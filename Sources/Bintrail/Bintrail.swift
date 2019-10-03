@@ -210,10 +210,7 @@ private extension Bintrail {
 
             completion(
                 result.map {
-                    bt_debug(
-                        "Successfully flushed \(events.count) event(s) of session.",
-                        "Dequeueing \(events.count) event(s)."
-                    )
+                    bt_debug("Successfully flushed \(events.count) event(s) of session.")
                     session.dequeueEvents(count: events.count)
                 }
             )

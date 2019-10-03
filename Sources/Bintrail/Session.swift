@@ -30,6 +30,7 @@ public final class Session {
     }
 
     internal func dequeueEvents(count: Int) {
+        bt_debug("Dequeueing \(count) event(s) from session.")
         events.removeFirst(count)
     }
 
