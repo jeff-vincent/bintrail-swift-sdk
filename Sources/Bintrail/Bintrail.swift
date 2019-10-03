@@ -3,7 +3,6 @@ import Foundation
 public enum BintrailError: Error {
 
     case appCredentialsMising
-    case appCredentialsInvalid
     case appCredentialsEncodingFailed
 
     case requestBodyEncodingFailed
@@ -12,6 +11,8 @@ public enum BintrailError: Error {
 
     case invalidURLResponse
     case unexpectedResponseBody
+
+    case unexpectedResponseStatus(accepted: Set<Int>, got: Int)
 
     case `internal`(Error)
 
@@ -28,25 +29,53 @@ internal struct AppCredentials {
     }
 
     var base64EncodedString: String? {
-        return Data(base64Encoded: keyId + ":" + secret)?.base64EncodedString()
+        let string = keyId + ":" + secret
+        return string.data(using: .utf8)?.base64EncodedString()
     }
+}
+
+internal func bt_print_internal(_ items: [Any], terminator: String, prefix: StaticString) {
+
+    let message = items.map { item in
+        String(describing: item)
+    }.joined(separator: terminator)
+
+    Swift.print(prefix, message)
+}
+
+internal func bt_print(_ items: Any..., terminator: String = " ") {
+    bt_print_internal(items, terminator: terminator, prefix: "[BINTRAIL]")
+}
+
+internal func bt_debug_internal(_ items: @autoclosure () -> [Any], terminator: String, prefix: StaticString) {
+    #if DEBUG
+    bt_print_internal(items(), terminator: terminator, prefix: prefix)
+    #endif
+}
+
+internal func bt_debug(_ items: Any..., terminator: String = " ", prefix: StaticString = "[BINTRAIL DEBUG]") {
+    bt_debug_internal(items, terminator: terminator, prefix: prefix)
 }
 
 internal extension URL {
     static let bintrailBaseUrl = URL(string: "http://localhost:5000")!
 }
 
+public extension Bintrail {
+    static let didAuthenticateSessionNotificationName = Notification.Name("BintrailDidAuthenticateSession")
+}
+
 public class Bintrail {
 
     public static let shared = Bintrail()
 
-    private var session = Session(timestamp: Date())
+    internal private(set) var currentSession = Session(startDate: Date())
 
-    private var processingSessions: [Session] = []
+    @SyncWrapper private var processingSessions: [Session] = []
 
     private let urlSession = URLSession(configuration: .default)
 
-    private var dispatchQueue = DispatchQueue(label: "com.bintrail.client")
+    private var dispatchQueue = DispatchQueue(label: "com.bintrail.async")
 
     private let jsonEncoder = JSONEncoder()
 
@@ -56,7 +85,10 @@ public class Bintrail {
 
     private var credentials: AppCredentials?
 
-    private init() {}
+    private init() {
+        jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
+        jsonDecoder.dateDecodingStrategy = .millisecondsSince1970
+    }
 
     var isConfigured: Bool {
         return credentials != nil
@@ -78,12 +110,27 @@ public class Bintrail {
         }
 
         async {
-            self.flush(session: self.session)
+            self.flush(session: self.currentSession)
+        }
+
+        timer = Timer.scheduledTimer(
+            timeInterval: 30,
+            target: self,
+            selector: #selector(timerAction),
+            userInfo: nil,
+            repeats: true
+        )
+    }
+
+    @objc
+    private func timerAction() {
+        async {
+            self.flush()
         }
     }
 
     private func isProcessing(session: Session) -> Bool {
-        return processingSessions.contains(session)
+        processingSessions.contains(session)
     }
 
     private func beginProcessing(session: Session) -> Bool {
@@ -91,54 +138,54 @@ public class Bintrail {
             return false
         }
 
+        bt_debug("Begin processing for session.")
         processingSessions.append(session)
         return true
     }
 
     private func endProcessing(session: Session) {
+
+        bt_debug("End processing for session.")
         processingSessions.removeAll { otherSession in
             session == otherSession
         }
     }
 
+    private func flush() {
+        flush(session: currentSession)
+    }
+
     private func flush(session: Session) {
 
+        bt_debug("Flushing session...")
+
         guard beginProcessing(session: session) else {
+            bt_debug("Session is already processing. Skipping.")
             return
         }
 
         if let existingCredentials = session.credentials {
-            guard session.events.isEmpty == false else {
-                endProcessing(session: session)
-                return
-            }
+            bt_debug("Session has credentials previously set.")
 
-            send(
-                request: Request(
-                    method: .post,
-                    path: "ingest/events",
-                    headers: ["Authorization": "Bearer " + existingCredentials.token],
-                    body: session.events,
-                    encoder: self.jsonEncoder
-                )
-            ) { result in
-                    self.endProcessing(session: session)
+            flushEvents(of: session, withCredentials: existingCredentials) { result in
 
-                    switch result {
-                    case .success:
-                        session.events = .empty
-                    case .failure(let error):
-                        self.print(error)
-                    }
+                if case .failure(let error) = result {
+                    bt_print("Failed to flush events for session:", error)
+                }
+
+                self.endProcessing(session: session)
             }
 
         } else {
+
+            bt_debug("Session does not have credentials set. Authenticating...")
+
             authenticate(session: session) { result in
                 switch result {
                 case .success(let credentials):
                     session.credentials = credentials
                 case .failure(let error):
-                    self.print(error)
+                    bt_print(error)
                 }
 
                 self.endProcessing(session: session)
@@ -157,70 +204,46 @@ private extension Bintrail {
 }
 
 private extension Bintrail {
-    func print(_ item: Any) {
-        Swift.print("[BINTRAIL]", item)
-    }
-}
 
-private extension Bintrail {
+    func flushEvents(
+        of session: Session,
+        withCredentials credentials: SessionCredentials,
+        completion: @escaping (Result<Void, BintrailError>) -> Void) {
 
-    enum RequestMethod: String {
-        case post = "POST"
-    }
+        let events = session.events
 
-    struct Request {
-        let method: RequestMethod
-        let path: String
-        let headers: [String: String]
-        let body: (() throws -> Data)?
-
-        init(method: RequestMethod, path: String, headers: [String: String] = [:]) {
-            self.method = method
-            self.path = path
-            self.headers = headers
-            self.body = nil
+        guard events.isEmpty == false else {
+            bt_debug("Session has no events. Skipping event flush.")
+            completion(.success(()))
+            return
         }
 
-        init<U: Encodable>(
-            method: RequestMethod,
-            path: String,
-            headers: [String: String] = [:],
-            body: U,
-            encoder: JSONEncoder
-        ) {
+        bt_debug("Flushing \(events.count) event(s) of session.")
 
-            var headers = headers
+        send(
+            request: Request(
+                method: .post,
+                path: "ingest/events",
+                headers: ["Authorization": "Bearer " + credentials.token],
+                body: PutSessionEventBatchRequest(session.events),
+                encoder: self.jsonEncoder
+            ),
+            acceptStatusCodes: [202]
+        ) { result in
 
-            if headers.keys.contains(where: { $0.lowercased() == "content-type" }) == false {
-                headers["Content-Type"] = "application/json"
-            }
-
-            self.method = method
-            self.path = path
-            self.headers = headers
-            self.body = { try encoder.encode(body) }
-        }
-
-        func makeURLRequest() throws -> URLRequest {
-            var urlRequest = URLRequest(url: URL.bintrailBaseUrl.appendingPathComponent(path))
-            urlRequest.httpMethod = method.rawValue
-
-            urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-
-            for (key, value) in headers {
-                urlRequest.setValue(value, forHTTPHeaderField: key)
-            }
-
-            urlRequest.httpBody = try body?()
-
-            return urlRequest
+            completion(
+                result.map {
+                    bt_debug(
+                        "Successfully flushed \(events.count) event(s) of session.",
+                        "Dequeueing \(events.count) event(s)."
+                    )
+                    session.dequeueEvents(count: events.count)
+                }
+            )
         }
     }
-}
 
-private extension Bintrail {
-
-    private func authenticate(
+    func authenticate(
         session: Session,
         completion: @escaping (Result<SessionCredentials, BintrailError>) -> Void
     ) {
@@ -233,6 +256,11 @@ private extension Bintrail {
                 throw BintrailError.appCredentialsEncodingFailed
             }
 
+            let completion: (Result<SessionCredentials, BintrailError>) -> Void = { result in
+                NotificationCenter.default.post(name: Bintrail.didAuthenticateSessionNotificationName, object: session)
+                completion(result)
+            }
+
             send(
                 request: Request(
                     method: .post,
@@ -241,6 +269,7 @@ private extension Bintrail {
                     body: SessionStartRequest(session),
                     encoder: jsonEncoder
                 ),
+                acceptStatusCodes: [200],
                 decodingResponseBodyTo: SessionCredentials.self,
                 completion: completion
             )
@@ -257,12 +286,16 @@ private extension Bintrail {
 
     func send<T: Decodable>(
         request: Request,
+        acceptStatusCodes acceptedStatusCodes: Set<Int>,
         decodingResponseBodyTo responseBodyType: T.Type,
         completion: @escaping (Result<T, BintrailError>) -> Void
     ) {
         async {
             do {
-                self.send(urlRequest: try request.makeURLRequest()) { result in
+                self.send(
+                    urlRequest: try request.makeURLRequest(),
+                    acceptStatusCodes: acceptedStatusCodes
+                ) { result in
                     completion(result.flatMap { _, data in
                         do {
                             guard let data = data else {
@@ -287,11 +320,15 @@ private extension Bintrail {
 
     func send(
         request: Request,
+        acceptStatusCodes acceptedStatusCodes: Set<Int>,
         completion: @escaping (Result<Void, BintrailError>) -> Void
     ) {
         async {
             do {
-                self.send(urlRequest: try request.makeURLRequest()) { result in
+                self.send(
+                    urlRequest: try request.makeURLRequest(),
+                    acceptStatusCodes: acceptedStatusCodes
+                ) { result in
                     completion(result.map { _, _ in
                         return
                     })
@@ -304,8 +341,12 @@ private extension Bintrail {
 
     func send(
         urlRequest: URLRequest,
+        acceptStatusCodes acceptedStatusCodes: Set<Int>,
         completion: @escaping (Result<(HTTPURLResponse, Data?), BintrailError>) -> Void
     ) {
+
+        bt_debug("Sending URLRequest", urlRequest)
+
         urlSession.dataTask(with: urlRequest) { data, urlResponse, error in
             self.async {
                 do {
@@ -317,13 +358,11 @@ private extension Bintrail {
                         throw BintrailError.invalidURLResponse
                     }
 
-                    guard httpUrlResponse.statusCode != 200 else {
-                        switch httpUrlResponse.statusCode {
-                        case 401:
-                            throw BintrailError.appCredentialsInvalid
-                        default:
-                            throw BintrailError.unexpected
-                        }
+                    guard acceptedStatusCodes.contains(httpUrlResponse.statusCode) else {
+                        throw BintrailError.unexpectedResponseStatus(
+                            accepted: acceptedStatusCodes,
+                            got: httpUrlResponse.statusCode
+                        )
                     }
 
                     completion(.success((httpUrlResponse, data)))
@@ -334,6 +373,6 @@ private extension Bintrail {
                     completion(.failure(.internal(error)))
                 }
             }
-        }
+        }.resume()
     }
 }

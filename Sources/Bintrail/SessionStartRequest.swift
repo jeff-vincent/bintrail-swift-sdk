@@ -1,10 +1,10 @@
 internal struct SessionStartRequest {
     let timestamp: Date
-    let client: ClientInfo
-    let device: DeviceInfo
+    let client: Client
+    let device: Device
     let sessionId: String?
 
-    init(timestamp: Date, client: ClientInfo, device: DeviceInfo, sessionId: String? = nil) {
+    init(timestamp: Date, client: Client, device: Device, sessionId: String? = nil) {
         self.timestamp = timestamp
         self.client = client
         self.device = device
@@ -15,8 +15,8 @@ internal struct SessionStartRequest {
 extension SessionStartRequest {
     init(_ session: Session) {
         self.init(
-            timestamp: session.timestamp, client:
-            session.client,
+            timestamp: session.startDate,
+            client: session.client,
             device: session.device
         )
     }

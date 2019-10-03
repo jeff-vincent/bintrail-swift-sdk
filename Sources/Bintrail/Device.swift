@@ -3,19 +3,19 @@ import Foundation
 import UIKit
 #endif
 
-internal struct DeviceInfo {
+internal struct Device {
     let identifier: String
     let name: String
     let model: String
     let make: String
     let platformVersion: String
     let platform: String
-    let locale: Locale
+    let locale: String
 
     #if canImport(UIKit)
 
-    static var current: DeviceInfo {
-        return DeviceInfo(device: .current)
+    static var current: Device {
+        return Device(device: .current)
     }
 
     private init(device: UIDevice) {
@@ -25,9 +25,9 @@ internal struct DeviceInfo {
         make = "Apple"
         platformVersion = device.systemVersion
         platform = device.systemName
-        locale = Locale.current
+        locale = Locale.current.identifier
     }
     #endif
 }
 
-extension DeviceInfo: Codable {}
+extension Device: Codable {}

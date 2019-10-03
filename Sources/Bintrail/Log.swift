@@ -44,5 +44,13 @@ public func bt_log(
     line: Int = #line,
     column: Int = #column
 ) {
-    print(items)
+    Bintrail.shared.currentSession.log(
+        items,
+        type: type,
+        timestamp: Date(),
+        file: file,
+        function: function,
+        line: line,
+        column: column
+    )
 }

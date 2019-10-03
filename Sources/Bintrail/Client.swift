@@ -1,12 +1,12 @@
-internal struct ClientInfo {
+internal struct Client {
 
     let versionName: String?
     let versionCode: Int?
     let packageName: String?
     let title: String?
 
-    static var current: ClientInfo {
-        return ClientInfo(bundle: .main)
+    static var current: Client {
+        return Client(bundle: .main)
     }
 
     private init(bundle: Bundle) {
@@ -24,4 +24,4 @@ internal struct ClientInfo {
     }
 }
 
-extension ClientInfo: Codable {}
+extension Client: Codable {}

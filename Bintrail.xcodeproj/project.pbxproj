@@ -7,25 +7,48 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		63B00E6C234495DF00B63A81 /* Bintrail.h in Headers */ = {isa = PBXBuildFile; fileRef = 63B00E69234495DF00B63A81 /* Bintrail.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		63B00E6F2344963700B63A81 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B00E6E2344963700B63A81 /* Log.swift */; };
-		63B00E712344964F00B63A81 /* ClientInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B00E702344964F00B63A81 /* ClientInfo.swift */; };
-		63B00E732344965A00B63A81 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B00E722344965A00B63A81 /* DeviceInfo.swift */; };
-		63B00E75234497DF00B63A81 /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B00E74234497DF00B63A81 /* Bintrail.swift */; };
-		63B00E782344DE6800B63A81 /* SessionStartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B00E772344DE6800B63A81 /* SessionStartRequest.swift */; };
-		63B00E7A2344E1E300B63A81 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B00E792344E1E300B63A81 /* Session.swift */; };
+		633148C023452EBB00B1722F /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B723452EB500B1722F /* Client.swift */; };
+		633148C123452EBB00B1722F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B823452EB500B1722F /* Session.swift */; };
+		633148C223452EBB00B1722F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B923452EB500B1722F /* Log.swift */; };
+		633148C323452EBB00B1722F /* SessionStartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BA23452EB500B1722F /* SessionStartRequest.swift */; };
+		633148C423452EBB00B1722F /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BB23452EB500B1722F /* Device.swift */; };
+		633148C523452EBB00B1722F /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BC23452EB500B1722F /* Bintrail.swift */; };
+		633148C623452EC000B1722F /* BintrailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BF23452EB500B1722F /* BintrailTests.swift */; };
+		633148C723452EC500B1722F /* Bintrail.h in Headers */ = {isa = PBXBuildFile; fileRef = 633148B123452EB500B1722F /* Bintrail.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		633148CB2345445C00B1722F /* SessionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CA2345445C00B1722F /* SessionEvent.swift */; };
+		633148CD2345BBFD00B1722F /* PutSessionEventBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CC2345BBFD00B1722F /* PutSessionEventBatchRequest.swift */; };
+		633148CF2345BFB900B1722F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CE2345BFB900B1722F /* Request.swift */; };
+		633148D12345C20600B1722F /* SyncWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D02345C20600B1722F /* SyncWrapper.swift */; };
+		63B00E8423452E2200B63A81 /* Bintrail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63731DB8234495860014E7A3 /* Bintrail.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		63B00E8523452E2200B63A81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 63731DB7234495860014E7A3;
+			remoteInfo = "Bintrail iOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		633148B123452EB500B1722F /* Bintrail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bintrail.h; sourceTree = "<group>"; };
+		633148B223452EB500B1722F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		633148B423452EB500B1722F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		633148B723452EB500B1722F /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		633148B823452EB500B1722F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		633148B923452EB500B1722F /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		633148BA23452EB500B1722F /* SessionStartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartRequest.swift; sourceTree = "<group>"; };
+		633148BB23452EB500B1722F /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		633148BC23452EB500B1722F /* Bintrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bintrail.swift; sourceTree = "<group>"; };
+		633148BF23452EB500B1722F /* BintrailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BintrailTests.swift; sourceTree = "<group>"; };
+		633148CA2345445C00B1722F /* SessionEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEvent.swift; sourceTree = "<group>"; };
+		633148CC2345BBFD00B1722F /* PutSessionEventBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutSessionEventBatchRequest.swift; sourceTree = "<group>"; };
+		633148CE2345BFB900B1722F /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		633148D02345C20600B1722F /* SyncWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncWrapper.swift; sourceTree = "<group>"; };
 		63731DB8234495860014E7A3 /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		63B00E69234495DF00B63A81 /* Bintrail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bintrail.h; sourceTree = "<group>"; };
-		63B00E6A234495DF00B63A81 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		63B00E6E2344963700B63A81 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		63B00E702344964F00B63A81 /* ClientInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientInfo.swift; sourceTree = "<group>"; };
-		63B00E722344965A00B63A81 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
-		63B00E74234497DF00B63A81 /* Bintrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bintrail.swift; sourceTree = "<group>"; };
-		63B00E772344DE6800B63A81 /* SessionStartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartRequest.swift; sourceTree = "<group>"; };
-		63B00E792344E1E300B63A81 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		63B00E7F23452E2200B63A81 /* BintrailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BintrailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,14 +59,90 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		63B00E7C23452E2200B63A81 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63B00E8423452E2200B63A81 /* Bintrail.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		633148AF23452EB500B1722F /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				633148B023452EB500B1722F /* Bintrail */,
+				633148B323452EB500B1722F /* BintrailTests */,
+			);
+			path = Framework;
+			sourceTree = "<group>";
+		};
+		633148B023452EB500B1722F /* Bintrail */ = {
+			isa = PBXGroup;
+			children = (
+				633148B123452EB500B1722F /* Bintrail.h */,
+				633148B223452EB500B1722F /* Info.plist */,
+			);
+			path = Bintrail;
+			sourceTree = "<group>";
+		};
+		633148B323452EB500B1722F /* BintrailTests */ = {
+			isa = PBXGroup;
+			children = (
+				633148B423452EB500B1722F /* Info.plist */,
+			);
+			path = BintrailTests;
+			sourceTree = "<group>";
+		};
+		633148B523452EB500B1722F /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				633148B623452EB500B1722F /* Bintrail */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		633148B623452EB500B1722F /* Bintrail */ = {
+			isa = PBXGroup;
+			children = (
+				633148B723452EB500B1722F /* Client.swift */,
+				633148B823452EB500B1722F /* Session.swift */,
+				633148B923452EB500B1722F /* Log.swift */,
+				633148BA23452EB500B1722F /* SessionStartRequest.swift */,
+				633148BB23452EB500B1722F /* Device.swift */,
+				633148BC23452EB500B1722F /* Bintrail.swift */,
+				633148CA2345445C00B1722F /* SessionEvent.swift */,
+				633148CC2345BBFD00B1722F /* PutSessionEventBatchRequest.swift */,
+				633148CE2345BFB900B1722F /* Request.swift */,
+				633148D02345C20600B1722F /* SyncWrapper.swift */,
+			);
+			path = Bintrail;
+			sourceTree = "<group>";
+		};
+		633148BD23452EB500B1722F /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				633148BE23452EB500B1722F /* BintrailTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		633148BE23452EB500B1722F /* BintrailTests */ = {
+			isa = PBXGroup;
+			children = (
+				633148BF23452EB500B1722F /* BintrailTests.swift */,
+			);
+			path = BintrailTests;
+			sourceTree = "<group>";
+		};
 		63731DAE234495860014E7A3 = {
 			isa = PBXGroup;
 			children = (
-				63B00E68234495DF00B63A81 /* Framework */,
-				63B00E6B234495DF00B63A81 /* Sources */,
+				633148AF23452EB500B1722F /* Framework */,
+				633148B523452EB500B1722F /* Sources */,
+				633148BD23452EB500B1722F /* Tests */,
 				63731DB9234495860014E7A3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,30 +151,9 @@
 			isa = PBXGroup;
 			children = (
 				63731DB8234495860014E7A3 /* Bintrail.framework */,
+				63B00E7F23452E2200B63A81 /* BintrailTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		63B00E68234495DF00B63A81 /* Framework */ = {
-			isa = PBXGroup;
-			children = (
-				63B00E69234495DF00B63A81 /* Bintrail.h */,
-				63B00E6A234495DF00B63A81 /* Info.plist */,
-			);
-			path = Framework;
-			sourceTree = "<group>";
-		};
-		63B00E6B234495DF00B63A81 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				63B00E6E2344963700B63A81 /* Log.swift */,
-				63B00E702344964F00B63A81 /* ClientInfo.swift */,
-				63B00E722344965A00B63A81 /* DeviceInfo.swift */,
-				63B00E74234497DF00B63A81 /* Bintrail.swift */,
-				63B00E772344DE6800B63A81 /* SessionStartRequest.swift */,
-				63B00E792344E1E300B63A81 /* Session.swift */,
-			);
-			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,7 +163,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63B00E6C234495DF00B63A81 /* Bintrail.h in Headers */,
+				633148C723452EC500B1722F /* Bintrail.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,18 +189,40 @@
 			productReference = 63731DB8234495860014E7A3 /* Bintrail.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		63B00E7E23452E2200B63A81 /* BintrailTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63B00E8923452E2200B63A81 /* Build configuration list for PBXNativeTarget "BintrailTests" */;
+			buildPhases = (
+				63B00E7B23452E2200B63A81 /* Sources */,
+				63B00E7C23452E2200B63A81 /* Frameworks */,
+				63B00E7D23452E2200B63A81 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				63B00E8623452E2200B63A81 /* PBXTargetDependency */,
+			);
+			name = BintrailTests;
+			productName = BintrailTests;
+			productReference = 63B00E7F23452E2200B63A81 /* BintrailTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		63731DAF234495860014E7A3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1100;
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Bintrail AB";
 				TargetAttributes = {
 					63731DB7234495860014E7A3 = {
 						CreatedOnToolsVersion = 11.0;
 						LastSwiftMigration = 1100;
+					};
+					63B00E7E23452E2200B63A81 = {
+						CreatedOnToolsVersion = 11.0;
 					};
 				};
 			};
@@ -140,12 +240,20 @@
 			projectRoot = "";
 			targets = (
 				63731DB7234495860014E7A3 /* Bintrail iOS */,
+				63B00E7E23452E2200B63A81 /* BintrailTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		63731DB6234495860014E7A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63B00E7D23452E2200B63A81 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -180,16 +288,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63B00E712344964F00B63A81 /* ClientInfo.swift in Sources */,
-				63B00E782344DE6800B63A81 /* SessionStartRequest.swift in Sources */,
-				63B00E7A2344E1E300B63A81 /* Session.swift in Sources */,
-				63B00E732344965A00B63A81 /* DeviceInfo.swift in Sources */,
-				63B00E75234497DF00B63A81 /* Bintrail.swift in Sources */,
-				63B00E6F2344963700B63A81 /* Log.swift in Sources */,
+				633148C523452EBB00B1722F /* Bintrail.swift in Sources */,
+				633148C123452EBB00B1722F /* Session.swift in Sources */,
+				633148D12345C20600B1722F /* SyncWrapper.swift in Sources */,
+				633148C023452EBB00B1722F /* Client.swift in Sources */,
+				633148CB2345445C00B1722F /* SessionEvent.swift in Sources */,
+				633148CD2345BBFD00B1722F /* PutSessionEventBatchRequest.swift in Sources */,
+				633148C223452EBB00B1722F /* Log.swift in Sources */,
+				633148C323452EBB00B1722F /* SessionStartRequest.swift in Sources */,
+				633148CF2345BFB900B1722F /* Request.swift in Sources */,
+				633148C423452EBB00B1722F /* Device.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63B00E7B23452E2200B63A81 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				633148C623452EC000B1722F /* BintrailTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		63B00E8623452E2200B63A81 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 63731DB7234495860014E7A3 /* Bintrail iOS */;
+			targetProxy = 63B00E8523452E2200B63A81 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		63731DBE234495860014E7A3 /* Debug */ = {
@@ -321,7 +449,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "$(SRCROOT)/Framework/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Framework/Bintrail/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -347,7 +475,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "$(SRCROOT)/Framework/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Framework/Bintrail/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -358,6 +486,42 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Bintrail;
 				PRODUCT_NAME = Bintrail;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		63B00E8723452E2200B63A81 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Framework/BintrailTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.BintrailTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		63B00E8823452E2200B63A81 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Framework/BintrailTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.BintrailTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -380,6 +544,15 @@
 			buildConfigurations = (
 				63731DC1234495860014E7A3 /* Debug */,
 				63731DC2234495860014E7A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63B00E8923452E2200B63A81 /* Build configuration list for PBXNativeTarget "BintrailTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63B00E8723452E2200B63A81 /* Debug */,
+				63B00E8823452E2200B63A81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
