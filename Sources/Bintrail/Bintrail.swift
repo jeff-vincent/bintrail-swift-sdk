@@ -1,4 +1,10 @@
 import Foundation
+import KSCrash
+import KSCrashBintrail
+
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public enum BintrailError: Error {
 
@@ -46,6 +52,8 @@ public class Bintrail {
 
     public static let shared = Bintrail()
 
+    private let crashReporting = KSCrash.sharedInstance()!
+
     internal private(set) var currentSession = Session(startDate: Date())
 
     @SyncWrapper private var processingSessions: [Session] = []
@@ -72,6 +80,31 @@ public class Bintrail {
     }
 
     public func configure(keyId: String, secret: String) {
+
+        crashReporting.sink = BTCrashReportSink()
+        crashReporting.introspectMemory = true
+        crashReporting.addConsoleLogToReport = true
+        crashReporting.onCrash = { writer in
+            writer?.pointee.addStringElement(
+                writer, "vendor_identifier",
+                UIDevice.current.identifierForVendor?.uuidString
+            )
+
+            writer?.pointee.addStringElement(
+                writer, "session_id",
+                Bintrail.shared.currentSession.credentials?.sessionIdentifier
+            )
+
+            writer?.pointee.addStringElement(
+                writer, "app_id",
+                Bintrail.shared.currentSession.credentials?.appIdentifier
+            )
+        }
+        crashReporting.install()
+
+        crashReporting.sendAllReports { reports, completed, error in
+            //print(reports, completed, error)
+        }
 
         guard isConfigured == false else {
             return
@@ -166,7 +199,6 @@ public class Bintrail {
                 }
 
                 self.endProcessing(session: session)
-                self.flush(session: session)
             }
         }
     }

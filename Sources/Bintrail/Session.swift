@@ -1,12 +1,16 @@
 internal struct SessionCredentials {
     let token: String
     let expirationDate: Date
+    let appIdentifier: String
+    let sessionIdentifier: String
 }
 
 extension SessionCredentials: Codable {
     private enum CodingKeys: String, CodingKey {
         case token = "bearerToken"
         case expirationDate = "expiresAt"
+        case appIdentifier = "appId"
+        case sessionIdentifier = "sessionId"
     }
 }
 

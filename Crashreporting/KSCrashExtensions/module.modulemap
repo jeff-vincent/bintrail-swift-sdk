@@ -1,0 +1,5 @@
+module KSCrashBintrail {
+    header "BTCrashReportSink.h"
+    link "KSCrash"
+    export *
+}
