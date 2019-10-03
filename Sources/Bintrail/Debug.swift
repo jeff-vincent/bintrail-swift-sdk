@@ -1,4 +1,4 @@
-fileprivate func bt_print_internal(_ items: [Any], terminator: String, prefix: StaticString) {
+private func bt_print_internal(_ items: [Any], terminator: String, prefix: StaticString) {
 
     let message = items.map { item in
         String(describing: item)
@@ -7,7 +7,7 @@ fileprivate func bt_print_internal(_ items: [Any], terminator: String, prefix: S
     Swift.print(prefix, message)
 }
 
-fileprivate func bt_debug_internal(_ items: @autoclosure () -> [Any], terminator: String, prefix: StaticString) {
+private func bt_debug_internal(_ items: @autoclosure () -> [Any], terminator: String, prefix: StaticString) {
     #if DEBUG
     bt_print_internal(items(), terminator: terminator, prefix: prefix)
     #endif

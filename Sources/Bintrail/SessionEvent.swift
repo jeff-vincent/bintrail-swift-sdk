@@ -1,14 +1,16 @@
 internal enum SessionEventType: String, Codable {
     case log
+    case userEvent
 }
 
 internal enum SessionEvent {
     case log(Log)
+    case userEvent(UserEvent)
 
-    var eventType: SessionEventType {
+    var recordType: SessionEventType {
         switch self {
-        case .log:
-            return .log
+        case .log: return .log
+        case .userEvent: return .userEvent
         }
     }
 }
@@ -27,17 +29,21 @@ extension SessionEvent: Codable {
         switch type {
         case .log:
             self = .log(try container.decode((Log.self), forKey: .value))
+        case .userEvent:
+            self = .userEvent(try container.decode(UserEvent.self, forKey: .value))
         }
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(eventType, forKey: .type)
+        try container.encode(recordType, forKey: .type)
 
         switch self {
-        case .log(let log):
-            try container.encode(log, forKey: .value)
+        case .log(let value):
+            try container.encode(value, forKey: .value)
+        case .userEvent(let value):
+            try container.encode(value, forKey: .value)
         }
     }
 }

@@ -44,13 +44,23 @@ public func bt_log(
     line: Int = #line,
     column: Int = #column
 ) {
-    Bintrail.shared.currentSession.log(
-        items,
-        type: type,
-        timestamp: Date(),
-        file: file,
-        function: function,
+    #if DEBUG
+    let message = items.map { item in
+        String(describing: item)
+    }.joined(separator: terminator)
+
+    print(message)
+    #endif
+
+    let log = Log(
+        level: type,
+        message: items.map({ String(describing: $0) }).joined(separator: terminator),
         line: line,
-        column: column
+        column: column,
+        function: String(describing: function),
+        file: String(describing: file),
+        timestamp: Date()
     )
+
+    Bintrail.shared.currentSession.enqueueEvent(.log(log))
 }

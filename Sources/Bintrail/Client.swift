@@ -20,7 +20,7 @@ internal struct Client {
             versionCode = nil
         }
 
-        title = bundle.infoDictionary?["CFBundleDisplayName"] as? String
+        title = bundle.infoDictionary?["CFBundleName"] as? String
     }
 }
 

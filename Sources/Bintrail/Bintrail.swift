@@ -187,7 +187,7 @@ private extension Bintrail {
         withCredentials credentials: SessionCredentials,
         completion: @escaping (Result<Void, BintrailError>) -> Void) {
 
-        let events = session.events
+        let events = session.records
 
         guard events.isEmpty == false else {
             bt_debug("Session has no events. Skipping event flush.")
@@ -202,7 +202,7 @@ private extension Bintrail {
                 method: .post,
                 path: "ingest/events",
                 headers: ["Authorization": "Bearer " + credentials.token],
-                body: PutSessionEventBatchRequest(session.events),
+                body: PutSessionEventBatchRequest(session.records),
                 encoder: self.jsonEncoder
             ),
             acceptStatusCodes: [202]

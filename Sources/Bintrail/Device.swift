@@ -20,7 +20,11 @@ internal struct Device {
 
     private init(device: UIDevice) {
         identifier = (device.identifierForVendor ?? UUID()).uuidString
+        #if targetEnvironment(simulator)
+        name = device.name + " (Simulator)"
+        #else
         name = device.name
+        #endif
         model = device.model
         make = "Apple"
         platformVersion = device.systemVersion
