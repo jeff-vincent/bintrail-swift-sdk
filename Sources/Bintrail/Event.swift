@@ -2,16 +2,16 @@ public protocol AnyUserEvent: AnyObject {
 
     func add(attribute value: String, for key: String)
 
-    func add<T: BinaryInteger>(metric value: T, for metricType: UserEvent.MetricType)
+    func add<T: BinaryInteger>(metric value: T, for metricType: Event.MetricType)
 
-    func add<T: BinaryFloatingPoint>(metric value: T, for metricType: UserEvent.MetricType)
+    func add<T: BinaryFloatingPoint>(metric value: T, for metricType: Event.MetricType)
 
     func setDuration(_ value: TimeInterval)
 
     var hasDuration: Bool { get }
 }
 
-public final class UserEvent: AnyUserEvent {
+public final class Event: AnyUserEvent {
 
     public typealias Metrics = [MetricType: Double]
 
@@ -73,11 +73,11 @@ public final class UserEvent: AnyUserEvent {
         attributes[key] = String(describing: value)
     }
 
-    public func add<T: BinaryInteger>(metric value: T, for metricType: UserEvent.MetricType) {
+    public func add<T: BinaryInteger>(metric value: T, for metricType: Event.MetricType) {
         metrics[metricType] = Double(value)
     }
 
-    public func add<T: BinaryFloatingPoint>(metric value: T, for metricType: UserEvent.MetricType) {
+    public func add<T: BinaryFloatingPoint>(metric value: T, for metricType: Event.MetricType) {
         metrics[metricType] = Double(value)
     }
 
@@ -90,23 +90,23 @@ public final class UserEvent: AnyUserEvent {
     }
 }
 
-extension UserEvent.MetricType: ExpressibleByStringLiteral {
+extension Event.MetricType: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         self.init(rawValue: value)
     }
 }
 
-extension UserEvent.Label: ExpressibleByStringLiteral {
+extension Event.Label: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         self.init(rawValue: value)
     }
 }
 
-public extension UserEvent.MetricType {
-    static let duration: UserEvent.MetricType = "@duration"
+public extension Event.MetricType {
+    static let duration: Event.MetricType = "@duration"
 }
 
-extension UserEvent: Codable {
+extension Event: Codable {
 
     private enum CodingKeys: String, CodingKey {
         case label
@@ -134,7 +134,7 @@ extension UserEvent: Codable {
                 [String: Double].self,
                 forKey: .metrics
             ).reduce(into: [:]) { result, keyValue in
-                result[UserEvent.MetricType(rawValue: keyValue.key)] = keyValue.value
+                result[Event.MetricType(rawValue: keyValue.key)] = keyValue.value
             }
         )
     }
@@ -160,27 +160,27 @@ extension UserEvent: Codable {
     }
 }
 
-public func bt_event_start(_ label: UserEvent.Label) -> UserEvent {
-    return UserEvent(label: label)
+public func bt_event_start(_ label: Event.Label) -> Event {
+    return Event(label: label)
 }
 
-public func bt_event_finish(_ userEvent: UserEvent) {
-    if userEvent.hasDuration == false {
-        userEvent.clock()
+public func bt_event_finish(_ event: Event) {
+    if event.hasDuration == false {
+        event.clock()
     }
 
-    bt_event_register(userEvent)
+    bt_event_register(event)
 }
 
-internal func bt_event_register(_ userEvent: UserEvent) {
-    Bintrail.shared.currentSession.enqueueEvent(.userEvent(userEvent))
+internal func bt_event_register(_ event: Event) {
+    Bintrail.shared.currentSession.enqueueEvent(.event(event))
 }
 
-public func bt_event<T>(_ label: UserEvent.Label, _ body: (UserEvent) throws -> T) rethrows -> T {
+public func bt_event<T>(_ label: Event.Label, _ body: (Event) throws -> T) rethrows -> T {
 
-    let userEvent = UserEvent(label: label)
-    let value = try body(userEvent)
+    let event = Event(label: label)
+    let value = try body(event)
 
-    bt_event_register(userEvent)
+    bt_event_register(event)
     return value
 }

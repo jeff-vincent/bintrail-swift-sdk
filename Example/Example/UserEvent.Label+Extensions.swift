@@ -1,6 +1,6 @@
 import Bintrail
 import UIKit
 
-extension UserEvent.Label {
-    public static let appLaunch: UserEvent.Label = "appLaunch"
+extension Event.Label {
+    public static let appLaunch: Event.Label = "appLaunch"
 }

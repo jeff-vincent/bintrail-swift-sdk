@@ -2,23 +2,23 @@ internal class PutSessionEventBatchRequest: Encodable {
 
     let logs: [Log]
 
-    let userEvents: [UserEvent]
+    let events: [Event]
 
     init<T: Sequence>(_ records: T) where T.Element == SessionEvent {
 
         var logs: [Log] = []
-        var userEvents: [UserEvent] = []
+        var events: [Event] = []
 
         for record in records {
             switch record {
             case .log(let event):
                 logs.append(event)
-            case .userEvent(let event):
-                userEvents.append(event)
+            case .event(let event):
+                events.append(event)
             }
         }
 
         self.logs = logs
-        self.userEvents = userEvents
+        self.events = events
     }
 }

@@ -141,7 +141,7 @@
 		63995E4F234B237C00FA9765 /* Backtrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63995E4E234B237C00FA9765 /* Backtrace.swift */; };
 		63995E51234B239800FA9765 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63995E50234B239800FA9765 /* Thread.swift */; };
 		63995E53234B23B300FA9765 /* BinaryImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63995E52234B23B300FA9765 /* BinaryImage.swift */; };
-		63A8EA072346217300507264 /* UserEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A8EA062346217300507264 /* UserEvent.swift */; };
+		63A8EA072346217300507264 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A8EA062346217300507264 /* Event.swift */; };
 		63B00E8423452E2200B63A81 /* Bintrail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63731DB8234495860014E7A3 /* Bintrail.framework */; };
 		63E8367623468AAC009A4838 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 63E8367523468A9E009A4838 /* libc++.tbd */; };
 		63E8367823468AB9009A4838 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 63E8367723468AB9009A4838 /* libz.tbd */; };
@@ -297,7 +297,7 @@
 		63995E4E234B237C00FA9765 /* Backtrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backtrace.swift; sourceTree = "<group>"; };
 		63995E50234B239800FA9765 /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		63995E52234B23B300FA9765 /* BinaryImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryImage.swift; sourceTree = "<group>"; };
-		63A8EA062346217300507264 /* UserEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserEvent.swift; sourceTree = "<group>"; };
+		63A8EA062346217300507264 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		63B00E7F23452E2200B63A81 /* BintrailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BintrailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		63E8367523468A9E009A4838 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		63E8367723468AB9009A4838 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
@@ -375,7 +375,7 @@
 				633148CA2345445C00B1722F /* SessionEvent.swift */,
 				633148BA23452EB500B1722F /* SessionStartRequest.swift */,
 				633148D02345C20600B1722F /* Synchronized.swift */,
-				63A8EA062346217300507264 /* UserEvent.swift */,
+				63A8EA062346217300507264 /* Event.swift */,
 				63995594234A520D00FA9765 /* CrashReporter.swift */,
 				63995598234A6F0100FA9765 /* Device.swift */,
 				6399559A234A6F1400FA9765 /* Executable.swift */,
@@ -760,7 +760,7 @@
 				63995E44234B080A00FA9765 /* KSCrashMonitor_CPPException.cpp in Sources */,
 				633148D32345CFE800B1722F /* Debug.swift in Sources */,
 				633148D12345C20600B1722F /* Synchronized.swift in Sources */,
-				63A8EA072346217300507264 /* UserEvent.swift in Sources */,
+				63A8EA072346217300507264 /* Event.swift in Sources */,
 				63995597234A555800FA9765 /* CrashReport.swift in Sources */,
 				63995E18234B080A00FA9765 /* KSCrashMonitor_MachException.c in Sources */,
 				63995E40234B080A00FA9765 /* KSThread.c in Sources */,

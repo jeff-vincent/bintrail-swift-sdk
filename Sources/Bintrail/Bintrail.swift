@@ -214,7 +214,7 @@ private extension Bintrail {
         send(
             request: Request(
                 method: .post,
-                path: "ingest/events",
+                path: "ingest",
                 headers: ["Authorization": "Bearer " + credentials.token],
                 body: PutSessionEventBatchRequest(session.records),
                 encoder: self.jsonEncoder
@@ -260,8 +260,8 @@ private extension Bintrail {
             send(
                 request: Request(
                     method: .post,
-                    path: "auth/app",
-                    headers: ["Bintrail-AppCredentials": base64EncodedAppCredentials],
+                    path: "auth/executable",
+                    headers: ["Bintrail-Ingest-Token": base64EncodedAppCredentials],
                     body: SessionStartRequest(executable: executable, device: device),
                     encoder: jsonEncoder
                 ),
