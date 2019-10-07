@@ -47,6 +47,12 @@ struct Request {
 
         urlRequest.httpBody = try body?()
 
+        if let body = urlRequest.httpBody {
+            if let string = String(data: body, encoding: .utf8) {
+                print(string)
+            }
+        }
+
         return urlRequest
     }
 }

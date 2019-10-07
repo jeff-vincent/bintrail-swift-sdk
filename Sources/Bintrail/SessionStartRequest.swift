@@ -1,5 +1,5 @@
 internal struct SessionStartRequest {
-    let client: Executable
+    let executable: Executable
     let device: Device
 }
 

@@ -1,10 +1,16 @@
 import KSCrash
 
 struct Executable {
+
+    struct Package: Encodable {
+        let identifier: String
+        let versionName: String
+        let versionCode: Int?
+        let name: String
+    }
+
     let identifier: String
-    let name: String
-    let version: Int?
-    let versionName: String
+    let package: Package
     let startTime: Date?
 
     let title: String
@@ -19,11 +25,13 @@ extension Executable: Decodable {
         let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
 
         identifier = try container.decode(String.self, forKey: .appUUID)
-        name = try container.decode(String.self, forKey: .bundleId)
 
-        version = Int(try container.decode(String.self, forKey: .bundleVersion))
-
-        versionName = try container.decode(String.self, forKey: .bundleShortVersion)
+        package = Package(
+            identifier: try container.decode(String.self, forKey: .bundleId),
+            versionName: try container.decode(String.self, forKey: .bundleShortVersion),
+            versionCode: Int(try container.decode(String.self, forKey: .bundleVersion)),
+            name: try container.decode(String.self, forKey: .bundleName)
+        )
 
         startTime = CrashReporter.dateFormatter.date(
             from: try container.decode(String.self, forKey: .appStartTime)

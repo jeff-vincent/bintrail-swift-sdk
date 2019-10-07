@@ -1,4 +1,7 @@
 import KSCrash
+#if canImport(UIKit)
+import UIKit
+#endif
 
 struct Device: Encodable {
 
@@ -6,8 +9,6 @@ struct Device: Encodable {
         let architecture: String
         let type: Int32
         let subType: Int32?
-        let binaryType: Int32?
-        let binarySubtype: Int32
     }
 
     struct MemoryInfo: Encodable {
@@ -16,9 +17,19 @@ struct Device: Encodable {
         let usable: UInt64
     }
 
-    let platformName: String
-    let platformVersion: String
-    let platformVersionName: String
+    struct Platform: Encodable {
+        let name: String
+        let versionCode: String
+        let versionName: String
+    }
+
+    let identifier: String
+
+    let platform: Platform
+
+    let name: String?
+
+    let localeIdentifier: String?
 
     let kernelVersion: String
 
@@ -27,7 +38,6 @@ struct Device: Encodable {
 
     let processor: Processor
     let memory: MemoryInfo
-
 }
 
 extension Device.MemoryInfo: Decodable {
@@ -48,8 +58,6 @@ extension Device.Processor: Decodable {
 
         type = try container.decode(Int32.self, forKey: .cpuType)
         subType = try container.decode(Int32.self, forKey: .cpuSubtype)
-        binaryType = try container.decode(Int32.self, forKey: .cpuBinaryType)
-        binarySubtype = try container.decode(Int32.self, forKey: .cpuBinarySubtype)
     }
 }
 
@@ -57,19 +65,37 @@ extension Device: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
 
-        processor = try Processor(from: decoder)
-        memory = try container.decode(MemoryInfo.self, forKey: .memory)
+        processor = try container.decode(Processor.self, forKey: .system)
 
-        platformName = try container.decode(String.self, forKey: .systemName)
-        platformVersion = try container.decode(String.self, forKey: .osVersion)
-        platformVersionName = try container.decode(String.self, forKey: .systemVersion)
+        let systemContainer = try container.nestedContainer(keyedBy: CrashReport.DecodingKey.self, forKey: .system)
 
-        kernelVersion = try container.decode(String.self, forKey: .kernelVersion)
+        if let userInfoContainer = try? container.nestedContainer(
+            keyedBy: CrashReport.UserInfoDecodingKey.self,
+            forKey: .userInfo
+        ) {
+            name = try userInfoContainer.decodeIfPresent(String.self, forKey: .deviceName)
+            localeIdentifier = try userInfoContainer.decodeIfPresent(String.self, forKey: .locale)
+        } else {
+            name = nil
+            localeIdentifier = nil
+        }
 
-        bootTime = CrashReporter.dateFormatter.date(
-            from: try container.decode(String.self, forKey: .bootTime)
+        identifier = try systemContainer.decode(String.self, forKey: .deviceAppHash)
+
+        memory = try systemContainer.decode(MemoryInfo.self, forKey: .memory)
+
+        platform = Platform(
+            name: try systemContainer.decode(String.self, forKey: .systemName),
+            versionCode: try systemContainer.decode(String.self, forKey: .osVersion),
+            versionName: try systemContainer.decode(String.self, forKey: .systemVersion)
         )
 
-        isJailBroken = try container.decode(Bool.self, forKey: .isJailBroken)
+        kernelVersion = try systemContainer.decode(String.self, forKey: .kernelVersion)
+
+        bootTime = CrashReporter.dateFormatter.date(
+            from: try systemContainer.decode(String.self, forKey: .bootTime)
+        )
+
+        isJailBroken = try systemContainer.decode(Bool.self, forKey: .isJailBroken)
     }
 }

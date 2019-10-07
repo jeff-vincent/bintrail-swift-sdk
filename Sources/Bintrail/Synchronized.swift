@@ -1,5 +1,5 @@
 @propertyWrapper
-internal struct SyncWrapper<Value> {
+internal struct Synchronized<Value> {
     let dispatchQueue = DispatchQueue(label: "com.bintrail.sync", attributes: .concurrent)
 
     private var value: Value
@@ -22,13 +22,13 @@ internal struct SyncWrapper<Value> {
     }
 }
 
-extension SyncWrapper: Encodable where Value: Encodable {
+extension Synchronized: Encodable where Value: Encodable {
     func encode(to encoder: Encoder) throws {
         try wrappedValue.encode(to: encoder)
     }
 }
 
-extension SyncWrapper: Decodable where Value: Decodable {
+extension Synchronized: Decodable where Value: Decodable {
     init(from decoder: Decoder) throws {
         try self.init(wrappedValue: Value(from: decoder))
     }

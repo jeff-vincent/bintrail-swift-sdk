@@ -1,3 +1,6 @@
+#if canImport(UIKit)
+import UIKit
+#endif
 import KSCrash
 
 enum CrashReporterError: Error {
@@ -95,19 +98,30 @@ internal class CrashReporter {
 
         let system = context.System
 
+        let deviceName: String
+
+        #if canImport(UIKit)
+        deviceName = UIDevice.current.name
+        #else
+        deviceName = "Unknown" // TODO: Replace me with os-specific values
+        #endif
+
         return Device(
-            platformName: String(cString: system.systemName),
-            platformVersion: String(cString: system.osVersion),
-            platformVersionName: String(cString: system.machine),
+            identifier: String(cString: system.deviceAppHash),
+            platform: Device.Platform(
+                name: String(cString: system.systemName),
+                versionCode: String(cString: system.osVersion),
+                versionName: String(cString: system.systemVersion)
+            ),
+            name: deviceName,
+            localeIdentifier: Locale.current.identifier,
             kernelVersion: String(cString: system.kernelVersion),
             bootTime: CrashReporter.dateFormatter.date(from: String(cString: system.bootTime)),
             isJailBroken: system.isJailbroken,
             processor: Device.Processor(
                 architecture: String(cString: system.cpuArchitecture),
                 type: system.cpuType,
-                subType: system.cpuSubType,
-                binaryType: system.binaryCPUType,
-                binarySubtype: system.binaryCPUSubType
+                subType: system.cpuSubType
             ),
             memory: Device.MemoryInfo(
                 size: system.memorySize,
@@ -126,9 +140,12 @@ internal class CrashReporter {
 
         return Executable(
             identifier: String(cString: system.appID),
-            name: String(cString: system.bundleID),
-            version: Int(String(cString: system.bundleVersion)),
-            versionName: String(cString: system.bundleShortVersion),
+            package: Executable.Package(
+                identifier: String(cString: system.bundleID),
+                versionName: String(cString: system.bundleShortVersion),
+                versionCode: Int(String(cString: system.bundleVersion)),
+                name: String(cString: system.bundleName)
+            ),
             startTime: CrashReporter.dateFormatter.date(from: String(cString: system.appStartTime)),
             title: String(cString: system.bundleName),
             path: String(cString: system.executablePath)

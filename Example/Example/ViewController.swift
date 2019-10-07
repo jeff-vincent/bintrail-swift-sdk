@@ -20,7 +20,7 @@ class ViewController: UIViewController {
             event.add(metric: tapCounter, for: "tapCount")
         }
 
-                [0][1]
+        bt_log("Button tapped", type: .debug)
 
         tapCounter += 1
     }

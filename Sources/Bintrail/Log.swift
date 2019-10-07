@@ -49,7 +49,7 @@ public func bt_log(
         String(describing: item)
     }.joined(separator: terminator)
 
-    print(message)
+    print("bt_log [\(type.rawValue.uppercased())]", message)
     #endif
 
     let log = Log(

@@ -1,7 +1,6 @@
 internal struct SessionCredentials {
     let token: String
     let expirationDate: Date
-    let appIdentifier: String
     let sessionIdentifier: String
 }
 
@@ -9,7 +8,6 @@ extension SessionCredentials: Codable {
     private enum CodingKeys: String, CodingKey {
         case token = "bearerToken"
         case expirationDate = "expiresAt"
-        case appIdentifier = "appId"
         case sessionIdentifier = "sessionId"
     }
 }
@@ -18,7 +16,7 @@ public final class Session {
 
     internal var credentials: SessionCredentials?
 
-    @SyncWrapper private(set) var records: [SessionEvent]
+    @Synchronized private(set) var records: [SessionEvent]
 
     internal func dequeueEvents(count: Int) {
         bt_debug("Dequeueing \(count) event(s) from session.")

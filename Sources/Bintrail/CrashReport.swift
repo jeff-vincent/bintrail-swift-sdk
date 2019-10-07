@@ -29,7 +29,7 @@ extension CrashReport: Decodable {
 
         executable = try container.decode(Executable.self, forKey: .system)
 
-        device = try container.decode(Device.self, forKey: .system)
+        device = try Device(from: decoder)
 
         // Crash report
 
@@ -61,6 +61,11 @@ extension CrashReport: Decodable {
 extension CrashReport: Encodable {}
 
 extension CrashReport {
+
+    enum UserInfoDecodingKey: String, CodingKey {
+        case deviceName
+        case locale
+    }
 
     struct DecodingKey: CodingKey {
 

@@ -58,7 +58,7 @@ public class Bintrail {
 
     internal private(set) var currentSession = Session()
 
-    @SyncWrapper private var processingSessions: [Session] = []
+    @Synchronized private var processingSessions: [Session] = []
 
     private let urlSession = URLSession(configuration: .default)
 
@@ -262,7 +262,7 @@ private extension Bintrail {
                     method: .post,
                     path: "auth/app",
                     headers: ["Bintrail-AppCredentials": base64EncodedAppCredentials],
-                    body: SessionStartRequest(client: executable, device: device),
+                    body: SessionStartRequest(executable: executable, device: device),
                     encoder: jsonEncoder
                 ),
                 acceptStatusCodes: [200],

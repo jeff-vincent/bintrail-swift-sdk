@@ -18,7 +18,7 @@
 		633148CB2345445C00B1722F /* SessionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CA2345445C00B1722F /* SessionEvent.swift */; };
 		633148CD2345BBFD00B1722F /* PutSessionEventBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CC2345BBFD00B1722F /* PutSessionEventBatchRequest.swift */; };
 		633148CF2345BFB900B1722F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CE2345BFB900B1722F /* Request.swift */; };
-		633148D12345C20600B1722F /* SyncWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D02345C20600B1722F /* SyncWrapper.swift */; };
+		633148D12345C20600B1722F /* Synchronized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D02345C20600B1722F /* Synchronized.swift */; };
 		633148D32345CFE800B1722F /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D22345CFE800B1722F /* Debug.swift */; };
 		63995595234A520D00FA9765 /* CrashReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63995594234A520D00FA9765 /* CrashReporter.swift */; };
 		63995597234A555800FA9765 /* CrashReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63995596234A555800FA9765 /* CrashReport.swift */; };
@@ -172,7 +172,7 @@
 		633148CA2345445C00B1722F /* SessionEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEvent.swift; sourceTree = "<group>"; };
 		633148CC2345BBFD00B1722F /* PutSessionEventBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutSessionEventBatchRequest.swift; sourceTree = "<group>"; };
 		633148CE2345BFB900B1722F /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		633148D02345C20600B1722F /* SyncWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncWrapper.swift; sourceTree = "<group>"; };
+		633148D02345C20600B1722F /* Synchronized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Synchronized.swift; sourceTree = "<group>"; };
 		633148D22345CFE800B1722F /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		63731DB8234495860014E7A3 /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63995594234A520D00FA9765 /* CrashReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashReporter.swift; sourceTree = "<group>"; };
@@ -374,7 +374,7 @@
 				633148B823452EB500B1722F /* Session.swift */,
 				633148CA2345445C00B1722F /* SessionEvent.swift */,
 				633148BA23452EB500B1722F /* SessionStartRequest.swift */,
-				633148D02345C20600B1722F /* SyncWrapper.swift */,
+				633148D02345C20600B1722F /* Synchronized.swift */,
 				63A8EA062346217300507264 /* UserEvent.swift */,
 				63995594234A520D00FA9765 /* CrashReporter.swift */,
 				63995598234A6F0100FA9765 /* Device.swift */,
@@ -759,7 +759,7 @@
 				633148C123452EBB00B1722F /* Session.swift in Sources */,
 				63995E44234B080A00FA9765 /* KSCrashMonitor_CPPException.cpp in Sources */,
 				633148D32345CFE800B1722F /* Debug.swift in Sources */,
-				633148D12345C20600B1722F /* SyncWrapper.swift in Sources */,
+				633148D12345C20600B1722F /* Synchronized.swift in Sources */,
 				63A8EA072346217300507264 /* UserEvent.swift in Sources */,
 				63995597234A555800FA9765 /* CrashReport.swift in Sources */,
 				63995E18234B080A00FA9765 /* KSCrashMonitor_MachException.c in Sources */,
