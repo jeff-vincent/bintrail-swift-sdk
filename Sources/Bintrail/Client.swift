@@ -4,7 +4,6 @@ internal struct Client {
     let versionCode: Int?
     let packageName: String?
     let title: String
-    
 
     static var current: Client {
         return Client(bundle: .main)

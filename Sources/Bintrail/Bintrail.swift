@@ -74,7 +74,11 @@ public class Bintrail {
 
     private init() {
         jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
-        jsonEncoder.outputFormatting = [.prettyPrinted] // TODO: Remove me
+
+        #if DEBUG
+            jsonEncoder.outputFormatting = [.prettyPrinted]
+        #endif
+
         if #available(iOS 11, *) {
             jsonEncoder.outputFormatting.insert(.sortedKeys)
         }
@@ -89,8 +93,6 @@ public class Bintrail {
     public func configure(keyId: String, secret: String) {
 
         crashReporter.install()
-
-        print(crashReporter.device)
 
         guard isConfigured == false else {
             return
@@ -111,7 +113,6 @@ public class Bintrail {
             repeats: true
         )
     }
-
 
     @objc
     private func timerAction() {

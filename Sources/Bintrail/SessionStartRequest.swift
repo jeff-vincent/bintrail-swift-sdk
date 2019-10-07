@@ -3,5 +3,4 @@ internal struct SessionStartRequest {
     let device: Device
 }
 
-
 extension SessionStartRequest: Encodable {}

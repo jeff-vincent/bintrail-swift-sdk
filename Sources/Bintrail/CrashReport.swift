@@ -10,15 +10,15 @@ internal struct CrashReport {
 
     let binaryImages: [BinaryImage]
 
-    let processName: String?
+    let processName: String
 
-    let identifier: String?
+    let identifier: String
 
     let timestamp: Date?
 
-    let type: String?
+    let type: String
 
-    let version: String?
+    let version: String
 }
 
 extension CrashReport: Decodable {
@@ -35,19 +35,17 @@ extension CrashReport: Decodable {
 
         let reportContainer = try container.nestedContainer(keyedBy: DecodingKey.self, forKey: .report)
 
-        processName = try reportContainer.decode(String?.self, forKey: .processName)
+        processName = try reportContainer.decode(String.self, forKey: .processName)
 
-        identifier = try reportContainer.decode(String?.self, forKey: .identifier)
+        identifier = try reportContainer.decode(String.self, forKey: .identifier)
 
-        if let value = try reportContainer.decode(String?.self, forKey: .timestamp) {
-            timestamp = CrashReporter.dateFormatter.date(from: value)
-        } else {
-            timestamp = nil
-        }
+        timestamp = CrashReporter.dateFormatter.date(
+            from: try reportContainer.decode(String.self, forKey: .timestamp)
+        )
 
-        type = try reportContainer.decode(String?.self, forKey: .type)
+        type = try reportContainer.decode(String.self, forKey: .type)
 
-        version = try reportContainer.decode(String?.self, forKey: .version)
+        version = try reportContainer.decode(String.self, forKey: .version)
 
         // Crash
 
