@@ -1,6 +1,5 @@
 import Foundation
 import KSCrash
-import KSCrashBintrail
 
 #if canImport(UIKit)
 import UIKit
@@ -52,7 +51,7 @@ public class Bintrail {
 
     public static let shared = Bintrail()
 
-    private let crashReporting = KSCrash.sharedInstance()!
+    let crashReporter = CrashReporter()
 
     internal private(set) var currentSession = Session(startDate: Date())
 
@@ -72,6 +71,11 @@ public class Bintrail {
 
     private init() {
         jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
+        jsonEncoder.outputFormatting = [.prettyPrinted] // TODO: Remove me
+        if #available(iOS 11, *) {
+            jsonEncoder.outputFormatting.insert(.sortedKeys)
+        }
+
         jsonDecoder.dateDecodingStrategy = .millisecondsSince1970
     }
 
@@ -81,30 +85,9 @@ public class Bintrail {
 
     public func configure(keyId: String, secret: String) {
 
-        crashReporting.sink = BTCrashReportSink()
-        crashReporting.introspectMemory = true
-        crashReporting.addConsoleLogToReport = true
-        crashReporting.onCrash = { writer in
-            writer?.pointee.addStringElement(
-                writer, "vendor_identifier",
-                UIDevice.current.identifierForVendor?.uuidString
-            )
+        crashReporter.install()
 
-            writer?.pointee.addStringElement(
-                writer, "session_id",
-                Bintrail.shared.currentSession.credentials?.sessionIdentifier
-            )
-
-            writer?.pointee.addStringElement(
-                writer, "app_id",
-                Bintrail.shared.currentSession.credentials?.appIdentifier
-            )
-        }
-        crashReporting.install()
-
-        crashReporting.sendAllReports { reports, completed, error in
-            //print(reports, completed, error)
-        }
+        print(crashReporter.device)
 
         guard isConfigured == false else {
             return
@@ -112,12 +95,6 @@ public class Bintrail {
 
         let credentials = AppCredentials(keyId: keyId, secret: secret)
         self.credentials = credentials
-
-        NSSetUncaughtExceptionHandler { exception in
-            if let existing = NSGetUncaughtExceptionHandler() {
-                existing(exception)
-            }
-        }
 
         async {
             self.flush(session: self.currentSession)
@@ -131,6 +108,7 @@ public class Bintrail {
             repeats: true
         )
     }
+
 
     @objc
     private func timerAction() {

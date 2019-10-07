@@ -22,7 +22,7 @@ public final class Session {
 
     let client: Client
 
-    let device: Device
+    let device: DeviceInfo
 
     @SyncWrapper private(set) var records: [SessionEvent]
 

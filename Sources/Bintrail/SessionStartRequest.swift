@@ -1,14 +1,12 @@
 internal struct SessionStartRequest {
     let timestamp: Date
     let client: Client
-    let device: Device
-    let sessionId: String?
+    let device: DeviceInfo
 
-    init(timestamp: Date, client: Client, device: Device, sessionId: String? = nil) {
+    init(timestamp: Date, client: Client, device: DeviceInfo) {
         self.timestamp = timestamp
         self.client = client
         self.device = device
-        self.sessionId = sessionId
     }
 }
 

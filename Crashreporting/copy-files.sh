@@ -30,7 +30,11 @@ cp KSCrash/Source/KSCrash/Reporting/Filters/KSCrashReportFilterAppleFmt.* $DIGES
 cat >$DIGEST_DIR_NAME/module.modulemap <<EOL
 // WARNING! This file is generated automatically. Don't edit.
 module KSCrash {
-    header "KSCrash.h"
+    header "KSCrashC.h"
+    header "KSCrashMonitorContext.h"
+    header "KSCrashMonitor_System.h"
+    header "KSSystemCapabilities.h"
+    header "KSCrashReportFields.h"
     export *
 }
 EOL

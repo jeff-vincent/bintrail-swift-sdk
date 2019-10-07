@@ -1,37 +1,29 @@
-import Foundation
-#if canImport(UIKit)
-import UIKit
-#endif
+struct Device: Encodable {
 
-internal struct Device {
-    let identifier: String
-    let name: String
-    let model: String
-    let make: String
+    struct Processor: Encodable {
+        let architecture: String
+        let type: Int32
+        let subType: Int32
+        let binaryType: Int32
+        let binarySubtype: Int32
+    }
+
+    struct MemoryInfo: Encodable {
+        let size: UInt64
+        let free: UInt64
+        let usable: UInt64
+    }
+
+    let platformName: String
     let platformVersion: String
-    let platform: String
-    let locale: String
+    let platformVersionName: String
 
-    #if canImport(UIKit)
+    let kernelVersion: String
 
-    static var current: Device {
-        return Device(device: .current)
-    }
+    let bootTime: Date?
+    let isJailBroken: Bool
 
-    private init(device: UIDevice) {
-        identifier = (device.identifierForVendor ?? UUID()).uuidString
-        #if targetEnvironment(simulator)
-        name = device.name + " (Simulator)"
-        #else
-        name = device.name
-        #endif
-        model = device.model
-        make = "Apple"
-        platformVersion = device.systemVersion
-        platform = device.systemName
-        locale = Locale.current.identifier
-    }
-    #endif
+    let processor: Processor
+    let memory: MemoryInfo
+
 }
-
-extension Device: Codable {}

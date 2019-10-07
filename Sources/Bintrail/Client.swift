@@ -3,7 +3,8 @@ internal struct Client {
     let versionName: String?
     let versionCode: Int?
     let packageName: String?
-    let title: String?
+    let title: String
+    
 
     static var current: Client {
         return Client(bundle: .main)
@@ -20,7 +21,7 @@ internal struct Client {
             versionCode = nil
         }
 
-        title = bundle.infoDictionary?["CFBundleName"] as? String
+        title = bundle.infoDictionary?["CFBundleName"] as? String ?? "Unknown"
     }
 }
 

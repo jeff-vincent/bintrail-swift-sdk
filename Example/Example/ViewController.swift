@@ -20,6 +20,8 @@ class ViewController: UIViewController {
             event.add(metric: tapCounter, for: "tapCount")
         }
 
+                [0][1]
+
         tapCounter += 1
     }
 
