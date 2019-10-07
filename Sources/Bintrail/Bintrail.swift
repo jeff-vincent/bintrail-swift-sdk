@@ -22,6 +22,9 @@ public enum BintrailError: Error {
     case `internal`(Error)
 
     case unexpected
+
+    case uninitializedExecutableInfo
+    case uninitializedDeviceInfo
 }
 
 internal struct AppCredentials {
@@ -53,7 +56,7 @@ public class Bintrail {
 
     let crashReporter = CrashReporter()
 
-    internal private(set) var currentSession = Session(startDate: Date())
+    internal private(set) var currentSession = Session()
 
     @SyncWrapper private var processingSessions: [Session] = []
 
@@ -245,12 +248,20 @@ private extension Bintrail {
                 completion(result)
             }
 
+            guard let executable = crashReporter.executable else {
+                throw BintrailError.uninitializedExecutableInfo
+            }
+
+            guard let device = crashReporter.device else {
+                throw BintrailError.uninitializedDeviceInfo
+            }
+
             send(
                 request: Request(
                     method: .post,
                     path: "auth/app",
                     headers: ["Bintrail-AppCredentials": base64EncodedAppCredentials],
-                    body: SessionStartRequest(session),
+                    body: SessionStartRequest(client: executable, device: device),
                     encoder: jsonEncoder
                 ),
                 acceptStatusCodes: [200],
