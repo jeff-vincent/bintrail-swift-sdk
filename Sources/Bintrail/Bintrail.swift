@@ -186,6 +186,36 @@ public class Bintrail {
     }
 }
 
+extension Bintrail {
+
+    private static var notificationNamesOfInterest: Set<Notification.Name> {
+        return [
+            UIApplication.didFinishLaunchingNotification
+            public class let didEnterBackgroundNotification: NSNotification.Name
+
+            @available(iOS 4.0, *)
+            public class let willEnterForegroundNotification: NSNotification.Name
+
+            public class let didFinishLaunchingNotification: NSNotification.Name
+
+            public class let didBecomeActiveNotification: NSNotification.Name
+
+            public class let willResignActiveNotification: NSNotification.Name
+
+            public class let didReceiveMemoryWarningNotification: NSNotification.Name
+
+            public class let willTerminateNotification: NSNotification.Name
+
+            public class let significantTimeChangeNotification: NSNotification.Name
+        ]
+    }
+
+    private func subscribeToNotifications() {
+        let noti
+    }
+
+}
+
 private extension Bintrail {
     private func async(_ body: @escaping () -> Void) {
         dispatchQueue.async {
@@ -260,7 +290,7 @@ private extension Bintrail {
             send(
                 request: Request(
                     method: .post,
-                    path: "auth/executable",
+                    path: "ingest/auth",
                     headers: ["Bintrail-Ingest-Token": base64EncodedAppCredentials],
                     body: SessionStartRequest(executable: executable, device: device),
                     encoder: jsonEncoder
