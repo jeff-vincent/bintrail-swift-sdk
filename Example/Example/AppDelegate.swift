@@ -12,8 +12,6 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    private let launchEvent = bt_event_start(.appLaunch)
-
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         return true
     }
@@ -21,13 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         Bintrail.shared.configure(
-            keyId: "P155T0OIALNN2JK3D81P",
-            secret: "ZXuSDVYCofpaHEeKRcmBEpTbfNhkAbL1NZ9t7lZ8"
+            keyId: "XCTUV032SKS4HUH7KCSN",
+            secret: "MVgAxyOrfwVal6HFX5dZLBgApvHdSnDhIO42ENVb"
         )
 
         bt_log("App launched successfully", type: .info)
 
-        bt_event_finish(launchEvent)
 
         return true
     }

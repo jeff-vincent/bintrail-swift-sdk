@@ -146,6 +146,7 @@
 		63E8367623468AAC009A4838 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 63E8367523468A9E009A4838 /* libc++.tbd */; };
 		63E8367823468AB9009A4838 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 63E8367723468AB9009A4838 /* libz.tbd */; };
 		63E8367A23468AC0009A4838 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63E8367923468AC0009A4838 /* SystemConfiguration.framework */; };
+		B7F636F0234CFE9C0065CA19 /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F636EF234CFE9C0065CA19 /* EventType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -302,6 +303,7 @@
 		63E8367523468A9E009A4838 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		63E8367723468AB9009A4838 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		63E8367923468AC0009A4838 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		B7F636EF234CFE9C0065CA19 /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,6 +378,7 @@
 				633148BA23452EB500B1722F /* SessionStartRequest.swift */,
 				633148D02345C20600B1722F /* Synchronized.swift */,
 				63A8EA062346217300507264 /* Event.swift */,
+				B7F636EF234CFE9C0065CA19 /* EventType.swift */,
 				63995594234A520D00FA9765 /* CrashReporter.swift */,
 				63995598234A6F0100FA9765 /* Device.swift */,
 				6399559A234A6F1400FA9765 /* Executable.swift */,
@@ -774,6 +777,7 @@
 				63995E28234B080A00FA9765 /* KSCrashC.c in Sources */,
 				63995DDC234B080A00FA9765 /* Demangle.cpp in Sources */,
 				63995E17234B080A00FA9765 /* KSCrashDoctor.m in Sources */,
+				B7F636F0234CFE9C0065CA19 /* EventType.swift in Sources */,
 				63995E24234B080A00FA9765 /* KSSignalInfo.c in Sources */,
 				63995E21234B080A00FA9765 /* KSSymbolicator.c in Sources */,
 				63995E51234B239800FA9765 /* Thread.swift in Sources */,

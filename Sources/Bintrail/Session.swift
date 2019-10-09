@@ -16,19 +16,19 @@ public final class Session {
 
     internal var credentials: SessionCredentials?
 
-    @Synchronized private(set) var records: [SessionEvent]
+    @Synchronized private(set) var events: [SessionEvent]
 
     internal func dequeueEvents(count: Int) {
         bt_debug("Dequeueing \(count) event(s) from session.")
-        records.removeFirst(count)
+        events.removeFirst(count)
     }
 
     internal func enqueueEvent(_ event: SessionEvent) {
-        records.append(event)
+        events.append(event)
     }
 
     internal init() {
-        records = []
+        events = []
     }
 }
 

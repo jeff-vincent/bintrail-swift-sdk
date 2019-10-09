@@ -15,7 +15,7 @@
 		6331490D2345D2BA00B1722F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6331490B2345D2BA00B1722F /* LaunchScreen.storyboard */; };
 		6331491E2345D2EE00B1722F /* Bintrail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6331491A2345D2CD00B1722F /* Bintrail.framework */; };
 		6331491F2345D2EE00B1722F /* Bintrail.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6331491A2345D2CD00B1722F /* Bintrail.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		63A8EA09234637AC00507264 /* UserEvent.Label+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A8EA08234637AC00507264 /* UserEvent.Label+Extensions.swift */; };
+		B77F1002234E0E2200314012 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77F1001234E0E2200314012 /* AdSupport.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,7 +59,7 @@
 		6331490C2345D2BA00B1722F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6331490E2345D2BA00B1722F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		633149142345D2CC00B1722F /* Bintrail.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bintrail.xcodeproj; path = ../Bintrail.xcodeproj; sourceTree = "<group>"; };
-		63A8EA08234637AC00507264 /* UserEvent.Label+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEvent.Label+Extensions.swift"; sourceTree = "<group>"; };
+		B77F1001234E0E2200314012 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +68,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6331491E2345D2EE00B1722F /* Bintrail.framework in Frameworks */,
+				B77F1002234E0E2200314012 /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +96,6 @@
 		633148FF2345D2B900B1722F /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				63A8EA08234637AC00507264 /* UserEvent.Label+Extensions.swift */,
 				633149002345D2B900B1722F /* AppDelegate.swift */,
 				633149022345D2B900B1722F /* SceneDelegate.swift */,
 				633149042345D2B900B1722F /* ViewController.swift */,
@@ -119,6 +119,7 @@
 		6331491D2345D2EE00B1722F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B77F1001234E0E2200314012 /* AdSupport.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -151,7 +152,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "Bintrail AB";
 				TargetAttributes = {
 					633148FC2345D2B900B1722F = {
@@ -219,7 +220,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				633149052345D2B900B1722F /* ViewController.swift in Sources */,
-				63A8EA09234637AC00507264 /* UserEvent.Label+Extensions.swift in Sources */,
 				633149012345D2B900B1722F /* AppDelegate.swift in Sources */,
 				633149032345D2B900B1722F /* SceneDelegate.swift in Sources */,
 			);
@@ -300,6 +300,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				STRIP_STYLE = debugging;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;

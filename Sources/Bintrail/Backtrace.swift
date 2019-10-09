@@ -10,7 +10,7 @@ internal struct Backtrace: Collection {
 
     private let elements: [Element]
 
-    let skipped: Int
+    let isSkipped: Int
 
     var startIndex: Int {
         elements.startIndex
@@ -39,7 +39,7 @@ extension Backtrace: Encodable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: EncodingKey.self)
 
-        try container.encode(skipped, forKey: .skipped)
+        try container.encode(isSkipped, forKey: .skipped)
         try container.encode(elements, forKey: .contents)
     }
 }
@@ -60,7 +60,7 @@ extension Backtrace: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
 
-        skipped = try container.decode(Int.self, forKey: .skipped)
+        isSkipped = try container.decode(Int.self, forKey: .skipped)
         elements = try container.decode([Element].self, forKey: .contents)
 
     }

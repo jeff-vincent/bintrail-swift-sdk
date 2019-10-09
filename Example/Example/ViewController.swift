@@ -15,11 +15,6 @@ class ViewController: UIViewController {
 
     @IBAction
     func buttonAction(sender: UIButton) {
-
-        bt_event("Button tap") { event in
-            event.add(metric: tapCounter, for: "tapCount")
-        }
-
         bt_log("Button tapped", type: .debug)
 
         tapCounter += 1

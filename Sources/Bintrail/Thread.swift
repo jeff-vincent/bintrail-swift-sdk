@@ -1,6 +1,6 @@
 internal struct Thread: Encodable {
 
-    let crashed: Bool
+    let isCrashed: Bool
 
     let backtrace: Backtrace
 }
@@ -8,7 +8,7 @@ internal struct Thread: Encodable {
 extension Thread: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
-        crashed = try container.decode(Bool.self, forKey: .crashed)
+        isCrashed = try container.decode(Bool.self, forKey: .crashed)
         backtrace = try container.decode(Backtrace.self, forKey: .backtrace)
     }
 }

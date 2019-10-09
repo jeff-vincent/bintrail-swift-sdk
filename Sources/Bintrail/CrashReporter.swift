@@ -150,8 +150,6 @@ internal class CrashReporter {
             title: String(cString: system.bundleName),
             path: String(cString: system.executablePath)
         )
-
-        kscrash_setCrashNotifyCallback(<#T##onCrashNotify: KSReportWriteCallback!##KSReportWriteCallback!##(UnsafePointer<KSCrashReportWriter>?) -> Void#>)
     }
 
     func sendCrashReports() {

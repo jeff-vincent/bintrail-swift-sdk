@@ -54,7 +54,9 @@ public class Bintrail {
 
     public static let shared = Bintrail()
 
-    let crashReporter = CrashReporter()
+    @Synchronized private var managedEventsByType: [EventType: Event] = [:]
+
+    private let crashReporter = CrashReporter()
 
     internal private(set) var currentSession = Session()
 
@@ -62,7 +64,11 @@ public class Bintrail {
 
     private let urlSession = URLSession(configuration: .default)
 
-    private var dispatchQueue = DispatchQueue(label: "com.bintrail.async")
+    private let dispatchQueue = DispatchQueue(label: "com.bintrail.async")
+
+    private var notificationObservers: [Any] = []
+
+    private let operationQueue = OperationQueue()
 
     private let jsonEncoder = JSONEncoder()
 
@@ -84,6 +90,8 @@ public class Bintrail {
         }
 
         jsonDecoder.dateDecodingStrategy = .millisecondsSince1970
+
+        operationQueue.underlyingQueue = dispatchQueue
     }
 
     var isConfigured: Bool {
@@ -92,11 +100,12 @@ public class Bintrail {
 
     public func configure(keyId: String, secret: String) {
 
-        crashReporter.install()
-
         guard isConfigured == false else {
             return
         }
+
+        crashReporter.install()
+        subscribeToNotifications()
 
         let credentials = AppCredentials(keyId: keyId, secret: secret)
         self.credentials = credentials
@@ -188,32 +197,91 @@ public class Bintrail {
 
 extension Bintrail {
 
-    private static var notificationNamesOfInterest: Set<Notification.Name> {
-        return [
-            UIApplication.didFinishLaunchingNotification
-            public class let didEnterBackgroundNotification: NSNotification.Name
+    private func observeNotification(
+        named notificationName: Notification.Name,
+        object: Any? = nil,
+        using block: @escaping (Notification) -> Void
+    ) {
+        let observer = NotificationCenter.default.addObserver(
+            forName: notificationName,
+            object: nil,
+            queue: operationQueue,
+            using: block
+        )
 
-            @available(iOS 4.0, *)
-            public class let willEnterForegroundNotification: NSNotification.Name
+        notificationObservers.append(observer)
+    }
 
-            public class let didFinishLaunchingNotification: NSNotification.Name
+    private func startManagedEvent(
+        withType type: EventType,
+        timestamp: Date = Date(),
+        overwriteIfExits overwrite: Bool = true,
+        cofigure block: ((Event) -> Void
+    )? = nil) {
 
-            public class let didBecomeActiveNotification: NSNotification.Name
+        if managedEventsByType[type] != nil && overwrite == false {
+            return
+        }
 
-            public class let willResignActiveNotification: NSNotification.Name
+        let event = Event(type: type)
+        managedEventsByType[type] = event
+        block?(event)
+    }
 
-            public class let didReceiveMemoryWarningNotification: NSNotification.Name
+    private func endManagedEvent(withType type: EventType) {
+        guard let event = managedEventsByType[type] else {
+            return
+        }
 
-            public class let willTerminateNotification: NSNotification.Name
-
-            public class let significantTimeChangeNotification: NSNotification.Name
-        ]
+        managedEventsByType[type] = nil
+        bt_event_finish(event)
     }
 
     private func subscribeToNotifications() {
-        let noti
-    }
 
+        observeNotification(named: UIApplication.willTerminateNotification) { _ in
+            kscrash_notifyAppTerminate()
+        }
+
+        observeNotification(named: UIApplication.willResignActiveNotification) { _ in
+            kscrash_notifyAppActive(false)
+
+            self.startManagedEvent(withType: .inactivePeriod)
+            self.endManagedEvent(withType: .activePeriod)
+        }
+
+        observeNotification(named: UIApplication.didBecomeActiveNotification) { _ in
+            kscrash_notifyAppActive(true)
+
+            self.startManagedEvent(withType: .activePeriod)
+            self.endManagedEvent(withType: .inactivePeriod)
+        }
+
+        observeNotification(named: UIApplication.willEnterForegroundNotification) { _ in
+            kscrash_notifyAppInForeground(true)
+
+            self.startManagedEvent(withType: .foregroundPeriod)
+            self.endManagedEvent(withType: .backgroundPeriod)
+        }
+
+        observeNotification(named: UIApplication.didEnterBackgroundNotification) { _ in
+            kscrash_notifyAppInForeground(false)
+
+            self.startManagedEvent(withType: .backgroundPeriod)
+            self.endManagedEvent(withType: .foregroundPeriod)
+        }
+
+        observeNotification(named: UIApplication.didReceiveMemoryWarningNotification) { _ in
+            bt_event_register(.memoryWarning) { event in
+
+                if let memory = self.crashReporter.device?.memory {
+                    event.add(metric: memory.size, for: "size")
+                    event.add(metric: memory.free, for: "free")
+                    event.add(metric: memory.usable, for: "memory")
+                }
+            }
+        }
+    }
 }
 
 private extension Bintrail {
@@ -231,7 +299,7 @@ private extension Bintrail {
         withCredentials credentials: SessionCredentials,
         completion: @escaping (Result<Void, BintrailError>) -> Void) {
 
-        let events = session.records
+        let events = session.events
 
         guard events.isEmpty == false else {
             bt_debug("Session has no events. Skipping event flush.")
@@ -246,7 +314,7 @@ private extension Bintrail {
                 method: .post,
                 path: "ingest",
                 headers: ["Authorization": "Bearer " + credentials.token],
-                body: PutSessionEventBatchRequest(session.records),
+                body: PutSessionEventBatchRequest(session.events),
                 encoder: self.jsonEncoder
             ),
             acceptStatusCodes: [202]
