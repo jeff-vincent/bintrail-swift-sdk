@@ -83,7 +83,7 @@ extension CrashReportBody: Decodable {
 
         identifier = try reportContainer.decode(String.self, forKey: .identifier)
 
-        timestamp = CrashReporter.dateFormatterMillisecondPrecision.date(
+        timestamp = CrashReport.millisecondPrecisionDateFormatter.date(
             from: try reportContainer.decode(String.self, forKey: .timestamp)
         )
 
@@ -288,4 +288,33 @@ internal struct CrashReport {
     let identifier: Int64
 
     let body: CrashReportBody
+}
+
+internal extension CrashReport {
+
+    private static var dateFormatterByFormat: [String: DateFormatter] = [:]
+
+    static func dateFormatter(withFormat format: String) -> DateFormatter {
+        if let existing = dateFormatterByFormat[format] {
+            return existing
+        }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.calendar = Calendar(identifier: .gregorian)
+        dateFormatter.dateFormat = format
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+        dateFormatterByFormat[format] = dateFormatter
+
+        return dateFormatter
+    }
+
+    static var secondPrecisionDateFormatter: DateFormatter {
+        return dateFormatter(withFormat: "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    }
+
+    static var millisecondPrecisionDateFormatter: DateFormatter {
+        return dateFormatter(withFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
+    }
 }

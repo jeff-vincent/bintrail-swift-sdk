@@ -10,32 +10,6 @@ enum CrashReporterError: Error {
 
 internal class CrashReporter {
 
-    private static var dateFormatterByFormat: [String: DateFormatter] = [:]
-
-    static func dateFormatter(withFormat format: String) -> DateFormatter {
-        if let existing = dateFormatterByFormat[format] {
-            return existing
-        }
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.calendar = Calendar(identifier: .gregorian)
-        dateFormatter.dateFormat = format
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-
-        dateFormatterByFormat[format] = dateFormatter
-
-        return dateFormatter
-    }
-
-    static var dateFormatterSecondPrecision: DateFormatter {
-        return dateFormatter(withFormat: "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    }
-
-    static var dateFormatterMillisecondPrecision: DateFormatter {
-        return dateFormatter(withFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
-    }
-
     let jsonEncoder: JSONEncoder
     let jsonDecoder: JSONDecoder
 
@@ -149,7 +123,7 @@ internal class CrashReporter {
             name: userInfo.deviceName,
             localeIdentifier: Locale.current.identifier,
             kernelVersion: String(cString: system.kernelVersion),
-            bootTime: CrashReporter.dateFormatterSecondPrecision.date(from: String(cString: system.bootTime)),
+            bootTime: CrashReport.secondPrecisionDateFormatter.date(from: String(cString: system.bootTime)),
             isJailBroken: system.isJailbroken,
             processor: Device.Processor(
                 architecture: String(cString: system.cpuArchitecture),
@@ -179,7 +153,7 @@ internal class CrashReporter {
                 versionCode: Int(String(cString: system.bundleVersion)),
                 name: String(cString: system.bundleName)
             ),
-            startTime: CrashReporter.dateFormatterSecondPrecision.date(from: String(cString: system.appStartTime)),
+            startTime: CrashReport.secondPrecisionDateFormatter.date(from: String(cString: system.appStartTime)),
             title: String(cString: system.bundleName),
             path: String(cString: system.executablePath)
         )

@@ -33,10 +33,10 @@ extension Executable: Decodable {
             name: try container.decode(String.self, forKey: .bundleName)
         )
 
-        startTime = CrashReporter.dateFormatterSecondPrecision.date(
+        startTime = CrashReport.secondPrecisionDateFormatter.date(
             from: try container.decode(String.self, forKey: .appStartTime)
         )
-        
+
         title = try container.decode(String.self, forKey: .bundleName)
         path = try container.decode(String.self, forKey: .executablePath)
     }

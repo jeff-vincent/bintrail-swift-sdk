@@ -97,7 +97,7 @@ extension Device: Decodable {
 
         kernelVersion = try systemContainer.decode(String.self, forKey: .kernelVersion)
 
-        bootTime = CrashReporter.dateFormatterSecondPrecision.date(
+        bootTime = CrashReport.secondPrecisionDateFormatter.date(
             from: try systemContainer.decode(String.self, forKey: .bootTime)
         )
 
