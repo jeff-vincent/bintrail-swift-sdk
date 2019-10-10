@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		633148C023452EBB00B1722F /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B723452EB500B1722F /* Client.swift */; };
 		633148C123452EBB00B1722F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B823452EB500B1722F /* Session.swift */; };
 		633148C223452EBB00B1722F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B923452EB500B1722F /* Log.swift */; };
 		633148C323452EBB00B1722F /* SessionStartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BA23452EB500B1722F /* SessionStartRequest.swift */; };
@@ -162,7 +161,6 @@
 		633148B123452EB500B1722F /* Bintrail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bintrail.h; sourceTree = "<group>"; };
 		633148B223452EB500B1722F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		633148B423452EB500B1722F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		633148B723452EB500B1722F /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		633148B823452EB500B1722F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		633148B923452EB500B1722F /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		633148BA23452EB500B1722F /* SessionStartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartRequest.swift; sourceTree = "<group>"; };
@@ -365,7 +363,6 @@
 			isa = PBXGroup;
 			children = (
 				633148BC23452EB500B1722F /* Bintrail.swift */,
-				633148B723452EB500B1722F /* Client.swift */,
 				633148D22345CFE800B1722F /* Debug.swift */,
 				633148B923452EB500B1722F /* Log.swift */,
 				633148CC2345BBFD00B1722F /* PutSessionEventBatchRequest.swift */,
@@ -764,7 +761,6 @@
 				63995597234A555800FA9765 /* CrashReport.swift in Sources */,
 				63995E18234B080A00FA9765 /* KSCrashMonitor_MachException.c in Sources */,
 				63995E40234B080A00FA9765 /* KSThread.c in Sources */,
-				633148C023452EBB00B1722F /* Client.swift in Sources */,
 				63995E02234B080A00FA9765 /* KSMachineContext.c in Sources */,
 				63995DE3234B080A00FA9765 /* KSCrashMonitor_Deadlock.m in Sources */,
 				63995E1E234B080A00FA9765 /* KSString.c in Sources */,
