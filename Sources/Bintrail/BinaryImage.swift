@@ -11,7 +11,7 @@ internal struct BinaryImage: Encodable {
 }
 extension BinaryImage: Decodable {
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
+        let container = try decoder.container(keyedBy: CrashReportBody.DecodingKey.self)
 
         majorVersion = try container.decode(Int.self, forKey: .imageMajorVersion)
         minorVersion = try container.decode(Int.self, forKey: .imageMinorVersion)

@@ -11,7 +11,6 @@
 		633148C123452EBB00B1722F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B823452EB500B1722F /* Session.swift */; };
 		633148C223452EBB00B1722F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B923452EB500B1722F /* Log.swift */; };
 		633148C323452EBB00B1722F /* SessionStartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BA23452EB500B1722F /* SessionStartRequest.swift */; };
-		633148C423452EBB00B1722F /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BB23452EB500B1722F /* DeviceInfo.swift */; };
 		633148C523452EBB00B1722F /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BC23452EB500B1722F /* Bintrail.swift */; };
 		633148C623452EC000B1722F /* BintrailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BF23452EB500B1722F /* BintrailTests.swift */; };
 		633148C723452EC500B1722F /* Bintrail.h in Headers */ = {isa = PBXBuildFile; fileRef = 633148B123452EB500B1722F /* Bintrail.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -167,7 +166,6 @@
 		633148B823452EB500B1722F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		633148B923452EB500B1722F /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		633148BA23452EB500B1722F /* SessionStartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartRequest.swift; sourceTree = "<group>"; };
-		633148BB23452EB500B1722F /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		633148BC23452EB500B1722F /* Bintrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bintrail.swift; sourceTree = "<group>"; };
 		633148BF23452EB500B1722F /* BintrailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BintrailTests.swift; sourceTree = "<group>"; };
 		633148CA2345445C00B1722F /* SessionEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEvent.swift; sourceTree = "<group>"; };
@@ -369,7 +367,6 @@
 				633148BC23452EB500B1722F /* Bintrail.swift */,
 				633148B723452EB500B1722F /* Client.swift */,
 				633148D22345CFE800B1722F /* Debug.swift */,
-				633148BB23452EB500B1722F /* DeviceInfo.swift */,
 				633148B923452EB500B1722F /* Log.swift */,
 				633148CC2345BBFD00B1722F /* PutSessionEventBatchRequest.swift */,
 				633148CE2345BFB900B1722F /* Request.swift */,
@@ -823,7 +820,6 @@
 				63995DFA234B080A00FA9765 /* KSObjC.c in Sources */,
 				63995DEF234B080A00FA9765 /* Punycode.cpp in Sources */,
 				63995E0A234B080A00FA9765 /* KSCrashMonitor_Zombie.c in Sources */,
-				633148C423452EBB00B1722F /* DeviceInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

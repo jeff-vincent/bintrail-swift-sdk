@@ -1,6 +1,31 @@
+#if canImport(UIKit)
+import UIKit
+#endif
+
 import KSCrash
 
-internal struct CrashReport {
+internal struct CrashReportBody {
+
+    struct UserInfo {
+
+        let deviceName: String?
+
+        var sessionId: String?
+
+        let localeIdentifier: String?
+
+        init() {
+            #if canImport(UIKit)
+            deviceName = UIDevice.current.name
+            #else
+            deviceName = "Unknown" // Add more OS
+            #endif
+
+            localeIdentifier = Locale.current.identifier
+
+            sessionId = nil
+        }
+    }
 
     let executable: Executable
 
@@ -19,9 +44,28 @@ internal struct CrashReport {
     let type: String
 
     let version: String
+
+    let userInfo: UserInfo
 }
 
-extension CrashReport: Decodable {
+extension CrashReportBody.UserInfo: Codable {
+
+    enum CodingKeys: String, CodingKey {
+        case deviceName
+        case localeIdentifier
+        case sessionId
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        deviceName = try container.decodeIfPresent(String.self, forKey: .deviceName)
+        sessionId = try container.decodeIfPresent(String.self, forKey: .sessionId)
+        localeIdentifier = try container.decodeIfPresent(String.self, forKey: .localeIdentifier)
+    }
+}
+
+extension CrashReportBody: Decodable {
 
     init(from decoder: Decoder) throws {
 
@@ -39,7 +83,7 @@ extension CrashReport: Decodable {
 
         identifier = try reportContainer.decode(String.self, forKey: .identifier)
 
-        timestamp = CrashReporter.dateFormatter.date(
+        timestamp = CrashReporter.dateFormatterMillisecondPrecision.date(
             from: try reportContainer.decode(String.self, forKey: .timestamp)
         )
 
@@ -55,17 +99,44 @@ extension CrashReport: Decodable {
 
         binaryImages = try container.decode([BinaryImage].self, forKey: .binaryImages)
 
+        // User info
+
+        userInfo = try container.decodeIfPresent(UserInfo.self, forKey: .user) ?? UserInfo()
     }
 }
 
-extension CrashReport: Encodable {}
+extension CrashReportBody: Encodable {
 
-extension CrashReport {
-
-    enum UserInfoDecodingKey: String, CodingKey {
-        case deviceName
-        case locale
+    private enum EncodingKey: String, CodingKey {
+        case executable
+        case device
+        case processName
+        case identifier
+        case timestamp
+        case type
+        case version
+        case crash
+        case binaryImages
+        case sessionId
     }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: EncodingKey.self)
+
+        try container.encode(executable, forKey: .executable)
+        try container.encode(device, forKey: .device)
+        try container.encode(processName, forKey: .processName)
+        try container.encode(identifier, forKey: .identifier)
+        try container.encode(timestamp, forKey: .timestamp)
+        try container.encode(type, forKey: .type)
+        try container.encode(version, forKey: .version)
+        try container.encode(crash, forKey: .crash)
+        try container.encode(binaryImages, forKey: .binaryImages)
+        try container.encode(userInfo.sessionId, forKey: .sessionId)
+    }
+}
+
+extension CrashReportBody {
 
     struct DecodingKey: CodingKey {
 
@@ -210,4 +281,11 @@ extension CrashReport {
         static let buildType = DecodingKey(stringValue: KSCrashField_BuildType)
     }
 
+}
+
+internal struct CrashReport {
+
+    let identifier: Int64
+
+    let body: CrashReportBody
 }

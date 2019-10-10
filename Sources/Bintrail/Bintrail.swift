@@ -43,7 +43,7 @@ internal struct AppCredentials {
 }
 
 internal extension URL {
-    static let bintrailBaseUrl = URL(string: "http://localhost:5000")!
+    static let bintrailBaseUrl = URL(string: "http://davids-macbook-pro.local:5000")!
 }
 
 public extension Bintrail {
@@ -56,7 +56,7 @@ public class Bintrail {
 
     @Synchronized private var managedEventsByType: [EventType: Event] = [:]
 
-    private let crashReporter = CrashReporter()
+    private let crashReporter: CrashReporter
 
     internal private(set) var currentSession = Session()
 
@@ -91,6 +91,8 @@ public class Bintrail {
 
         jsonDecoder.dateDecodingStrategy = .millisecondsSince1970
 
+        crashReporter = CrashReporter(jsonEncoder: jsonEncoder, jsonDecoder: jsonDecoder)
+
         operationQueue.underlyingQueue = dispatchQueue
     }
 
@@ -112,6 +114,9 @@ public class Bintrail {
 
         async {
             self.flush(session: self.currentSession)
+            self.sendCrashReports { result in
+                print(result)
+            }
         }
 
         timer = Timer.scheduledTimer(
@@ -185,6 +190,7 @@ public class Bintrail {
                 switch result {
                 case .success(let credentials):
                     session.credentials = credentials
+                    self.crashReporter.userInfo.sessionId = credentials.sessionIdentifier
                 case .failure(let error):
                     bt_print(error)
                 }
@@ -293,6 +299,59 @@ private extension Bintrail {
 }
 
 private extension Bintrail {
+    func sendCrashReports(completion: @escaping (Result<Void, BintrailError>) -> Void) {
+
+        do {
+            guard let credentials = credentials else {
+                throw BintrailError.appCredentialsMising
+            }
+
+            guard let base64EncodedAppCredentials = credentials.base64EncodedString else {
+                throw BintrailError.appCredentialsEncodingFailed
+            }
+
+            var crashReports: [CrashReport] = []
+
+            for crashReport in crashReporter {
+                switch crashReport {
+                case .success(let crashReport):
+                    crashReports.append(crashReport)
+                case .failure(let error):
+                    bt_print("Failed to extract crash report", error)
+                }
+            }
+
+            guard crashReports.isEmpty == false else {
+                bt_print("No crash reports available. Not sending.")
+                return
+            }
+
+            send(
+                request: Request(
+                    method: .post,
+                    path: "ingest/crashes/apple",
+                    headers: ["Bintrail-Ingest-Token": base64EncodedAppCredentials],
+                    body: crashReports.map { crashReport in
+                        crashReport.body
+                    },
+                    encoder: self.jsonEncoder
+                ),
+                acceptStatusCodes: [202]) { result in
+                    completion(result.map { _ in
+                        // TODO: Re-enable
+                        //self.crashReporter.deleteReports(withIdentifiers: crashReports.map { $0.identifier })
+                    })
+            }
+
+        } catch let error as BintrailError {
+            completion(.failure(error))
+        } catch {
+            completion(.failure(.internal(error)))
+        }
+    }
+}
+
+private extension Bintrail {
 
     func flushEvents(
         of session: Session,
@@ -312,7 +371,7 @@ private extension Bintrail {
         send(
             request: Request(
                 method: .post,
-                path: "ingest",
+                path: "ingest/events",
                 headers: ["Authorization": "Bearer " + credentials.token],
                 body: PutSessionEventBatchRequest(session.events),
                 encoder: self.jsonEncoder
@@ -453,6 +512,11 @@ private extension Bintrail {
                     }
 
                     guard acceptedStatusCodes.contains(httpUrlResponse.statusCode) else {
+
+                        if let data = data, let string = String(data: data, encoding: .utf8) {
+                            print(string)
+                        }
+
                         throw BintrailError.unexpectedResponseStatus(
                             accepted: acceptedStatusCodes,
                             got: httpUrlResponse.statusCode

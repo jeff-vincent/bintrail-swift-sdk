@@ -1,7 +1,7 @@
+import KSCrash
 #if canImport(UIKit)
 import UIKit
 #endif
-import KSCrash
 
 enum CrashReporterError: Error {
     case reportNotFound
@@ -10,23 +10,45 @@ enum CrashReporterError: Error {
 
 internal class CrashReporter {
 
-    private static var dateFormatterInternal: DateFormatter?
+    private static var dateFormatterByFormat: [String: DateFormatter] = [:]
 
-    static var dateFormatter: DateFormatter {
-        if let dateFormatter = dateFormatterInternal {
-            return dateFormatter
+    static func dateFormatter(withFormat format: String) -> DateFormatter {
+        if let existing = dateFormatterByFormat[format] {
+            return existing
         }
 
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.calendar = Calendar(identifier: .gregorian)
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        dateFormatter.dateFormat = format
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        dateFormatterInternal = dateFormatter
+
+        dateFormatterByFormat[format] = dateFormatter
+
         return dateFormatter
     }
 
-    let jsonDecoder = JSONDecoder()
+    static var dateFormatterSecondPrecision: DateFormatter {
+        return dateFormatter(withFormat: "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    }
+
+    static var dateFormatterMillisecondPrecision: DateFormatter {
+        return dateFormatter(withFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
+    }
+
+    let jsonEncoder: JSONEncoder
+    let jsonDecoder: JSONDecoder
+
+    var userInfo = CrashReportBody.UserInfo() {
+        didSet {
+            writeUserInfo()
+        }
+    }
+
+    init(jsonEncoder: JSONEncoder, jsonDecoder: JSONDecoder) {
+        self.jsonEncoder = jsonEncoder
+        self.jsonDecoder = jsonDecoder
+    }
 
     func install() {
         let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Unknown"
@@ -41,8 +63,18 @@ internal class CrashReporter {
         }
 
         kscrash_install(appName, baseUrl?.path)
-        sendCrashReports()
+        writeUserInfo()
+    }
 
+    private func writeUserInfo() {
+        do {
+            try jsonEncoder.encode(userInfo).withUnsafeBytes { bytes in
+                kscrash_setUserInfoJSON(bytes.bindMemory(to: Int8.self).baseAddress)
+            }
+
+        } catch {
+            bt_print("Warning! Could not encode user info.")
+        }
     }
 
     var reportIdentifiers: [Int64] {
@@ -59,24 +91,33 @@ internal class CrashReporter {
     }
 
     func loadReport(withIdentifier identifier: Int64) -> Result<CrashReport, CrashReporterError> {
+
         guard let pointer = kscrash_readReport(identifier) else {
             return .failure(.reportNotFound)
         }
 
         let data = Data(bytesNoCopy: pointer, count: strlen(pointer), deallocator: .free)
 
-        if let string = String(data: data, encoding: .utf8) {
-            print(string)
-        }
-
         do {
             return .success(
-                try jsonDecoder.decode(CrashReport.self, from: data)
+                CrashReport(
+                    identifier: identifier,
+                    body: try jsonDecoder.decode(CrashReportBody.self, from: data)
+                )
             )
         } catch {
             return .failure(.jsonDecodingError(error))
         }
+    }
 
+    func deleteReport(withIdentifier identifier: Int64) {
+        kscrash_deleteReportWithID(identifier)
+    }
+
+    func deleteReports<T: Sequence>(withIdentifiers identifiers: T) where T.Element == Int64 {
+        for identifier in identifiers {
+            deleteReport(withIdentifier: identifier)
+        }
     }
 
     private var monitorContext: KSCrash_MonitorContext? {
@@ -98,14 +139,6 @@ internal class CrashReporter {
 
         let system = context.System
 
-        let deviceName: String
-
-        #if canImport(UIKit)
-        deviceName = UIDevice.current.name
-        #else
-        deviceName = "Unknown" // TODO: Replace me with os-specific values
-        #endif
-
         return Device(
             identifier: String(cString: system.deviceAppHash),
             platform: Device.Platform(
@@ -113,10 +146,10 @@ internal class CrashReporter {
                 versionCode: String(cString: system.osVersion),
                 versionName: String(cString: system.systemVersion)
             ),
-            name: deviceName,
+            name: userInfo.deviceName,
             localeIdentifier: Locale.current.identifier,
             kernelVersion: String(cString: system.kernelVersion),
-            bootTime: CrashReporter.dateFormatter.date(from: String(cString: system.bootTime)),
+            bootTime: CrashReporter.dateFormatterSecondPrecision.date(from: String(cString: system.bootTime)),
             isJailBroken: system.isJailbroken,
             processor: Device.Processor(
                 architecture: String(cString: system.cpuArchitecture),
@@ -146,24 +179,11 @@ internal class CrashReporter {
                 versionCode: Int(String(cString: system.bundleVersion)),
                 name: String(cString: system.bundleName)
             ),
-            startTime: CrashReporter.dateFormatter.date(from: String(cString: system.appStartTime)),
+            startTime: CrashReporter.dateFormatterSecondPrecision.date(from: String(cString: system.appStartTime)),
             title: String(cString: system.bundleName),
             path: String(cString: system.executablePath)
         )
     }
-
-    func sendCrashReports() {
-
-        for report in self {
-            switch report {
-            case .success(let report):
-                print(report)
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-
 }
 
 extension CrashReporter: Sequence {

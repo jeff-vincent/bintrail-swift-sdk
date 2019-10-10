@@ -1,14 +1,14 @@
 internal struct CrashError: Encodable {
     struct Mach: Encodable {
-        let code: Int
+        let code: UInt
         let exceptionName: String
-        let subcode: Int
-        let exception: Int
+        let subcode: UInt
+        let exception: UInt
     }
 
     struct Signal: Encodable {
-        let signal: Int
-        let code: Int
+        let signal: UInt
+        let code: UInt
     }
 
     let mach: Mach
@@ -27,7 +27,7 @@ internal struct Crash: Encodable {
 extension Crash: Decodable {
 
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
+        let container = try decoder.container(keyedBy: CrashReportBody.DecodingKey.self)
 
         error = try container.decode(CrashError.self, forKey: .error)
         threads = try container.decode([Thread].self, forKey: .threads)
@@ -36,28 +36,28 @@ extension Crash: Decodable {
 
 extension CrashError.Mach: Decodable {
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
+        let container = try decoder.container(keyedBy: CrashReportBody.DecodingKey.self)
 
-        code = try container.decode(Int.self, forKey: .code)
+        code = try container.decode(UInt.self, forKey: .code)
         exceptionName = try container.decode(String.self, forKey: .exceptionName)
-        subcode = try container.decode(Int.self, forKey: .subcode)
-        exception = try container.decode(Int.self, forKey: .exception)
+        subcode = try container.decode(UInt.self, forKey: .subcode)
+        exception = try container.decode(UInt.self, forKey: .exception)
     }
 }
 
 extension CrashError.Signal: Decodable {
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
+        let container = try decoder.container(keyedBy: CrashReportBody.DecodingKey.self)
 
-        signal = try container.decode(Int.self, forKey: .signal)
-        code = try container.decode(Int.self, forKey: .code)
+        signal = try container.decode(UInt.self, forKey: .signal)
+        code = try container.decode(UInt.self, forKey: .code)
     }
 }
 
 extension CrashError: Decodable {
 
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
+        let container = try decoder.container(keyedBy: CrashReportBody.DecodingKey.self)
 
         mach = try container.decode(Mach.self, forKey: .mach)
         signal = try container.decode(Signal.self, forKey: .signal)

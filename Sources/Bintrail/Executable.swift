@@ -22,7 +22,7 @@ extension Executable: Encodable {}
 extension Executable: Decodable {
 
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CrashReport.DecodingKey.self)
+        let container = try decoder.container(keyedBy: CrashReportBody.DecodingKey.self)
 
         identifier = try container.decode(String.self, forKey: .appUUID)
 
@@ -33,10 +33,10 @@ extension Executable: Decodable {
             name: try container.decode(String.self, forKey: .bundleName)
         )
 
-        startTime = CrashReporter.dateFormatter.date(
+        startTime = CrashReporter.dateFormatterSecondPrecision.date(
             from: try container.decode(String.self, forKey: .appStartTime)
         )
-
+        
         title = try container.decode(String.self, forKey: .bundleName)
         path = try container.decode(String.self, forKey: .executablePath)
     }

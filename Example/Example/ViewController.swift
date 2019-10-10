@@ -17,6 +17,8 @@ class ViewController: UIViewController {
     func buttonAction(sender: UIButton) {
         bt_log("Button tapped", type: .debug)
 
+        [0][1]
+
         tapCounter += 1
     }
 
