@@ -1,7 +1,6 @@
 internal struct Backtrace: Collection {
 
     struct Element: Encodable {
-        let symbolName: String?
         let symbolAddress: UInt
         let instructionAddress: UInt
         let objectName: String
@@ -48,7 +47,6 @@ extension Backtrace.Element: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CrashReportBody.DecodingKey.self)
 
-        symbolName = try container.decodeIfPresent(String.self, forKey: .symbolName)
         symbolAddress = try container.decode(UInt.self, forKey: .symbolAddress)
         instructionAddress = try container.decode(UInt.self, forKey: .instructionAddress)
         objectName = try container.decode(String.self, forKey: .objectName)

@@ -146,6 +146,7 @@ internal class CrashReporter {
         let system = context.System
 
         return Executable(
+            name: String(cString: system.executableName),
             identifier: String(cString: system.appID),
             package: Executable.Package(
                 identifier: String(cString: system.bundleID),

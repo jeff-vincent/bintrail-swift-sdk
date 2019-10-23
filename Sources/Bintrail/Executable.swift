@@ -9,6 +9,8 @@ struct Executable {
         let name: String
     }
 
+    let name: String
+
     let identifier: String
     let package: Package
     let startTime: Date?
@@ -39,5 +41,6 @@ extension Executable: Decodable {
 
         title = try container.decode(String.self, forKey: .bundleName)
         path = try container.decode(String.self, forKey: .executablePath)
+        name = try container.decode(String.self, forKey: .executable)
     }
 }

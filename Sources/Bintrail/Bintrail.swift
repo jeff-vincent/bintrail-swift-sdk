@@ -43,7 +43,7 @@ internal struct AppCredentials {
 }
 
 internal extension URL {
-    static let bintrailBaseUrl = URL(string: "http://davids-macbook-pro.local:5000")!
+    static let bintrailBaseUrl = URL(string: "https://api.bintrail.com")!
 }
 
 public extension Bintrail {
@@ -329,7 +329,7 @@ private extension Bintrail {
             send(
                 request: Request(
                     method: .post,
-                    path: "ingest/crashes/apple",
+                    path: "ingest/crashreport/apple",
                     headers: ["Bintrail-Ingest-Token": base64EncodedAppCredentials],
                     body: crashReports.map { crashReport in
                         crashReport.body
@@ -371,7 +371,7 @@ private extension Bintrail {
         send(
             request: Request(
                 method: .post,
-                path: "ingest/events",
+                path: "session/ingest",
                 headers: ["Authorization": "Bearer " + credentials.token],
                 body: PutSessionEventBatchRequest(session.events),
                 encoder: self.jsonEncoder
@@ -417,9 +417,9 @@ private extension Bintrail {
             send(
                 request: Request(
                     method: .post,
-                    path: "ingest/auth",
+                    path: "session/auth",
                     headers: ["Bintrail-Ingest-Token": base64EncodedAppCredentials],
-                    body: SessionStartRequest(executable: executable, device: device),
+                    body: SessionAuthRequest(executable: executable, device: device),
                     encoder: jsonEncoder
                 ),
                 acceptStatusCodes: [200],
