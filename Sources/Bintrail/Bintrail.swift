@@ -43,7 +43,7 @@ internal struct AppCredentials {
 }
 
 internal extension URL {
-    static let bintrailBaseUrl = URL(string: "https://api.bintrail.com")!
+    static let bintrailBaseUrl = URL(string: "http://localhost:5000")!
 }
 
 public extension Bintrail {

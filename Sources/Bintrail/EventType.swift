@@ -1,7 +1,7 @@
 public struct EventType: Hashable, Codable {
 
     internal enum Namespace: String, Codable {
-        case executable
+        case ios
         case user
     }
 
@@ -87,35 +87,35 @@ extension EventType.Outcome: Codable {
     }
 }
 
-public extension EventType {
+internal extension EventType {
 
     static let foregroundPeriod = EventType(
         name: "inForeground",
-        namespace: .executable,
+        namespace: .ios,
         outcome: .neutral
     )
 
     static let backgroundPeriod = EventType(
         name: "inBackground",
-        namespace: .executable,
+        namespace: .ios,
         outcome: .neutral
     )
 
     static let activePeriod = EventType(
         name: "activePeriod",
-        namespace: .executable,
+        namespace: .ios,
         outcome: .neutral
     )
 
     static let inactivePeriod = EventType(
         name: "inactivePeriod",
-        namespace: .executable,
+        namespace: .ios,
         outcome: .neutral
     )
 
     static let memoryWarning = EventType(
         name: "memoryWarning",
-        namespace: .executable,
+        namespace: .ios,
         outcome: .negative(.high)
     )
 }

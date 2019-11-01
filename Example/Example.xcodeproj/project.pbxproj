@@ -15,6 +15,7 @@
 		6331490D2345D2BA00B1722F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6331490B2345D2BA00B1722F /* LaunchScreen.storyboard */; };
 		6331491E2345D2EE00B1722F /* Bintrail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6331491A2345D2CD00B1722F /* Bintrail.framework */; };
 		6331491F2345D2EE00B1722F /* Bintrail.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6331491A2345D2CD00B1722F /* Bintrail.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B7200A422369C54B00836E8D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7200A412369C54B00836E8D /* DetailViewController.swift */; };
 		B77F1002234E0E2200314012 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77F1001234E0E2200314012 /* AdSupport.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		6331490C2345D2BA00B1722F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6331490E2345D2BA00B1722F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		633149142345D2CC00B1722F /* Bintrail.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bintrail.xcodeproj; path = ../Bintrail.xcodeproj; sourceTree = "<group>"; };
+		B7200A412369C54B00836E8D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		B7385877235134EA00DB7641 /* Sentry.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sentry.framework; path = Carthage/Build/iOS/Sentry.framework; sourceTree = "<group>"; };
 		B77F1001234E0E2200314012 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -104,6 +106,7 @@
 				633149092345D2BA00B1722F /* Assets.xcassets */,
 				6331490B2345D2BA00B1722F /* LaunchScreen.storyboard */,
 				6331490E2345D2BA00B1722F /* Info.plist */,
+				B7200A412369C54B00836E8D /* DetailViewController.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				633149052345D2B900B1722F /* ViewController.swift in Sources */,
 				633149012345D2B900B1722F /* AppDelegate.swift in Sources */,
 				633149032345D2B900B1722F /* SceneDelegate.swift in Sources */,
+				B7200A422369C54B00836E8D /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
