@@ -115,6 +115,7 @@ internal class CrashReporter {
 
         return Device(
             identifier: String(cString: system.deviceAppHash),
+            model: String(cString: system.model),
             platform: Device.Platform(
                 name: String(cString: system.systemName),
                 versionCode: String(cString: system.osVersion),
@@ -122,6 +123,7 @@ internal class CrashReporter {
             ),
             name: userInfo.deviceName,
             localeIdentifier: Locale.current.identifier,
+            timeZoneIdentifier: String(cString: system.timezone),
             kernelVersion: String(cString: system.kernelVersion),
             bootTime: CrashReport.secondPrecisionDateFormatter.date(from: String(cString: system.bootTime)),
             isJailBroken: system.isJailbroken,

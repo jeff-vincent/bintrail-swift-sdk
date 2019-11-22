@@ -9,24 +9,15 @@
 import Bintrail
 import UIKit
 
-extension EventType {
-    public static let buttonTapped = EventType(name: "buttonTapped for this is a very long event name. That's ok though, we'll allow it, wont' we? Yes we will.", outcome: .positive(.low))
-    public static let presentViewController = EventType(name: "presentViewController", outcome: .neutral)
-}
-
 class ViewController: UIViewController {
 
     private var tapCounter: Int = 1
 
     @IBAction
     func buttonAction(sender: UIButton) {
-        bt_log("Button tapped", type: .debug)
-        bt_event_register(.buttonTapped) { event in
-            event.add(metric: tapCounter, for: "tapCount")
-            event.add(attribute: Date(), for: "date")
-            event.add(attribute: Int.max, for: "intMax")
-            event.add(attribute: Int.min, for: "intMin")
-            event.add(attribute: Int.random(in: Int.min..<Int.max), for: "intRnd")
+        bt_log("Button tapped", type: .trace)
+        bt_event_register("Button tapped") { event in
+            event.add(attribute: sender.titleLabel?.text, for: "Button title")
         }
 
         let detailController = UINavigationController(
@@ -36,8 +27,7 @@ class ViewController: UIViewController {
         bt_log("Presenting detail controller", detailController, type: .info)
 
 
-
-        let event = bt_event_start(.presentViewController)
+        let event = bt_event_start("View controller presented")
         event.add(attribute: detailController, for: "viewController")
         present(detailController, animated: true) {
             bt_event_finish(event)

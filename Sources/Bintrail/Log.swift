@@ -1,6 +1,7 @@
 import Foundation
 
 public enum LogType: String, Codable {
+    case trace
     case debug
     case info
     case warning

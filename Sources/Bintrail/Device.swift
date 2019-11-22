@@ -25,11 +25,15 @@ struct Device: Encodable {
 
     let identifier: String
 
+    let model: String
+    
     let platform: Platform
 
     let name: String?
 
     let localeIdentifier: String?
+    
+    let timeZoneIdentifier: String
 
     let kernelVersion: String
 
@@ -84,10 +88,14 @@ extension Device: Decodable {
             name = nil
             localeIdentifier = nil
         }
-
+        
+        timeZoneIdentifier = try container.decode(String.self, forKey: .timeZone)
+        
         identifier = try systemContainer.decode(String.self, forKey: .deviceAppHash)
 
         memory = try systemContainer.decode(MemoryInfo.self, forKey: .memory)
+        
+        model = try systemContainer.decode(String.self, forKey: .model)
 
         platform = Platform(
             name: try systemContainer.decode(String.self, forKey: .systemName),

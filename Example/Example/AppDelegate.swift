@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         Bintrail.shared.configure(
-            keyId: "XE07BA47M2RHKY8Y78LF",
-            secret: "wPp2Rljuh3yz6hz4a28JkLiw8pc0eDKne88KekzL"
+            keyId: "1ZO59NAYTNNPGBKZ98IE",
+            secret: "cVtiZ1M7rUTJnqokyNeac7xk2DPYb9xWTMA0ONBG"
         )
 
         bt_log("App launched successfully", type: .info)

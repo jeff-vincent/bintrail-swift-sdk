@@ -1,20 +1,11 @@
-internal struct SessionCredentials {
-    let token: String
-    let expirationDate: Date
-    let sessionIdentifier: String
-}
-
-extension SessionCredentials: Codable {
-    private enum CodingKeys: String, CodingKey {
-        case token = "bearerToken"
-        case expirationDate = "expiresAt"
-        case sessionIdentifier = "sessionId"
-    }
-}
-
 public final class Session {
+    
+    internal struct Context: Codable {
+        let appId: String
+        let sessionId: String
+    }
 
-    internal var credentials: SessionCredentials?
+    internal var context: Context?
 
     @Synchronized private(set) var events: [SessionEvent]
 
