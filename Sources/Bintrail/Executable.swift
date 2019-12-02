@@ -5,7 +5,7 @@ struct Executable {
     struct Package: Encodable {
         let identifier: String
         let versionName: String
-        let versionCode: Int?
+        let versionCode: String
         let name: String
     }
 
@@ -31,7 +31,7 @@ extension Executable: Decodable {
         package = Package(
             identifier: try container.decode(String.self, forKey: .bundleId),
             versionName: try container.decode(String.self, forKey: .bundleShortVersion),
-            versionCode: Int(try container.decode(String.self, forKey: .bundleVersion)),
+            versionCode: try container.decode(String.self, forKey: .bundleVersion),
             name: try container.decode(String.self, forKey: .bundleName)
         )
 

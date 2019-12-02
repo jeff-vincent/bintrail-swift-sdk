@@ -5,7 +5,7 @@ enum RequestMethod: String {
 struct Request {
     let method: RequestMethod
     let path: String
-    let headers: [String: String]
+    var headers: [String: String]
     let body: (() throws -> Data)?
 
     init(method: RequestMethod, path: String, headers: [String: String] = [:]) {

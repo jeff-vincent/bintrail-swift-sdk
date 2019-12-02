@@ -19,11 +19,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         Bintrail.shared.configure(
-            keyId: "1ZO59NAYTNNPGBKZ98IE",
-            secret: "cVtiZ1M7rUTJnqokyNeac7xk2DPYb9xWTMA0ONBG"
+            keyId: "NA9FGMOXOIEM96NO09QP",
+            secret: "eEMBulGiWc7xdffh2kzb1TCfWSePRUl23sJloHzL"
         )
 
         bt_log("App launched successfully", type: .info)
+        
+        bt_log("This is a trace messag, perhaps not something you'd send always.", type: .trace)
+        bt_log("Debug messages are interesting, but numerous", type: .debug)
+        bt_log("Here's were we're getting some information", type: .info)
+        bt_log("Oh no, but no biggie.", type: .warning)
+        bt_log("Shoot, something went wrong!", type: .error)
+        bt_log("It works on my machine!", type: .fatal)
 
 
         return true

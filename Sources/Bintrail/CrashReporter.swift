@@ -115,6 +115,7 @@ internal class CrashReporter {
 
         return Device(
             identifier: String(cString: system.deviceAppHash),
+            machine: String(cString: system.machine),
             model: String(cString: system.model),
             platform: Device.Platform(
                 name: String(cString: system.systemName),
@@ -153,7 +154,7 @@ internal class CrashReporter {
             package: Executable.Package(
                 identifier: String(cString: system.bundleID),
                 versionName: String(cString: system.bundleShortVersion),
-                versionCode: Int(String(cString: system.bundleVersion)),
+                versionCode: String(cString: system.bundleVersion),
                 name: String(cString: system.bundleName)
             ),
             startTime: CrashReport.secondPrecisionDateFormatter.date(from: String(cString: system.appStartTime)),

@@ -144,6 +144,8 @@
 		63E8367623468AAC009A4838 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 63E8367523468A9E009A4838 /* libc++.tbd */; };
 		63E8367823468AB9009A4838 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 63E8367723468AB9009A4838 /* libz.tbd */; };
 		63E8367A23468AC0009A4838 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63E8367923468AC0009A4838 /* SystemConfiguration.framework */; };
+		B740D42D239548E8005A0A8D /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D42C239548E8005A0A8D /* Client.swift */; };
+		B740D42F23954D2F005A0A8D /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D42E23954D2F005A0A8D /* Response.swift */; };
 		B7F636F0234CFE9C0065CA19 /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F636EF234CFE9C0065CA19 /* EventType.swift */; };
 /* End PBXBuildFile section */
 
@@ -299,6 +301,8 @@
 		63E8367523468A9E009A4838 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		63E8367723468AB9009A4838 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		63E8367923468AC0009A4838 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		B740D42C239548E8005A0A8D /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		B740D42E23954D2F005A0A8D /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		B7F636EF234CFE9C0065CA19 /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -367,6 +371,7 @@
 				633148B923452EB500B1722F /* Log.swift */,
 				633148CC2345BBFD00B1722F /* PutSessionEventBatchRequest.swift */,
 				633148CE2345BFB900B1722F /* Request.swift */,
+				B740D42E23954D2F005A0A8D /* Response.swift */,
 				633148B823452EB500B1722F /* Session.swift */,
 				633148CA2345445C00B1722F /* SessionEvent.swift */,
 				633148BA23452EB500B1722F /* SessionAuthRequest.swift */,
@@ -381,6 +386,7 @@
 				63995E4E234B237C00FA9765 /* Backtrace.swift */,
 				63995E50234B239800FA9765 /* Thread.swift */,
 				63995E52234B23B300FA9765 /* BinaryImage.swift */,
+				B740D42C239548E8005A0A8D /* Client.swift */,
 			);
 			path = Bintrail;
 			sourceTree = "<group>";
@@ -792,6 +798,7 @@
 				63995E3A234B080A00FA9765 /* KSCrashMonitor_User.c in Sources */,
 				633148C223452EBB00B1722F /* Log.swift in Sources */,
 				63995E45234B080A00FA9765 /* KSMach.c in Sources */,
+				B740D42F23954D2F005A0A8D /* Response.swift in Sources */,
 				63995E15234B080A00FA9765 /* KSCrashMonitor_NSException.m in Sources */,
 				63995E1F234B080A00FA9765 /* KSCPU_x86_64.c in Sources */,
 				63995E48234B080A00FA9765 /* KSCPU_arm64.c in Sources */,
@@ -811,6 +818,7 @@
 				63995E3C234B080A00FA9765 /* KSCrashMonitor.c in Sources */,
 				633148CF2345BFB900B1722F /* Request.swift in Sources */,
 				63995DE7234B080A00FA9765 /* NSError+SimpleConstructor.m in Sources */,
+				B740D42D239548E8005A0A8D /* Client.swift in Sources */,
 				63995E26234B080A00FA9765 /* KSCrashMonitorType.c in Sources */,
 				63995E20234B080A00FA9765 /* KSCrashReport.c in Sources */,
 				63995DFA234B080A00FA9765 /* KSObjC.c in Sources */,

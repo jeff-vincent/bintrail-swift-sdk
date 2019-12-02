@@ -22,7 +22,7 @@ public struct EventType: Hashable, Codable {
     }
 }
 
-extension EventType : ExpressibleByStringLiteral {
+extension EventType: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         self.init(name: value)
     }
