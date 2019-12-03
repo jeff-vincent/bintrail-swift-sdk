@@ -43,6 +43,15 @@ internal class Client {
                 "Content-Type": "application/json"
             ]
         )
+
+        static let sessionEntries = Endpoint(
+            method: "POST",
+            path: "session/entries",
+            headers: [
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            ]
+        )
     }
 
     internal struct Credentials {
@@ -76,9 +85,55 @@ internal class Client {
 
 internal extension Client {
 
-    struct EmptyHttpBody: Codable {}
+    func upload(
+        sessionMetadata: Session.Metadata,
+        completion: @escaping (Result<SessionInitResponse, ClientError>) -> Void
+    ) {
 
-    func send<T, U>(
+        send(
+            endpoint: .sessionInit,
+            requestBody: SessionInitRequest(metadata: sessionMetadata),
+            responseBody: SessionInitResponse.self
+        ) { result in
+            completion(
+                result.map { _, body in
+                    body
+                }
+            )
+        }
+    }
+
+    func upload<T>(
+        entries: T,
+        forSessionWithRemoteIdentifier remoteIdentifier: String,
+        completion: @escaping (Result<Void, ClientError>) -> Void
+    ) where T: Sequence, T.Element == SessionEntry {
+
+        dispatchQueue.async {
+            do {
+                let data = try JSONEncoder.bintrailDefault.encode(
+                    SessionEntriesBatch(
+                        sessionId: remoteIdentifier,
+                        entries: entries
+                    )
+                )
+
+                self.send(endpoint: .sessionEntries, body: data) { result in
+                    switch result {
+                    case .success:
+                        completion(.success(()))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+
+            } catch {
+                completion(.failure(.internal(error)))
+            }
+        }
+    }
+
+    private func send<T, U>(
         endpoint: Endpoint,
         requestBody: T,
         responseBody: U.Type,
@@ -145,7 +200,7 @@ internal extension Client {
         completion: @escaping (Result<(HTTPURLResponse, Data), ClientError>) -> Void
     ) {
 
-        bt_debug("Sending URLRequest", urlRequest)
+        bt_log_internal("Sending URLRequest", urlRequest)
 
         urlSession.dataTask(with: urlRequest) { data, urlResponse, error in
             do {

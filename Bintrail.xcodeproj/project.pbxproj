@@ -13,8 +13,8 @@
 		633148C523452EBB00B1722F /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BC23452EB500B1722F /* Bintrail.swift */; };
 		633148C623452EC000B1722F /* BintrailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BF23452EB500B1722F /* BintrailTests.swift */; };
 		633148C723452EC500B1722F /* Bintrail.h in Headers */ = {isa = PBXBuildFile; fileRef = 633148B123452EB500B1722F /* Bintrail.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		633148CB2345445C00B1722F /* SessionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CA2345445C00B1722F /* SessionEvent.swift */; };
-		633148CD2345BBFD00B1722F /* PutSessionEntryBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CC2345BBFD00B1722F /* PutSessionEntryBatchRequest.swift */; };
+		633148CB2345445C00B1722F /* SessionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CA2345445C00B1722F /* SessionEntry.swift */; };
+		633148CD2345BBFD00B1722F /* SessionEntriesBatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148CC2345BBFD00B1722F /* SessionEntriesBatch.swift */; };
 		633148D12345C20600B1722F /* Synchronized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D02345C20600B1722F /* Synchronized.swift */; };
 		633148D32345CFE800B1722F /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D22345CFE800B1722F /* Debug.swift */; };
 		63995595234A520D00FA9765 /* CrashReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63995594234A520D00FA9765 /* CrashReporter.swift */; };
@@ -170,8 +170,8 @@
 		633148BA23452EB500B1722F /* SessionAuthRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAuthRequest.swift; sourceTree = "<group>"; };
 		633148BC23452EB500B1722F /* Bintrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bintrail.swift; sourceTree = "<group>"; };
 		633148BF23452EB500B1722F /* BintrailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BintrailTests.swift; sourceTree = "<group>"; };
-		633148CA2345445C00B1722F /* SessionEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEvent.swift; sourceTree = "<group>"; };
-		633148CC2345BBFD00B1722F /* PutSessionEntryBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutSessionEntryBatchRequest.swift; sourceTree = "<group>"; };
+		633148CA2345445C00B1722F /* SessionEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEntry.swift; sourceTree = "<group>"; };
+		633148CC2345BBFD00B1722F /* SessionEntriesBatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEntriesBatch.swift; sourceTree = "<group>"; };
 		633148D02345C20600B1722F /* Synchronized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Synchronized.swift; sourceTree = "<group>"; };
 		633148D22345CFE800B1722F /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		63731DB8234495860014E7A3 /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -373,9 +373,9 @@
 				633148BC23452EB500B1722F /* Bintrail.swift */,
 				633148D22345CFE800B1722F /* Debug.swift */,
 				633148B923452EB500B1722F /* Log.swift */,
-				633148CC2345BBFD00B1722F /* PutSessionEntryBatchRequest.swift */,
+				633148CC2345BBFD00B1722F /* SessionEntriesBatch.swift */,
 				633148B823452EB500B1722F /* Session.swift */,
-				633148CA2345445C00B1722F /* SessionEvent.swift */,
+				633148CA2345445C00B1722F /* SessionEntry.swift */,
 				633148BA23452EB500B1722F /* SessionAuthRequest.swift */,
 				633148D02345C20600B1722F /* Synchronized.swift */,
 				63A8EA062346217300507264 /* Event.swift */,
@@ -777,7 +777,7 @@
 				63995DE3234B080A00FA9765 /* KSCrashMonitor_Deadlock.m in Sources */,
 				63995E1E234B080A00FA9765 /* KSString.c in Sources */,
 				63995E42234B080A00FA9765 /* KSStackCursor_Backtrace.c in Sources */,
-				633148CB2345445C00B1722F /* SessionEvent.swift in Sources */,
+				633148CB2345445C00B1722F /* SessionEntry.swift in Sources */,
 				63995E0B234B080A00FA9765 /* KSDynamicLinker.c in Sources */,
 				63995E28234B080A00FA9765 /* KSCrashC.c in Sources */,
 				63995DDC234B080A00FA9765 /* Demangle.cpp in Sources */,
@@ -786,7 +786,7 @@
 				63995E24234B080A00FA9765 /* KSSignalInfo.c in Sources */,
 				63995E21234B080A00FA9765 /* KSSymbolicator.c in Sources */,
 				63995E51234B239800FA9765 /* Thread.swift in Sources */,
-				633148CD2345BBFD00B1722F /* PutSessionEntryBatchRequest.swift in Sources */,
+				633148CD2345BBFD00B1722F /* SessionEntriesBatch.swift in Sources */,
 				63995E2A234B080A00FA9765 /* KSDebug.c in Sources */,
 				63995599234A6F0100FA9765 /* Device.swift in Sources */,
 				63995E37234B080A00FA9765 /* KSJSONCodec.c in Sources */,

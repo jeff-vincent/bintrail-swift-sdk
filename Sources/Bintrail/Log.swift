@@ -1,12 +1,29 @@
 import Foundation
 
-public enum LogType: String, Codable {
+public enum LogType: String, Codable, CaseIterable {
     case trace
     case debug
     case info
     case warning
     case error
     case fatal
+
+    internal var intValue: Int {
+        switch self {
+        case .trace:
+            return 1
+        case .debug:
+            return 2
+        case .info:
+            return 3
+        case .warning:
+            return 4
+        case .error:
+            return 5
+        case .fatal:
+            return 6
+        }
+    }
 }
 
 internal struct Log {

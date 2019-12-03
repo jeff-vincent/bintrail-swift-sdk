@@ -15,6 +15,24 @@ internal enum SessionEntry {
     }
 }
 
+internal extension SessionEntry {
+
+    var sendUrgency: Float {
+        switch self {
+        case .event:
+            return 0.25
+        case .log(let log):
+            switch log.level {
+            case .trace: return 0
+            case .debug: return 0.1
+            case .info: return 0.25
+            case .warning: return 0.5
+            case .error, .fatal: return 1
+            }
+        }
+    }
+}
+
 extension SessionEntry: Codable {
     private enum CodingKeys: String, CodingKey {
         case type

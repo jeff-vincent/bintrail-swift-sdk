@@ -14,9 +14,9 @@ public final class Event {
 
     public let type: EventType
 
-    private var attributes: Attributes
+    public private(set) var attributes: Attributes
 
-    private var metrics: Metrics
+    public private(set) var metrics: Metrics
 
     public let timestamp: Date
 

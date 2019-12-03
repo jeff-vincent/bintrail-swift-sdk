@@ -4,13 +4,17 @@ public final class Session {
 
         internal let startedAt: Date
 
-        internal var device: Device?
+        internal let device: Device?
 
-        internal var executable: Executable?
+        internal let executable: Executable?
 
-        internal var remoteIdentifier: String?
+        internal private(set) var remoteIdentifier: String?
 
-        internal var appIdentifier: String?
+        internal func withRemoteIdentifier(_ identifier: String) -> Metadata {
+            var new = self
+            new.remoteIdentifier = identifier
+            return new
+        }
     }
 
     private lazy var dispatchQueue = DispatchQueue(label: "com.bintrail.session(\(localIdentifier.uuidString))")
@@ -22,6 +26,8 @@ public final class Session {
     internal let localIdentifier: UUID
 
     internal let fileManager: FileManager
+
+    private var currentSendUrgency: Float = 0
 
     internal init(fileManager: FileManager) {
 
@@ -51,7 +57,7 @@ public final class Session {
         }
     }
 
-    private func writeEntries() {
+    func writeEntries() {
         dequeueDispatchWorkItem?.cancel()
         dequeueDispatchWorkItem = nil
 
@@ -61,7 +67,7 @@ public final class Session {
             try writeEntries(dequeuedEntries)
         } catch {
             entries.enqueue(dequeuedEntries)
-            bt_debug("Failed to write entries to file", error)
+            bt_log_internal("Failed to write entries to file", error)
         }
     }
 }
@@ -88,27 +94,46 @@ internal extension Session {
 
 private extension Session {
 
-    var directoryUrl: URL? {
-        return fileManager.bintrailDirectoryUrl?
-            .appendingPathComponent("sessions")
-            .appendingPathComponent(localIdentifier.uuidString)
+    static func sessionsDirectoryUrl(using fileManager: FileManager) -> URL? {
+        return fileManager.bintrailDirectoryUrl?.appendingPathComponent("sessions")
     }
 
-    func createDirectoryIfNeeded() throws {
+    var directoryUrl: URL? {
+        Session.sessionsDirectoryUrl(using: fileManager)?.appendingPathComponent(localIdentifier.uuidString)
+    }
+}
 
-        guard let directoryUrl = directoryUrl else {
-            throw FileError.failedToObtainDirectoryURL
+// MARK: Loading
+
+internal extension Session {
+
+    static func loadSaved(using fileManager: FileManager) throws -> [Session] {
+        guard let sessionsDirectoryUrl = sessionsDirectoryUrl(using: fileManager) else {
+            return []
         }
 
-        guard !fileManager.fileExists(atPath: directoryUrl.path) else {
+        var result: [Session] = []
+
+        for directoryName in try fileManager.contentsOfDirectory(atPath: sessionsDirectoryUrl.path) {
+            guard let localIdentifier = UUID(uuidString: directoryName) else {
+                bt_log_internal("Skipping directory named \(directoryName). Not a valid UUID")
+                continue
+            }
+
+            result.append(Session(localIdentifier: localIdentifier, fileManager: fileManager))
+        }
+
+        return result
+    }
+
+    func deleteSavedData() throws {
+        guard let directoryUrl = directoryUrl else {
             return
         }
 
-        try fileManager.createDirectory(at: directoryUrl, withIntermediateDirectories: true, attributes: nil)
+        bt_log_internal("Deleting saved data for \(localIdentifier)")
 
-        #if DEBUG
-        bt_debug("Created session directory at", directoryUrl.path)
-        #endif
+        try fileManager.removeItem(at: directoryUrl)
     }
 }
 
@@ -118,14 +143,6 @@ internal extension Session {
 
     var metadataFileUrl: URL? {
         return directoryUrl?.appendingPathComponent("metadata.json")
-    }
-
-    var metadataFileExists: Bool {
-        guard let fileUrl = metadataFileUrl else {
-            return false
-        }
-
-        return fileManager.fileExists(atPath: fileUrl.path)
     }
 
     func loadMetadata() throws -> Metadata? {
@@ -141,13 +158,18 @@ internal extension Session {
     }
 
     func saveMetadata(metadata: Metadata) throws {
-        try createDirectoryIfNeeded()
+
+        guard let directoryUrl = directoryUrl else {
+            throw FileError.failedToObtainDirectoryURL
+        }
+
+        try fileManager.createDirectoryIfNeeded(at: directoryUrl, withIntermediateDirectories: true)
 
         guard let metadataFileUrl = metadataFileUrl else {
             throw FileError.failedToObtainMetadataFileURL
         }
 
-        if metadataFileExists {
+        if fileManager.fileExists(atPath: metadataFileUrl.path) {
             try fileManager.removeItem(at: metadataFileUrl)
         }
 
@@ -155,8 +177,8 @@ internal extension Session {
             atPath: metadataFileUrl.path,
             contents: try JSONEncoder.bintrailDefault.encode(metadata),
             attributes: nil
-        ) else {
-            throw FileError.failedToWriteMetadata
+            ) else {
+                throw FileError.failedToWriteMetadata
         }
     }
 }
@@ -169,36 +191,29 @@ private extension Session {
         return directoryUrl?.appendingPathComponent("entries.json")
     }
 
-    var entriesFileExists: Bool {
-        guard let url = entriesFileUrl else {
-            return false
-        }
-
-        return fileManager.fileExists(atPath: url.path)
-    }
-
     func writeEntries<T>(_ entries: T) throws where T: Collection, T.Element == SessionEntry {
-
-        guard let entriesFileUrl = entriesFileUrl else {
-            throw FileError.failedToObtainEntriesFileURL
-        }
 
         guard entries.isEmpty == false else {
             return
         }
 
-        try createDirectoryIfNeeded()
+        guard let directoryUrl = directoryUrl else {
+            throw FileError.failedToObtainDirectoryURL
+        }
 
-        if !entriesFileExists {
+        guard let entriesFileUrl = entriesFileUrl else {
+            throw FileError.failedToObtainEntriesFileURL
+        }
+
+        try fileManager.createDirectoryIfNeeded(at: directoryUrl, withIntermediateDirectories: true)
+
+        if !fileManager.fileExists(atPath: entriesFileUrl.path) {
+            bt_log_internal("Creating entry file at ", entriesFileUrl.relativePath)
             fileManager.createFile(atPath: entriesFileUrl.path, contents: Data(), attributes: nil)
         }
 
         let fileHandle = try FileHandle(forWritingTo: entriesFileUrl)
         fileHandle.seekToEndOfFile()
-
-        defer {
-            fileHandle.closeFile()
-        }
 
         let jsonEncoder = JSONEncoder.bintrailDefault
         jsonEncoder.outputFormatting.remove(.prettyPrinted)
@@ -208,8 +223,185 @@ private extension Session {
         }
 
         for entry in entries {
-            try fileHandle.write(jsonEncoder.encode(entry))
+            currentSendUrgency += entry.sendUrgency
+            do {
+                try fileHandle.write(jsonEncoder.encode(entry))
+            } catch {
+                bt_log_internal("Failed to encode entry")
+            }
             fileHandle.write(newLine)
+        }
+
+        fileHandle.closeFile()
+
+        if currentSendUrgency >= 1 {
+            bt_log_internal("Send urgency for session (\(localIdentifier)) at \(currentSendUrgency)")
+            try moveEntriesFileToOutfilesDirectory()
+            currentSendUrgency = 0
+        }
+    }
+}
+
+// MARK: Entries out files
+
+internal struct SessionActionRequest {
+
+    enum Action {
+        case uploadMetadata(Session.Metadata)
+        case uploadEntries(SessionEntriesBatch)
+        case none(Error?)
+        case metadataMissing
+    }
+
+    let session: Session
+
+    let action: Action
+
+    fileprivate init(session: Session, action: Action) {
+        self.session = session
+        self.action = action
+    }
+}
+
+private extension Session {
+
+    func moveEntriesFileToOutfilesDirectory() throws {
+        guard let entriesFileUrl = entriesFileUrl else {
+            return
+        }
+
+        if !fileManager.fileExists(atPath: entriesFileUrl.path) {
+            return
+        }
+
+        guard let directoryUrl = entryOutfilesDirectoryUrl else {
+            return
+        }
+
+        bt_log_internal("Creating directory entry outfile directory for session \(localIdentifier)")
+
+        try fileManager.createDirectoryIfNeeded(at: directoryUrl, withIntermediateDirectories: true)
+
+        let destinationFileUrl = directoryUrl.appendingPathComponent("\(UUID().uuidString).json")
+
+        bt_log_internal("Moving entries file")
+
+        try fileManager.moveItem(
+            at: entriesFileUrl,
+            to: destinationFileUrl
+        )
+    }
+
+    var entryOutfilesDirectoryUrl: URL? {
+        return directoryUrl?.appendingPathComponent("out").appendingPathComponent("entries")
+    }
+
+    func listEntryOutfiles() throws -> [URL] {
+        guard let directoryUrl = entryOutfilesDirectoryUrl else {
+            return []
+        }
+
+        try fileManager.createDirectoryIfNeeded(at: directoryUrl, withIntermediateDirectories: true)
+
+        return try fileManager.contentsOfDirectory(atPath: directoryUrl.path).map { path in
+            directoryUrl.appendingPathComponent(path)
+        }
+    }
+}
+
+internal enum SessionSendError: Error {
+    case metadataMissing
+    case underlying(Error)
+}
+
+internal extension Session {
+
+    private static func loadEntriesFromFile(at fileUrl: URL) throws -> [SessionEntry] {
+
+        let jsonLines = try String(contentsOf: fileUrl, encoding: .utf8).split { character in
+            character.isNewline
+        }
+
+        var entries: [SessionEntry] = []
+
+        for jsonLine in jsonLines {
+            do {
+                entries.append(
+                    try JSONDecoder.bintrailDefault.decode(
+                        SessionEntry.self,
+                        from: Data(Array(jsonLine.utf8))
+                    )
+                )
+            } catch {
+                bt_log_internal("Failed to parse json line: \(jsonLine). Error: \(error)")
+                continue
+            }
+        }
+
+        return entries
+    }
+
+    func send(using client: Client, completion: @escaping (SessionSendError?) -> Void) {
+        dispatchQueue.async {
+            do {
+                guard let metadata = try self.loadMetadata() else {
+                    throw SessionSendError.metadataMissing
+                }
+
+                guard let remoteIdentifier = metadata.remoteIdentifier else {
+
+                    bt_log_internal("Session \(self.localIdentifier) lacks remote identifier. Uploading metadata...")
+
+                    client.upload(sessionMetadata: metadata) { result in
+                        switch result {
+                        case .success(let response):
+                            do {
+                                try self.saveMetadata(
+                                    metadata: metadata.withRemoteIdentifier(response.remoteIdentifier)
+                                )
+                                self.send(using: client, completion: completion)
+                            } catch {
+                                completion(.underlying(error))
+                            }
+                        case .failure(let error):
+                            completion(.underlying(error))
+                        }
+                    }
+                    return
+                }
+
+                guard let outFileUrl = try self.listEntryOutfiles().first else {
+                    bt_log_internal("Session \(self.localIdentifier) contains no more entry outfiles.")
+                    completion(nil)
+                    return
+                }
+
+                let entries = try Session.loadEntriesFromFile(at: outFileUrl)
+
+                bt_log_internal(
+                    "Uploading entries from \(outFileUrl.relativePath) for session (\(self.localIdentifier))"
+                )
+
+                client.upload(entries: entries, forSessionWithRemoteIdentifier: remoteIdentifier) { result in
+
+                    if case .failure(let error) = result {
+                        completion(.underlying(error))
+                        return
+                    }
+
+                    do {
+                        try self.fileManager.removeItem(at: outFileUrl)
+                        self.send(using: client, completion: completion)
+                    } catch {
+                        completion(.underlying(error))
+                    }
+                }
+
+            } catch let error as SessionSendError {
+                completion(error)
+            } catch {
+                completion(.underlying(error))
+            }
         }
     }
 }
