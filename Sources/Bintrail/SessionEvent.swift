@@ -1,13 +1,13 @@
-internal enum SessionEventType: String, Codable {
+internal enum SessionEntryType: String, Codable {
     case log
     case event
 }
 
-internal enum SessionEvent {
+internal enum SessionEntry {
     case log(Log)
     case event(Event)
 
-    var recordType: SessionEventType {
+    var recordType: SessionEntryType {
         switch self {
         case .log: return .log
         case .event: return .event
@@ -15,7 +15,7 @@ internal enum SessionEvent {
     }
 }
 
-extension SessionEvent: Codable {
+extension SessionEntry: Codable {
     private enum CodingKeys: String, CodingKey {
         case type
         case value
@@ -24,7 +24,7 @@ extension SessionEvent: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        let type = try container.decode(SessionEventType.self, forKey: .type)
+        let type = try container.decode(SessionEntryType.self, forKey: .type)
 
         switch type {
         case .log:

@@ -63,5 +63,5 @@ public func bt_log(
         timestamp: Date()
     )
 
-    Bintrail.shared.currentSession.enqueueEvent(.log(log))
+    Bintrail.shared.currentSession.add(.log(log))
 }

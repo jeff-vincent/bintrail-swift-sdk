@@ -10,18 +10,14 @@ enum CrashReporterError: Error {
 
 internal class CrashReporter {
 
-    let jsonEncoder: JSONEncoder
-    let jsonDecoder: JSONDecoder
-
     var userInfo = CrashReportBody.UserInfo() {
         didSet {
             writeUserInfo()
         }
     }
 
-    init(jsonEncoder: JSONEncoder, jsonDecoder: JSONDecoder) {
-        self.jsonEncoder = jsonEncoder
-        self.jsonDecoder = jsonDecoder
+    init() {
+
     }
 
     func install() {
@@ -42,7 +38,7 @@ internal class CrashReporter {
 
     private func writeUserInfo() {
         do {
-            try jsonEncoder.encode(userInfo).withUnsafeBytes { bytes in
+            try JSONEncoder.bintrailDefault.encode(userInfo).withUnsafeBytes { bytes in
                 kscrash_setUserInfoJSON(bytes.bindMemory(to: Int8.self).baseAddress)
             }
 
@@ -76,7 +72,7 @@ internal class CrashReporter {
             return .success(
                 CrashReport(
                     identifier: identifier,
-                    body: try jsonDecoder.decode(CrashReportBody.self, from: data)
+                    body: try JSONDecoder.bintrailDefault.decode(CrashReportBody.self, from: data)
                 )
             )
         } catch {

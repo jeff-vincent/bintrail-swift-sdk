@@ -1,4 +1,4 @@
-internal class PutSessionEventBatchRequest: Encodable {
+internal class PutSessionEntryBatchRequest: Encodable {
 
     let logs: [Log]
 
@@ -8,17 +8,17 @@ internal class PutSessionEventBatchRequest: Encodable {
 
     let sessionId: String
 
-    init<T: Sequence>(appId: String, sessionId: String, sessionEvents: T) where T.Element == SessionEvent {
+    init<T: Sequence>(appId: String, sessionId: String, sessionEvents: T) where T.Element == SessionEntry {
 
         var logs: [Log] = []
         var events: [Event] = []
 
         for sessionEvent in sessionEvents {
             switch sessionEvent {
-            case .log(let event):
-                logs.append(event)
-            case .event(let event):
-                events.append(event)
+            case .log(let entry):
+                logs.append(entry)
+            case .event(let entry):
+                events.append(entry)
             }
         }
 

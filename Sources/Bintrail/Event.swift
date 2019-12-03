@@ -152,7 +152,7 @@ public func bt_event_finish(_ event: Event) {
 }
 
 internal func bt_event_register(_ event: Event) {
-    Bintrail.shared.currentSession.enqueueEvent(.event(event))
+    Bintrail.shared.currentSession.add(.event(event))
 }
 
 public func bt_event_register(_ type: EventType) {

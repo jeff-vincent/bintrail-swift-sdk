@@ -62,10 +62,6 @@ internal class Client {
 
     internal var credentials: Credentials?
 
-    internal let jsonEncoder = JSONEncoder()
-
-    internal let jsonDecoder = JSONDecoder()
-
     private let dispatchQueue = DispatchQueue(label: "com.bintrail.client")
 
     private let urlSession = URLSession(configuration: .default)
@@ -75,18 +71,6 @@ internal class Client {
     internal init(baseUrl: URL) {
 
         self.baseUrl = baseUrl
-
-        jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
-
-        #if DEBUG
-            jsonEncoder.outputFormatting = [.prettyPrinted]
-        #endif
-
-        if #available(iOS 11, *) {
-            jsonEncoder.outputFormatting.insert(.sortedKeys)
-        }
-
-        jsonDecoder.dateDecodingStrategy = .millisecondsSince1970
     }
 }
 
@@ -102,10 +86,12 @@ internal extension Client {
     ) where T: Encodable, U: Decodable {
         dispatchQueue.async {
             do {
-                self.send(endpoint: endpoint, body: try self.jsonEncoder.encode(requestBody)) { result in
+                self.send(endpoint: endpoint, body: try JSONEncoder.bintrailDefault.encode(requestBody)) { result in
                     do {
                         let (response, data) = try result.get()
-                        completion(.success((response, try self.jsonDecoder.decode(responseBody, from: data))))
+                        completion(
+                            .success((response, try JSONDecoder.bintrailDefault.decode(responseBody, from: data)))
+                        )
                     } catch let error as ClientError {
                         completion(.failure(error))
                     } catch {

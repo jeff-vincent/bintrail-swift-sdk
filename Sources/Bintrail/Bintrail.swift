@@ -22,13 +22,15 @@ public class Bintrail {
 
     internal let client: Client
 
-    internal private(set) var currentSession = Session()
+    internal private(set) var currentSession: Session
 
     private var notificationObservers: [Any] = []
 
     private init() {
         client = Client(baseUrl: .bintrailBaseUrl)
-        crashReporter = CrashReporter(jsonEncoder: client.jsonEncoder, jsonDecoder: client.jsonDecoder)
+        crashReporter = CrashReporter()
+
+        currentSession = Session(fileManager: .default)
     }
 
     var isConfigured: Bool {
@@ -44,121 +46,133 @@ public class Bintrail {
         crashReporter.install()
         subscribeToNotifications()
 
+        do {
+            try currentSession.saveMetadata(
+                metadata: Session.Metadata(
+                    startedAt: Date(),
+                    device: crashReporter.device,
+                    executable: crashReporter.executable
+                )
+            )
+        } catch {
+            bt_debug("Failed to save session metadata", error)
+        }
+
         client.credentials = Client.Credentials(keyId: keyId, secret: secret)
 
         bt_log("Bintrail SDK configured", type: .trace)
     }
 }
-
-
-private extension Bintrail {
-
-    func flushEvents(
-        of session: Session,
-        withCredentials credentials: Credentials,
-        completion: @escaping (Result<Void, BintrailError>) -> Void) {
-
-        let events = session.events
-
-        guard let base64EncodedAppCredentials = credentials.base64EncodedString else {
-            completion(.failure(ClientError.appCredentialsEncodingFailed))
-            return
-        }
-
-        guard events.isEmpty == false else {
-            bt_debug("Session has no events. Skipping event flush.")
-            completion(.success(()))
-            return
-        }
-
-        guard let context = session.context else {
-            fetchSessionContext(session: session) { result in
-                switch result {
-                case .success(let context):
-                    session.context = context
-
-                    if session === self.currentSession {
-                        self.crashReporter.userInfo.sessionId = context.sessionId
-                    }
-
-                    self.async {
-                        self.flushEvents(of: session, withCredentials: credentials, completion: completion)
-                    }
-
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            }
-            return
-        }
-
-        bt_debug("Flushing \(events.count) event(s) of session.")
-
-        send(
-            request: Request(
-                method: .post,
-                path: "session/ingest",
-                headers: ["Bintrail-Ingest-Token": base64EncodedAppCredentials],
-                body: PutSessionEventBatchRequest(
-                    appId: context.appId,
-                    sessionId: context.sessionId,
-                    sessionEvents: session.events
-                ),
-                encoder: self.jsonEncoder
-            ),
-            acceptStatusCodes: [202]
-        ) { result in
-
-            completion(
-                result.map {
-                    bt_debug("Successfully flushed \(events.count) event(s) of session.")
-                    session.dequeueEvents(count: events.count)
-                }
-            )
-        }
-    }
-
-    func fetchSessionContext(
-        session: Session,
-        completion: @escaping (Result<Session.Context, BintrailError>) -> Void
-    ) {
-        do {
-
-            guard let executable = crashReporter.executable else {
-                throw BintrailError.uninitializedExecutableInfo
-            }
-
-            guard let device = crashReporter.device else {
-                throw BintrailError.uninitializedDeviceInfo
-            }
-
-            client.send(
-                endpoint: .sessionInit,
-                requestBody: SessionAuthRequest(executable: executable, device: device),
-                responseBody: Session.Context.self) { response in
-
-            }
-
-            send(
-                request: Request(
-                    method: .post,
-                    path: "session/init",
-                    headers: ["Bintrail-Ingest-Token": base64EncodedAppCredentials],
-                    body: SessionAuthRequest(executable: executable, device: device),
-                    encoder: jsonEncoder
-                ),
-                acceptStatusCodes: [200],
-                decodingResponseBodyTo: Session.Context.self,
-                completion: completion
-            )
-
-        } catch let error as ClientError {
-            completion(.failure(error))
-        } catch {
-            completion(.failure(.internal(error)))
-        }
-    }
-}
+//
+//
+//private extension Bintrail {
+//
+//    func flushEvents(
+//        of session: Session,
+//        withCredentials credentials: Credentials,
+//        completion: @escaping (Result<Void, BintrailError>) -> Void) {
+//
+//        let events = session.events
+//
+//        guard let base64EncodedAppCredentials = credentials.base64EncodedString else {
+//            completion(.failure(ClientError.appCredentialsEncodingFailed))
+//            return
+//        }
+//
+//        guard events.isEmpty == false else {
+//            bt_debug("Session has no events. Skipping event flush.")
+//            completion(.success(()))
+//            return
+//        }
+//
+//        guard let context = session.context else {
+//            fetchSessionContext(session: session) { result in
+//                switch result {
+//                case .success(let context):
+//                    session.context = context
+//
+//                    if session === self.currentSession {
+//                        self.crashReporter.userInfo.sessionId = context.sessionId
+//                    }
+//
+//                    self.async {
+//                        self.flushEvents(of: session, withCredentials: credentials, completion: completion)
+//                    }
+//
+//                case .failure(let error):
+//                    completion(.failure(error))
+//                }
+//            }
+//            return
+//        }
+//
+//        bt_debug("Flushing \(events.count) event(s) of session.")
+//
+//        send(
+//            request: Request(
+//                method: .post,
+//                path: "session/ingest",
+//                headers: ["Bintrail-Ingest-Token": base64EncodedAppCredentials],
+//                body: PutSessionEntryBatchRequest(
+//                    appId: context.appId,
+//                    sessionId: context.sessionId,
+//                    sessionEntrys: session.events
+//                ),
+//                encoder: self.jsonEncoder
+//            ),
+//            acceptStatusCodes: [202]
+//        ) { result in
+//
+//            completion(
+//                result.map {
+//                    bt_debug("Successfully flushed \(events.count) event(s) of session.")
+//                    session.dequeueEvents(count: events.count)
+//                }
+//            )
+//        }
+//    }
+//
+//    func fetchSessionContext(
+//        session: Session,
+//        completion: @escaping (Result<Session.Context, BintrailError>) -> Void
+//    ) {
+//        do {
+//
+//            guard let executable = crashReporter.executable else {
+//                throw BintrailError.uninitializedExecutableInfo
+//            }
+//
+//            guard let device = crashReporter.device else {
+//                throw BintrailError.uninitializedDeviceInfo
+//            }
+//
+//            client.send(
+//                endpoint: .sessionInit,
+//                requestBody: SessionAuthRequest(executable: executable, device: device),
+//                responseBody: Session.Context.self) { response in
+//
+//            }
+//
+//            send(
+//                request: Request(
+//                    method: .post,
+//                    path: "session/init",
+//                    headers: ["Bintrail-Ingest-Token": base64EncodedAppCredentials],
+//                    body: SessionAuthRequest(executable: executable, device: device),
+//                    encoder: jsonEncoder
+//                ),
+//                acceptStatusCodes: [200],
+//                decodingResponseBodyTo: Session.Context.self,
+//                completion: completion
+//            )
+//
+//        } catch let error as ClientError {
+//            completion(.failure(error))
+//        } catch {
+//            completion(.failure(.internal(error)))
+//        }
+//    }
+//}
 
 extension Bintrail {
 
@@ -248,6 +262,3 @@ extension Bintrail {
         }
     }
 }
-
-
-
