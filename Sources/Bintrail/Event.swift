@@ -172,60 +172,44 @@ public extension Event {
 
     internal enum Namespace: String, Codable {
         case iOS
-        case user
+        case custom
     }
 
     struct Name: Hashable, Codable {
 
-        public let name: String
+        internal let value: String
 
-        let namespace: Namespace
+        internal let namespace: Namespace
 
-        public init(name: String) {
-            self.init(name: name, namespace: .user)
+        public init(value: String) {
+            self.init(value: value, namespace: .custom)
         }
 
         internal init(
-            name: String,
+            value: String,
             namespace: Namespace
         ) {
-            self.name = name
+            self.value = value
             self.namespace = namespace
         }
     }
-
 }
 
 extension Event.Name: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self.init(name: value)
+        self.init(value: value)
     }
 }
 
 internal extension Event.Name {
 
-    static let foregroundPeriod = Event.Name(
-        name: "inForeground",
-        namespace: .iOS
-    )
+    static let foregroundPeriod = Event.Name(value: "inForeground", namespace: .iOS)
 
-    static let backgroundPeriod = Event.Name(
-        name: "inBackground",
-        namespace: .iOS
-    )
+    static let backgroundPeriod = Event.Name(value: "inBackground", namespace: .iOS)
 
-    static let activePeriod = Event.Name(
-        name: "activePeriod",
-        namespace: .iOS
-    )
+    static let activePeriod = Event.Name(value: "activePeriod", namespace: .iOS)
 
-    static let inactivePeriod = Event.Name(
-        name: "inactivePeriod",
-        namespace: .iOS
-    )
+    static let inactivePeriod = Event.Name(value: "inactivePeriod", namespace: .iOS)
 
-    static let memoryWarning = Event.Name(
-        name: "memoryWarning",
-        namespace: .iOS
-    )
+    static let memoryWarning = Event.Name(value: "memoryWarning", namespace: .iOS)
 }
