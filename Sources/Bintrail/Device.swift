@@ -4,7 +4,6 @@ import UIKit
 #endif
 
 struct Device: Codable {
-
     struct Processor: Codable {
         let architecture: String
         let type: Int32

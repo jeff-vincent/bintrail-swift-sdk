@@ -18,14 +18,11 @@ internal struct CrashError: Encodable {
 }
 
 internal struct Crash: Encodable {
-
     let error: CrashError
     let threads: [Thread]
-
 }
 
 extension Crash: Decodable {
-
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CrashReportBody.DecodingKey.self)
 
@@ -55,7 +52,6 @@ extension CrashError.Signal: Decodable {
 }
 
 extension CrashError: Decodable {
-
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CrashReportBody.DecodingKey.self)
 

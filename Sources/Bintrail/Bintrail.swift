@@ -11,7 +11,6 @@ public enum BintrailError: Error {
 }
 
 public class Bintrail {
-
     public static let shared = Bintrail()
 
     @Synchronized private var managedEventsByName: [Event.Name: Event] = [:]
@@ -43,7 +42,6 @@ public class Bintrail {
     }
 
     public func configure(keyId: String, secret: String) throws {
-
         guard isConfigured == false else {
             return
         }
@@ -107,7 +105,6 @@ public class Bintrail {
     func processNonCurrentSessions(completion: @escaping ([Error]) -> Void) {
         operationQueue.addOperation {
             do {
-
                 var errors: [Error] = []
 
                 var nonCurrentSessions = try Session.loadSaved(using: .default).filter { session in
@@ -121,7 +118,6 @@ public class Bintrail {
                 }
 
                 for session in nonCurrentSessions {
-
                     bt_log_internal("Processing non-current session \(session.localIdentifier)")
 
                     session.send(using: self.client) { error in
@@ -140,7 +136,6 @@ public class Bintrail {
                         }
                     }
                 }
-
             } catch {
                 completion([error])
             }
@@ -149,7 +144,6 @@ public class Bintrail {
 }
 
 extension Bintrail {
-
     private func observeNotification(
         named notificationName: Notification.Name,
         object: Any? = nil,
@@ -171,7 +165,6 @@ extension Bintrail {
         overwriteIfExits overwrite: Bool = true,
         cofigure block: ((Event) -> Void
     )? = nil) {
-
         if managedEventsByName[name] != nil && overwrite == false {
             return
         }
@@ -191,7 +184,6 @@ extension Bintrail {
     }
 
     private func subscribeToNotifications() {
-
         observeNotification(named: UIApplication.willTerminateNotification) { _ in
             kscrash_notifyAppTerminate()
         }
@@ -235,7 +227,6 @@ extension Bintrail {
 
         observeNotification(named: UIApplication.didReceiveMemoryWarningNotification) { _ in
             bt_event_register(.memoryWarning) { event in
-
                 if let memory = self.crashReporter.device?.memory {
                     event.add(value: memory.size, forMetric: "size")
                     event.add(value: memory.free, forMetric: "free")

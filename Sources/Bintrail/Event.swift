@@ -1,5 +1,4 @@
 public final class Event {
-
     public typealias Metrics = [Metric: Double]
 
     public typealias Attributes = [String: String]
@@ -78,7 +77,6 @@ public extension Event.Metric {
 }
 
 extension Event: Codable {
-
     private enum CodingKeys: String, CodingKey {
         case name
         case attributes
@@ -111,7 +109,6 @@ extension Event: Codable {
     }
 
     public func encode(to encoder: Encoder) throws {
-
         let stringKeyedMetrics: [String: Double] = metrics.reduce(into: [:]) { result, keyValue in
             result[keyValue.key.rawValue] = keyValue.value
         }
@@ -152,7 +149,6 @@ public func bt_event_register(_ name: Event.Name) {
 }
 
 public func bt_event_register<T>(_ name: Event.Name, _ body: (Event) throws -> T) rethrows -> T {
-
     let event = Event(name: name)
     let value = try body(event)
 
@@ -161,7 +157,6 @@ public func bt_event_register<T>(_ name: Event.Name, _ body: (Event) throws -> T
 }
 
 public extension Event {
-
     struct Metric: RawRepresentable, Hashable {
         public var rawValue: String
 
@@ -176,7 +171,6 @@ public extension Event {
     }
 
     struct Name: Hashable, Codable {
-
         internal let value: String
 
         internal let namespace: Namespace
@@ -202,7 +196,6 @@ extension Event.Name: ExpressibleByStringLiteral {
 }
 
 internal extension Event.Name {
-
     static let foregroundPeriod = Event.Name(value: "inForeground", namespace: .iOS)
 
     static let backgroundPeriod = Event.Name(value: "inBackground", namespace: .iOS)

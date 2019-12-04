@@ -1,7 +1,6 @@
 import Foundation
 
 internal extension FileManager {
-
     var bintrailDirectoryUrl: URL? {
         urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("bintrail")
     }
@@ -11,7 +10,6 @@ internal extension FileManager {
         withIntermediateDirectories createIntermediates: Bool,
         attributes: [FileAttributeKey: Any]? = nil
     ) throws {
-
         guard !fileExists(atPath: url.path) else {
             return
         }

@@ -5,9 +5,7 @@ import UIKit
 import KSCrash
 
 internal struct CrashReportBody {
-
     struct UserInfo {
-
         let deviceName: String?
 
         var sessionId: String?
@@ -49,7 +47,6 @@ internal struct CrashReportBody {
 }
 
 extension CrashReportBody.UserInfo: Codable {
-
     enum CodingKeys: String, CodingKey {
         case deviceName
         case localeIdentifier
@@ -66,9 +63,7 @@ extension CrashReportBody.UserInfo: Codable {
 }
 
 extension CrashReportBody: Decodable {
-
     init(from decoder: Decoder) throws {
-
         let container = try decoder.container(keyedBy: DecodingKey.self)
 
         executable = try container.decode(Executable.self, forKey: .system)
@@ -106,7 +101,6 @@ extension CrashReportBody: Decodable {
 }
 
 extension CrashReportBody: Encodable {
-
     private enum EncodingKey: String, CodingKey {
         case executable
         case device
@@ -137,9 +131,7 @@ extension CrashReportBody: Encodable {
 }
 
 extension CrashReportBody {
-
     struct DecodingKey: CodingKey {
-
         let intValue: Int? = nil
 
         init?(intValue: Int) {
@@ -280,18 +272,15 @@ extension CrashReportBody {
         static let timeZone = DecodingKey(stringValue: KSCrashField_TimeZone)
         static let buildType = DecodingKey(stringValue: KSCrashField_BuildType)
     }
-
 }
 
 internal struct CrashReport {
-
     let identifier: Int64
 
     let body: CrashReportBody
 }
 
 internal extension CrashReport {
-
     private static var dateFormatterByFormat: [String: DateFormatter] = [:]
 
     static func dateFormatter(withFormat format: String) -> DateFormatter {

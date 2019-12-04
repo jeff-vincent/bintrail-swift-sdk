@@ -9,15 +9,10 @@ enum CrashReporterError: Error {
 }
 
 internal class CrashReporter {
-
     var userInfo = CrashReportBody.UserInfo() {
         didSet {
             writeUserInfo()
         }
-    }
-
-    init() {
-
     }
 
     func install() {
@@ -41,7 +36,6 @@ internal class CrashReporter {
             try JSONEncoder.bintrailDefault.encode(userInfo).withUnsafeBytes { bytes in
                 kscrash_setUserInfoJSON(bytes.bindMemory(to: Int8.self).baseAddress)
             }
-
         } catch {
             bt_print("Warning! Could not encode user info.")
         }
@@ -57,11 +51,9 @@ internal class CrashReporter {
         }
 
         return identifiers
-
     }
 
     func loadReport(withIdentifier identifier: Int64) -> Result<CrashReport, CrashReporterError> {
-
         guard let pointer = kscrash_readReport(identifier) else {
             return .failure(.reportNotFound)
         }
@@ -161,7 +153,6 @@ internal class CrashReporter {
 }
 
 extension CrashReporter: Sequence {
-
     __consuming func makeIterator() -> AnyIterator<Result<CrashReport, CrashReporterError>> {
         var identifiers = reportIdentifiers
 

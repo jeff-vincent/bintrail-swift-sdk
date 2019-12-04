@@ -1,5 +1,4 @@
 public final class Session {
-
     private lazy var dispatchQueue = DispatchQueue(label: "com.bintrail.session(\(localIdentifier.uuidString))")
 
     private var entries = Queue<Entry>()
@@ -11,7 +10,6 @@ public final class Session {
     internal let fileManager: FileManager
 
     internal init(fileManager: FileManager) {
-
         localIdentifier = UUID()
 
         self.fileManager = fileManager
@@ -24,7 +22,6 @@ public final class Session {
 
     internal func add(_ entry: Entry) {
         dispatchQueue.async {
-
             // Enqueue new entry
             self.entries.enqueue(entry)
 
@@ -75,9 +72,7 @@ extension Session: Equatable {
 }
 
 internal extension Session {
-
     struct Metadata: Codable {
-
         let startedAt: Date
 
         let device: Device
@@ -95,7 +90,6 @@ internal extension Session {
 }
 
 internal extension Session {
-
     enum EntryType: String, Codable {
         case log
         case event
@@ -115,7 +109,6 @@ internal extension Session {
 }
 
 extension Session.Entry: Codable {
-
     private enum CodingKeys: String, CodingKey {
         case type
         case value
@@ -150,7 +143,6 @@ extension Session.Entry: Codable {
 
 internal extension Session {
     enum FileError: Error {
-
         case failedToObtainDirectoryURL
 
         case failedToObtainMetadataFileURL
@@ -163,7 +155,6 @@ internal extension Session {
 }
 
 private extension Session {
-
     static func sessionsDirectoryUrl(using fileManager: FileManager) -> URL? {
         return fileManager.bintrailDirectoryUrl?.appendingPathComponent("sessions")
     }
@@ -176,7 +167,6 @@ private extension Session {
 // MARK: Loading
 
 internal extension Session {
-
     static func loadSaved(using fileManager: FileManager) throws -> [Session] {
         guard let sessionsDirectoryUrl = sessionsDirectoryUrl(using: fileManager) else {
             return []
@@ -210,7 +200,6 @@ internal extension Session {
 // MARK: Metadata
 
 internal extension Session {
-
     var metadataFileUrl: URL? {
         return directoryUrl?.appendingPathComponent("metadata.json")
     }
@@ -228,7 +217,6 @@ internal extension Session {
     }
 
     func saveMetadata(metadata: Metadata) throws {
-
         guard let directoryUrl = directoryUrl else {
             throw FileError.failedToObtainDirectoryURL
         }
@@ -256,13 +244,11 @@ internal extension Session {
 // MARK: Entries
 
 private extension Session {
-
     var entriesFileUrl: URL? {
         return directoryUrl?.appendingPathComponent("entries.json")
     }
 
     func writeEntriesToFile<T>(_ entries: T) throws where T: Collection, T.Element == Entry {
-
         guard entries.isEmpty == false else {
             return
         }
@@ -321,7 +307,6 @@ private extension Session {
 // MARK: Entries out files
 
 private extension Session {
-
     func moveEntriesFileToOutfilesDirectory() throws {
         guard let entriesFileUrl = entriesFileUrl else {
             return
@@ -374,9 +359,7 @@ internal enum SessionSendError: Error {
 }
 
 internal extension Session {
-
     private static func loadEntriesFromFile(at fileUrl: URL) throws -> [Entry] {
-
         let jsonLines = try String(contentsOf: fileUrl, encoding: .utf8).split { character in
             character.isNewline
         }
@@ -408,7 +391,6 @@ internal extension Session {
                 }
 
                 guard let remoteIdentifier = metadata.remoteIdentifier else {
-
                     bt_log_internal("Session \(self.localIdentifier) lacks remote identifier. Uploading metadata...")
 
                     client.upload(sessionMetadata: metadata) { result in
@@ -444,7 +426,6 @@ internal extension Session {
                 )
 
                 client.upload(entries: entries, forSessionWithRemoteIdentifier: remoteIdentifier) { result in
-
                     if case .failure(let error) = result {
                         completion(.underlying(error))
                         return
@@ -457,7 +438,6 @@ internal extension Session {
                         completion(.underlying(error))
                     }
                 }
-
             } catch let error as SessionSendError {
                 completion(error)
             } catch {

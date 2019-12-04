@@ -2,9 +2,7 @@
 import XCTest
 
 class BintrailTests: XCTestCase {
-
     func testExample() {
-
         let exp = expectation(description: #function)
 
         Bintrail.shared.configure(

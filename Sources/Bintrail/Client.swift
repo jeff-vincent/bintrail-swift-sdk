@@ -3,8 +3,7 @@ internal extension URL {
 }
 
 public enum ClientError: Error {
-
-    case appCredentialsMising
+    case appCredentialsMising // TODO: Rename, ingest token?
     case appCredentialsEncodingFailed
 
     case requestBodyEncodingFailed
@@ -25,7 +24,6 @@ public enum ClientError: Error {
 }
 
 internal class Client {
-
     internal struct Endpoint {
         let method: String
         let path: String
@@ -78,13 +76,11 @@ internal class Client {
     internal let baseUrl: URL
 
     internal init(baseUrl: URL) {
-
         self.baseUrl = baseUrl
     }
 }
 
 internal struct PutSessionEntriesRequest: Encodable {
-
     let logs: [Log]
 
     let events: [Event]
@@ -92,7 +88,6 @@ internal struct PutSessionEntriesRequest: Encodable {
     let sessionId: String
 
     init<T: Sequence>(sessionId: String, entries: T) where T.Element == Session.Entry {
-
         var logs: [Log] = []
         var events: [Event] = []
 
@@ -113,7 +108,6 @@ internal struct PutSessionEntriesRequest: Encodable {
 }
 
 internal struct InitializeSessionRequest: Encodable {
-
     let executable: Executable?
 
     let device: Device?
@@ -128,7 +122,6 @@ internal struct InitializeSessionRequest: Encodable {
 }
 
 internal struct InitializeSessionResponse: Decodable {
-
     enum CodingKeys: String, CodingKey {
         case remoteIdentifier = "sessionId"
     }
@@ -137,12 +130,10 @@ internal struct InitializeSessionResponse: Decodable {
 }
 
 internal extension Client {
-
     func upload(
         sessionMetadata: Session.Metadata,
         completion: @escaping (Result<InitializeSessionResponse, ClientError>) -> Void
     ) {
-
         send(
             endpoint: .sessionInit,
             requestBody: InitializeSessionRequest(metadata: sessionMetadata),
@@ -161,7 +152,6 @@ internal extension Client {
         forSessionWithRemoteIdentifier remoteIdentifier: String,
         completion: @escaping (Result<Void, ClientError>) -> Void
     ) where T: Sequence, T.Element == Session.Entry {
-
         dispatchQueue.async {
             do {
                 let data = try JSONEncoder.bintrailDefault.encode(
@@ -179,7 +169,6 @@ internal extension Client {
                         completion(.failure(error))
                     }
                 }
-
             } catch {
                 completion(.failure(.internal(error)))
             }
@@ -218,7 +207,6 @@ internal extension Client {
         completion: @escaping (Result<(HTTPURLResponse, Data), ClientError>) -> Void
     ) {
         dispatchQueue.async {
-
             do {
                 var urlRequest = URLRequest(url: endpoint.url(withBaseUrl: self.baseUrl))
                 urlRequest.httpMethod = endpoint.method
@@ -239,7 +227,6 @@ internal extension Client {
                 urlRequest.httpBody = body
 
                 self.send(urlRequest: urlRequest, completion: completion)
-
             } catch let error as ClientError {
                 completion(.failure(error))
             } catch {
@@ -252,7 +239,6 @@ internal extension Client {
         urlRequest: URLRequest,
         completion: @escaping (Result<(HTTPURLResponse, Data), ClientError>) -> Void
     ) {
-
         bt_log_internal("Sending URLRequest", urlRequest)
 
         urlSession.dataTask(with: urlRequest) { data, urlResponse, error in
@@ -275,7 +261,6 @@ internal extension Client {
                 }
 
                 completion(.success((httpUrlResponse, data ?? Data())))
-
             } catch let error as ClientError {
                 completion(.failure(error))
             } catch {

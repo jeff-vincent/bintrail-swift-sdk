@@ -1,5 +1,4 @@
 internal struct Backtrace: Collection {
-
     struct Element: Encodable {
         let symbolAddress: UInt
         let instructionAddress: UInt
@@ -29,7 +28,6 @@ internal struct Backtrace: Collection {
 }
 
 extension Backtrace: Encodable {
-
     private enum EncodingKey: String, CodingKey {
         case skipped
         case contents
@@ -60,6 +58,5 @@ extension Backtrace: Decodable {
 
         isSkipped = try container.decode(Int.self, forKey: .skipped)
         elements = try container.decode([Element].self, forKey: .contents)
-
     }
 }

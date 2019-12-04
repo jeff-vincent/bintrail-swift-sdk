@@ -1,5 +1,4 @@
 internal struct Queue<T> {
-
     private let syncQueue = DispatchQueue(label: "com.bintrail.queue", attributes: .concurrent)
 
     private var elements: [T] = []

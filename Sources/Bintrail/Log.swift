@@ -27,7 +27,6 @@ public enum LogType: String, Codable, CaseIterable {
 }
 
 internal struct Log {
-
     private let identifier = UUID()
 
     let level: LogType

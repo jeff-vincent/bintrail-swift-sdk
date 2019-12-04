@@ -1,5 +1,4 @@
 internal struct Thread: Encodable {
-
     let isCrashed: Bool
 
     let backtrace: Backtrace
