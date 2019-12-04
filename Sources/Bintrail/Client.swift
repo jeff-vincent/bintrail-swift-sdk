@@ -83,17 +83,70 @@ internal class Client {
     }
 }
 
+internal struct PutSessionEntriesRequest: Encodable {
+
+    let logs: [Log]
+
+    let events: [Event]
+
+    let sessionId: String
+
+    init<T: Sequence>(sessionId: String, entries: T) where T.Element == Session.Entry {
+
+        var logs: [Log] = []
+        var events: [Event] = []
+
+        for entry in entries {
+            switch entry {
+            case .log(let entry):
+                logs.append(entry)
+            case .event(let entry):
+                events.append(entry)
+            }
+        }
+
+        self.sessionId = sessionId
+
+        self.logs = logs
+        self.events = events
+    }
+}
+
+internal struct InitializeSessionRequest: Encodable {
+
+    let executable: Executable?
+
+    let device: Device?
+
+    let startedAt: Date
+
+    init(metadata: Session.Metadata) {
+        executable = metadata.executable
+        device = metadata.device
+        startedAt = metadata.startedAt
+    }
+}
+
+internal struct InitializeSessionResponse: Decodable {
+
+    enum CodingKeys: String, CodingKey {
+        case remoteIdentifier = "sessionId"
+    }
+
+    let remoteIdentifier: String
+}
+
 internal extension Client {
 
     func upload(
         sessionMetadata: Session.Metadata,
-        completion: @escaping (Result<SessionInitResponse, ClientError>) -> Void
+        completion: @escaping (Result<InitializeSessionResponse, ClientError>) -> Void
     ) {
 
         send(
             endpoint: .sessionInit,
-            requestBody: SessionInitRequest(metadata: sessionMetadata),
-            responseBody: SessionInitResponse.self
+            requestBody: InitializeSessionRequest(metadata: sessionMetadata),
+            responseBody: InitializeSessionResponse.self
         ) { result in
             completion(
                 result.map { _, body in
@@ -107,12 +160,12 @@ internal extension Client {
         entries: T,
         forSessionWithRemoteIdentifier remoteIdentifier: String,
         completion: @escaping (Result<Void, ClientError>) -> Void
-    ) where T: Sequence, T.Element == SessionEntry {
+    ) where T: Sequence, T.Element == Session.Entry {
 
         dispatchQueue.async {
             do {
                 let data = try JSONEncoder.bintrailDefault.encode(
-                    SessionEntriesBatch(
+                    PutSessionEntriesRequest(
                         sessionId: remoteIdentifier,
                         entries: entries
                     )

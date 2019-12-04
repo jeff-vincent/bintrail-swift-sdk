@@ -8,7 +8,6 @@ import UIKit
 public enum BintrailError: Error {
     case uninitializedDeviceInfo
     case uninitializedExecutableInfo
-    case client(ClientError)
 }
 
 public class Bintrail {
@@ -17,89 +16,133 @@ public class Bintrail {
 
     @Synchronized private var managedEventsByType: [EventType: Event] = [:]
 
+    private let operationQueue = OperationQueue()
+
+    private let dispatchQueue = DispatchQueue(label: "com.bintrail")
+
     internal let crashReporter: CrashReporter
 
     internal let client: Client
 
     internal private(set) var currentSession: Session
 
-    private var timer: Timer?
+    private var timerDispatchWorkItem: DispatchWorkItem?
 
     private var notificationObservers: [Any] = []
 
     private init() {
         client = Client(baseUrl: .bintrailBaseUrl)
         crashReporter = CrashReporter()
-
         currentSession = Session(fileManager: .default)
+
+        operationQueue.underlyingQueue = dispatchQueue
     }
 
     var isConfigured: Bool {
         return client.credentials != nil
     }
 
-    public func configure(keyId: String, secret: String) {
+    public func configure(keyId: String, secret: String) throws {
 
         guard isConfigured == false else {
             return
         }
 
         crashReporter.install()
-        subscribeToNotifications()
 
-        do {
-            try currentSession.saveMetadata(
-                metadata: Session.Metadata(
-                    startedAt: Date(),
-                    device: crashReporter.device,
-                    executable: crashReporter.executable
-                )
-            )
-        } catch {
-            bt_log_internal("Failed to save session metadata", error)
+        guard let device = crashReporter.device else {
+            throw BintrailError.uninitializedDeviceInfo
         }
+
+        guard let executable = crashReporter.executable else {
+            throw BintrailError.uninitializedExecutableInfo
+        }
+
+        try currentSession.saveMetadata(
+            metadata: Session.Metadata(
+                startedAt: Date(),
+                device: device,
+                executable: executable
+            )
+        )
+
+        subscribeToNotifications()
 
         client.credentials = Client.Credentials(keyId: keyId, secret: secret)
 
         bt_log("Bintrail SDK configured", type: .trace)
+
+        processNonCurrentSessions { errors in
+            if !errors.isEmpty {
+                bt_log_internal("Failed processing non-current session(s):", errors)
+            }
+        }
         startTimer()
     }
-
     private func stopTimer() {
-        timer?.invalidate()
-        timer = nil
+        timerDispatchWorkItem?.cancel()
+        timerDispatchWorkItem = nil
     }
 
     private func startTimer() {
         stopTimer()
-        timer = Timer.scheduledTimer(
-            timeInterval: 30,
-            target: self,
-            selector: #selector(timerAction(sender:)),
-            userInfo: nil,
-            repeats: true
-        )
-    }
+        let newWorkItem = DispatchWorkItem { [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
 
-    @objc
-    private func timerAction(sender: Timer) {
-        do {
-            try dump()
-        } catch {
-            bt_print("Failed to load sessions")
+            weakSelf.currentSession.send(using: weakSelf.client) { error in
+                if let error = error {
+                    bt_log_internal("Failed to send current session:", error)
+                }
+
+                weakSelf.startTimer()
+            }
         }
+
+        timerDispatchWorkItem = newWorkItem
+        dispatchQueue.asyncAfter(deadline: .now() + 30, execute: newWorkItem)
     }
 
-    func dump() throws {
-        for session in try Session.loadSaved(using: .default) {
-            session.send(using: client) { error in
-                if session != self.currentSession {
-                    do {
-                        try session.deleteSavedData()
-                    } catch {
-                        bt_log_internal("Failed to delete session data", error)
+    func processNonCurrentSessions(completion: @escaping ([Error]) -> Void) {
+        operationQueue.addOperation {
+            do {
+
+                var errors: [Error] = []
+
+                var nonCurrentSessions = try Session.loadSaved(using: .default).filter { session in
+                    session != self.currentSession
+                }
+
+                if nonCurrentSessions.isEmpty {
+                    bt_log_internal("No non-current sessions need sending.")
+                    completion(errors)
+                    return
+                }
+
+                for session in nonCurrentSessions {
+
+                    bt_log_internal("Processing non-current session \(session.localIdentifier)")
+
+                    session.send(using: self.client) { error in
+                        nonCurrentSessions = nonCurrentSessions.filter { otherSession in
+                            session != otherSession
+                        }
+
+                        if let error = error {
+                            errors.append(error)
+                        } else {
+                            try? session.deleteSavedData()
+                        }
+
+                        if nonCurrentSessions.isEmpty {
+                            completion(errors)
+                        }
                     }
                 }
+
+            } catch {
+                completion([error])
             }
         }
     }
@@ -115,7 +158,7 @@ extension Bintrail {
         let observer = NotificationCenter.default.addObserver(
             forName: notificationName,
             object: nil,
-            queue: nil, // TODO: Operation queue
+            queue: operationQueue,
             using: block
         )
 
@@ -158,6 +201,14 @@ extension Bintrail {
 
             self.startManagedEvent(withType: .inactivePeriod)
             self.endManagedEvent(withType: .activePeriod)
+
+            self.stopTimer()
+
+            do {
+                try self.currentSession.writeEnqueuedEntriesToFile()
+            } catch {
+                bt_log_internal("Failed to write enqueued entries to file when resigning active:", error)
+            }
         }
 
         observeNotification(named: UIApplication.didBecomeActiveNotification) { _ in
@@ -165,6 +216,7 @@ extension Bintrail {
 
             self.startManagedEvent(withType: .activePeriod)
             self.endManagedEvent(withType: .inactivePeriod)
+            self.startTimer()
         }
 
         observeNotification(named: UIApplication.willEnterForegroundNotification) { _ in

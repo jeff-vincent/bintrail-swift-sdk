@@ -1,33 +1,14 @@
 public final class Session {
 
-    internal struct Metadata: Codable {
-
-        internal let startedAt: Date
-
-        internal let device: Device?
-
-        internal let executable: Executable?
-
-        internal private(set) var remoteIdentifier: String?
-
-        internal func withRemoteIdentifier(_ identifier: String) -> Metadata {
-            var new = self
-            new.remoteIdentifier = identifier
-            return new
-        }
-    }
-
     private lazy var dispatchQueue = DispatchQueue(label: "com.bintrail.session(\(localIdentifier.uuidString))")
 
-    private var entries = Queue<SessionEntry>()
+    private var entries = Queue<Entry>()
 
     private var dequeueDispatchWorkItem: DispatchWorkItem?
 
     internal let localIdentifier: UUID
 
     internal let fileManager: FileManager
-
-    private var currentSendUrgency: Float = 0
 
     internal init(fileManager: FileManager) {
 
@@ -41,33 +22,48 @@ public final class Session {
         self.fileManager = fileManager
     }
 
-    internal func add(_ entry: SessionEntry) {
+    internal func add(_ entry: Entry) {
         dispatchQueue.async {
 
-            self.dequeueDispatchWorkItem?.cancel()
-
+            // Enqueue new entry
             self.entries.enqueue(entry)
 
-            let replacementDispatchWorkItem = DispatchWorkItem { [weak self] in
-                self?.writeEntries()
+            // No need to proceed if a dispatch work item to dequeue entries already exists or is cancelled
+            guard self.dequeueDispatchWorkItem == nil || self.dequeueDispatchWorkItem?.isCancelled == true else {
+                return
             }
 
-            self.dequeueDispatchWorkItem = replacementDispatchWorkItem
-            self.dispatchQueue.asyncAfter(deadline: .now() + 5, execute: replacementDispatchWorkItem)
+            // Create a new dispatch work item to write enqueued entries to file
+            let dequeueDispatchWorkItem = DispatchWorkItem { [weak self] in
+                do {
+                    try self?.writeEnqueuedEntriesToFile()
+                } catch {
+                    bt_log_internal("Failed to write enqueued entries to file")
+                }
+            }
+
+            self.dequeueDispatchWorkItem = dequeueDispatchWorkItem
+
+            // Dispatch work item after a few seconds
+            self.dispatchQueue.asyncAfter(deadline: .now() + 5, execute: dequeueDispatchWorkItem)
         }
     }
 
-    func writeEntries() {
-        dequeueDispatchWorkItem?.cancel()
-        dequeueDispatchWorkItem = nil
+    func writeEnqueuedEntriesToFile() throws {
+        // In case someone calls this function, cancel and nullify existing work item
+        self.dequeueDispatchWorkItem?.cancel()
+        self.dequeueDispatchWorkItem = nil
 
-        let dequeuedEntries = entries.dequeueAll()
+        // Dequeue entries
+        let dequeuedEntries = self.entries.dequeueAll()
 
         do {
-            try writeEntries(dequeuedEntries)
+            // Try to write entries to file
+            try self.writeEntriesToFile(dequeuedEntries)
         } catch {
-            entries.enqueue(dequeuedEntries)
-            bt_log_internal("Failed to write entries to file", error)
+            // If fails, put them back into the queue
+            self.entries.enqueue(dequeuedEntries)
+            throw error
         }
     }
 }
@@ -75,6 +71,80 @@ public final class Session {
 extension Session: Equatable {
     public static func == (lhs: Session, rhs: Session) -> Bool {
         return lhs.localIdentifier == rhs.localIdentifier
+    }
+}
+
+internal extension Session {
+
+    struct Metadata: Codable {
+
+        let startedAt: Date
+
+        let device: Device
+
+        let executable: Executable
+
+        private(set) var remoteIdentifier: String?
+
+        func withRemoteIdentifier(_ identifier: String) -> Metadata {
+            var new = self
+            new.remoteIdentifier = identifier
+            return new
+        }
+    }
+}
+
+internal extension Session {
+
+    enum EntryType: String, Codable {
+        case log
+        case event
+    }
+
+    enum Entry {
+        case log(Log)
+        case event(Event)
+
+        var recordType: EntryType {
+            switch self {
+            case .log: return .log
+            case .event: return .event
+            }
+        }
+    }
+}
+
+extension Session.Entry: Codable {
+
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case value
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let type = try container.decode(Session.EntryType.self, forKey: .type)
+
+        switch type {
+        case .log:
+            self = .log(try container.decode((Log.self), forKey: .value))
+        case .event:
+            self = .event(try container.decode(Event.self, forKey: .value))
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(recordType, forKey: .type)
+
+        switch self {
+        case .log(let value):
+            try container.encode(value, forKey: .value)
+        case .event(let value):
+            try container.encode(value, forKey: .value)
+        }
     }
 }
 
@@ -191,7 +261,7 @@ private extension Session {
         return directoryUrl?.appendingPathComponent("entries.json")
     }
 
-    func writeEntries<T>(_ entries: T) throws where T: Collection, T.Element == SessionEntry {
+    func writeEntriesToFile<T>(_ entries: T) throws where T: Collection, T.Element == Entry {
 
         guard entries.isEmpty == false else {
             return
@@ -222,10 +292,12 @@ private extension Session {
             throw FileError.failedToEncodeString
         }
 
+        var entriesWritten: Int = 0
+
         for entry in entries {
-            currentSendUrgency += entry.sendUrgency
             do {
                 try fileHandle.write(jsonEncoder.encode(entry))
+                entriesWritten += 1
             } catch {
                 bt_log_internal("Failed to encode entry")
             }
@@ -234,34 +306,19 @@ private extension Session {
 
         fileHandle.closeFile()
 
-        if currentSendUrgency >= 1 {
-            bt_log_internal("Send urgency for session (\(localIdentifier)) at \(currentSendUrgency)")
+        bt_log_internal("Wrote \(entriesWritten)/\(entries.count) entries to entry file of session \(localIdentifier)")
+
+        let entryFileAttributes = try fileManager.attributesOfItem(atPath: entriesFileUrl.path)
+
+        if let fileSize = entryFileAttributes[.size] as? UInt, fileSize >= 1_024 * 1_014 {
+            print(fileSize)
+            bt_log_internal("Entry file for session (\(localIdentifier)) its size limit. Moving.")
             try moveEntriesFileToOutfilesDirectory()
-            currentSendUrgency = 0
         }
     }
 }
 
 // MARK: Entries out files
-
-internal struct SessionActionRequest {
-
-    enum Action {
-        case uploadMetadata(Session.Metadata)
-        case uploadEntries(SessionEntriesBatch)
-        case none(Error?)
-        case metadataMissing
-    }
-
-    let session: Session
-
-    let action: Action
-
-    fileprivate init(session: Session, action: Action) {
-        self.session = session
-        self.action = action
-    }
-}
 
 private extension Session {
 
@@ -278,18 +335,18 @@ private extension Session {
             return
         }
 
-        bt_log_internal("Creating directory entry outfile directory for session \(localIdentifier)")
-
         try fileManager.createDirectoryIfNeeded(at: directoryUrl, withIntermediateDirectories: true)
 
-        let destinationFileUrl = directoryUrl.appendingPathComponent("\(UUID().uuidString).json")
+        let destinationFileName = UUID().uuidString + ".json"
 
-        bt_log_internal("Moving entries file")
+        let destinationFileUrl = directoryUrl.appendingPathComponent(destinationFileName)
 
         try fileManager.moveItem(
             at: entriesFileUrl,
             to: destinationFileUrl
         )
+
+        bt_log_internal("Moved entries file to outfile named \(destinationFileName) for session (\(localIdentifier))")
     }
 
     var entryOutfilesDirectoryUrl: URL? {
@@ -305,6 +362,8 @@ private extension Session {
 
         return try fileManager.contentsOfDirectory(atPath: directoryUrl.path).map { path in
             directoryUrl.appendingPathComponent(path)
+        }.sorted { lhs, rhs in
+            lhs.path < rhs.path
         }
     }
 }
@@ -316,19 +375,19 @@ internal enum SessionSendError: Error {
 
 internal extension Session {
 
-    private static func loadEntriesFromFile(at fileUrl: URL) throws -> [SessionEntry] {
+    private static func loadEntriesFromFile(at fileUrl: URL) throws -> [Entry] {
 
         let jsonLines = try String(contentsOf: fileUrl, encoding: .utf8).split { character in
             character.isNewline
         }
 
-        var entries: [SessionEntry] = []
+        var entries: [Entry] = []
 
         for jsonLine in jsonLines {
             do {
                 entries.append(
                     try JSONDecoder.bintrailDefault.decode(
-                        SessionEntry.self,
+                        Entry.self,
                         from: Data(Array(jsonLine.utf8))
                     )
                 )
@@ -369,6 +428,8 @@ internal extension Session {
                     }
                     return
                 }
+
+                try self.moveEntriesFileToOutfilesDirectory()
 
                 guard let outFileUrl = try self.listEntryOutfiles().first else {
                     bt_log_internal("Session \(self.localIdentifier) contains no more entry outfiles.")
