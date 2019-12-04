@@ -1,18 +1,10 @@
 public final class Event {
 
-    public typealias Metrics = [MetricType: Double]
+    public typealias Metrics = [Metric: Double]
 
     public typealias Attributes = [String: String]
 
-    public struct MetricType: RawRepresentable, Hashable {
-        public var rawValue: String
-
-        public init(rawValue: String) {
-            self.rawValue = rawValue
-        }
-    }
-
-    public let type: EventType
+    public let name: Name
 
     public private(set) var attributes: Attributes
 
@@ -27,13 +19,13 @@ public final class Event {
     }
 
     internal init(
-        type: EventType,
+        name: Name,
         timestamp: Date = Date(),
         duration: TimeInterval? = nil,
         attributes: Attributes = [:],
         metrics: Metrics = [:]
     ) {
-        self.type = type
+        self.name = name
         self.timestamp = timestamp
         self.duration = duration
         self.attributes = attributes
@@ -58,12 +50,12 @@ public final class Event {
         attributes[key] = String(describing: value)
     }
 
-    public func add<T: BinaryInteger>(metric value: T, for metricType: Event.MetricType) {
-        metrics[metricType] = Double(value)
+    public func add<T: BinaryInteger>(value: T, forMetric metric: Event.Metric) {
+        metrics[metric] = Double(value)
     }
 
-    public func add<T: BinaryFloatingPoint>(metric value: T, for metricType: Event.MetricType) {
-        metrics[metricType] = Double(value)
+    public func add<T: BinaryFloatingPoint>(value: T, forMetric metric: Event.Metric) {
+        metrics[metric] = Double(value)
     }
 
     public func clock() {
@@ -75,20 +67,20 @@ public final class Event {
     }
 }
 
-extension Event.MetricType: ExpressibleByStringLiteral {
+extension Event.Metric: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         self.init(rawValue: value)
     }
 }
 
-public extension Event.MetricType {
-    static let duration: Event.MetricType = "@duration"
+public extension Event.Metric {
+    static let duration: Event.Metric = "@duration"
 }
 
 extension Event: Codable {
 
     private enum CodingKeys: String, CodingKey {
-        case type
+        case name
         case attributes
         case metrics
         case timestamp
@@ -105,7 +97,7 @@ extension Event: Codable {
         }
 
         self.init(
-            type: try container.decode(EventType.self, forKey: .type),
+            name: try container.decode(Name.self, forKey: .name),
             timestamp: try container.decode(Date.self, forKey: .timestamp),
             duration: duration,
             attributes: try container.decode(Attributes.self, forKey: .attributes),
@@ -113,7 +105,7 @@ extension Event: Codable {
                 [String: Double].self,
                 forKey: .metrics
             ).reduce(into: [:]) { result, keyValue in
-                result[Event.MetricType(rawValue: keyValue.key)] = keyValue.value
+                result[Event.Metric(rawValue: keyValue.key)] = keyValue.value
             }
         )
     }
@@ -131,7 +123,7 @@ extension Event: Codable {
         }
 
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(type, forKey: .type)
+        try container.encode(name, forKey: .name)
         try container.encode(attributes, forKey: .attributes)
         try container.encode(stringKeyedMetrics, forKey: .metrics)
         try container.encode(timestamp, forKey: .timestamp)
@@ -139,8 +131,8 @@ extension Event: Codable {
     }
 }
 
-public func bt_event_start(_ type: EventType) -> Event {
-    return Event(type: type)
+public func bt_event_start(_ name: Event.Name) -> Event {
+    return Event(name: name)
 }
 
 public func bt_event_finish(_ event: Event) {
@@ -155,15 +147,85 @@ internal func bt_event_register(_ event: Event) {
     Bintrail.shared.currentSession.add(.event(event))
 }
 
-public func bt_event_register(_ type: EventType) {
-    bt_event_register(Event(type: type))
+public func bt_event_register(_ name: Event.Name) {
+    bt_event_register(Event(name: name))
 }
 
-public func bt_event_register<T>(_ type: EventType, _ body: (Event) throws -> T) rethrows -> T {
+public func bt_event_register<T>(_ name: Event.Name, _ body: (Event) throws -> T) rethrows -> T {
 
-    let event = Event(type: type)
+    let event = Event(name: name)
     let value = try body(event)
 
     bt_event_register(event)
     return value
+}
+
+public extension Event {
+
+    struct Metric: RawRepresentable, Hashable {
+        public var rawValue: String
+
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+    }
+
+    internal enum Namespace: String, Codable {
+        case iOS
+        case user
+    }
+
+    struct Name: Hashable, Codable {
+
+        public let name: String
+
+        let namespace: Namespace
+
+        public init(name: String) {
+            self.init(name: name, namespace: .user)
+        }
+
+        internal init(
+            name: String,
+            namespace: Namespace
+        ) {
+            self.name = name
+            self.namespace = namespace
+        }
+    }
+
+}
+
+extension Event.Name: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self.init(name: value)
+    }
+}
+
+internal extension Event.Name {
+
+    static let foregroundPeriod = Event.Name(
+        name: "inForeground",
+        namespace: .iOS
+    )
+
+    static let backgroundPeriod = Event.Name(
+        name: "inBackground",
+        namespace: .iOS
+    )
+
+    static let activePeriod = Event.Name(
+        name: "activePeriod",
+        namespace: .iOS
+    )
+
+    static let inactivePeriod = Event.Name(
+        name: "inactivePeriod",
+        namespace: .iOS
+    )
+
+    static let memoryWarning = Event.Name(
+        name: "memoryWarning",
+        namespace: .iOS
+    )
 }

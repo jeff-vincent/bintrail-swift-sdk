@@ -14,7 +14,7 @@ public class Bintrail {
 
     public static let shared = Bintrail()
 
-    @Synchronized private var managedEventsByType: [EventType: Event] = [:]
+    @Synchronized private var managedEventsByName: [Event.Name: Event] = [:]
 
     private let operationQueue = OperationQueue()
 
@@ -166,27 +166,27 @@ extension Bintrail {
     }
 
     private func startManagedEvent(
-        withType type: EventType,
+        named name: Event.Name,
         timestamp: Date = Date(),
         overwriteIfExits overwrite: Bool = true,
         cofigure block: ((Event) -> Void
     )? = nil) {
 
-        if managedEventsByType[type] != nil && overwrite == false {
+        if managedEventsByName[name] != nil && overwrite == false {
             return
         }
 
-        let event = Event(type: type)
-        managedEventsByType[type] = event
+        let event = Event(name: name)
+        managedEventsByName[name] = event
         block?(event)
     }
 
-    private func endManagedEvent(withType type: EventType) {
-        guard let event = managedEventsByType[type] else {
+    private func endManagedEvent(named name: Event.Name) {
+        guard let event = managedEventsByName[name] else {
             return
         }
 
-        managedEventsByType[type] = nil
+        managedEventsByName[name] = nil
         bt_event_finish(event)
     }
 
@@ -199,8 +199,8 @@ extension Bintrail {
         observeNotification(named: UIApplication.willResignActiveNotification) { _ in
             kscrash_notifyAppActive(false)
 
-            self.startManagedEvent(withType: .inactivePeriod)
-            self.endManagedEvent(withType: .activePeriod)
+            self.startManagedEvent(named: .inactivePeriod)
+            self.endManagedEvent(named: .activePeriod)
 
             self.stopTimer()
 
@@ -214,32 +214,32 @@ extension Bintrail {
         observeNotification(named: UIApplication.didBecomeActiveNotification) { _ in
             kscrash_notifyAppActive(true)
 
-            self.startManagedEvent(withType: .activePeriod)
-            self.endManagedEvent(withType: .inactivePeriod)
+            self.startManagedEvent(named: .activePeriod)
+            self.endManagedEvent(named: .inactivePeriod)
             self.startTimer()
         }
 
         observeNotification(named: UIApplication.willEnterForegroundNotification) { _ in
             kscrash_notifyAppInForeground(true)
 
-            self.startManagedEvent(withType: .foregroundPeriod)
-            self.endManagedEvent(withType: .backgroundPeriod)
+            self.startManagedEvent(named: .foregroundPeriod)
+            self.endManagedEvent(named: .backgroundPeriod)
         }
 
         observeNotification(named: UIApplication.didEnterBackgroundNotification) { _ in
             kscrash_notifyAppInForeground(false)
 
-            self.startManagedEvent(withType: .backgroundPeriod)
-            self.endManagedEvent(withType: .foregroundPeriod)
+            self.startManagedEvent(named: .backgroundPeriod)
+            self.endManagedEvent(named: .foregroundPeriod)
         }
 
         observeNotification(named: UIApplication.didReceiveMemoryWarningNotification) { _ in
             bt_event_register(.memoryWarning) { event in
 
                 if let memory = self.crashReporter.device?.memory {
-                    event.add(metric: memory.size, for: "size")
-                    event.add(metric: memory.free, for: "free")
-                    event.add(metric: memory.usable, for: "memory")
+                    event.add(value: memory.size, forMetric: "size")
+                    event.add(value: memory.free, forMetric: "free")
+                    event.add(value: memory.usable, forMetric: "memory")
                 }
             }
         }

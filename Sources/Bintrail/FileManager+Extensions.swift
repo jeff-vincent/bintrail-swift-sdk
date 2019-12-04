@@ -9,7 +9,7 @@ internal extension FileManager {
     func createDirectoryIfNeeded(
         at url: URL,
         withIntermediateDirectories createIntermediates: Bool,
-        attributes: [FileAttributeKey : Any]? = nil
+        attributes: [FileAttributeKey: Any]? = nil
     ) throws {
 
         guard !fileExists(atPath: url.path) else {

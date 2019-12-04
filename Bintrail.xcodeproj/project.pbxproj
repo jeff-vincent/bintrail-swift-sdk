@@ -145,7 +145,6 @@
 		B740D4332395AF5E005A0A8D /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */; };
 		B740D4352395AFDD005A0A8D /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */; };
 		B740D4372395BDB5005A0A8D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
-		B7F636F0234CFE9C0065CA19 /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F636EF234CFE9C0065CA19 /* EventType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -301,7 +300,6 @@
 		B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
 		B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Extensions.swift"; sourceTree = "<group>"; };
 		B740D4362395BDB5005A0A8D /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
-		B7F636EF234CFE9C0065CA19 /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,7 +368,6 @@
 				633148B823452EB500B1722F /* Session.swift */,
 				633148D02345C20600B1722F /* Synchronized.swift */,
 				63A8EA062346217300507264 /* Event.swift */,
-				B7F636EF234CFE9C0065CA19 /* EventType.swift */,
 				63995594234A520D00FA9765 /* CrashReporter.swift */,
 				63995598234A6F0100FA9765 /* Device.swift */,
 				6399559A234A6F1400FA9765 /* Executable.swift */,
@@ -772,7 +769,6 @@
 				63995E28234B080A00FA9765 /* KSCrashC.c in Sources */,
 				63995DDC234B080A00FA9765 /* Demangle.cpp in Sources */,
 				63995E17234B080A00FA9765 /* KSCrashDoctor.m in Sources */,
-				B7F636F0234CFE9C0065CA19 /* EventType.swift in Sources */,
 				63995E24234B080A00FA9765 /* KSSignalInfo.c in Sources */,
 				63995E21234B080A00FA9765 /* KSSymbolicator.c in Sources */,
 				63995E51234B239800FA9765 /* Thread.swift in Sources */,
