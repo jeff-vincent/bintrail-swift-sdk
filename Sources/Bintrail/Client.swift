@@ -42,7 +42,7 @@ internal class Client {
             ]
         )
 
-        static let sessionEntries = Endpoint(
+        static let putSessionEntries = Endpoint(
             method: "POST",
             path: "session/entries",
             headers: [
@@ -161,7 +161,7 @@ internal extension Client {
                     )
                 )
 
-                self.send(endpoint: .sessionEntries, body: data) { result in
+                self.send(endpoint: .putSessionEntries, body: data) { result in
                     switch result {
                     case .success:
                         completion(.success(()))
