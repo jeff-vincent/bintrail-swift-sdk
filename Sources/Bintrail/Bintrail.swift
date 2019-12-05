@@ -1,14 +1,9 @@
 import Foundation
-import KSCrash
+import Dispatch
 
 #if canImport(UIKit)
 import UIKit
 #endif
-
-public enum BintrailError: Error {
-    case uninitializedDeviceInfo
-    case uninitializedExecutableInfo
-}
 
 public class Bintrail {
     public static let shared = Bintrail()
@@ -18,8 +13,6 @@ public class Bintrail {
     private let operationQueue = OperationQueue()
 
     private let dispatchQueue = DispatchQueue(label: "com.bintrail")
-
-    internal let crashReporter: CrashReporter
 
     internal let client: Client
 
@@ -31,7 +24,6 @@ public class Bintrail {
 
     private init() {
         client = Client(baseUrl: .bintrailBaseUrl)
-        crashReporter = CrashReporter()
         currentSession = Session(fileManager: .default)
 
         operationQueue.underlyingQueue = dispatchQueue
@@ -46,21 +38,11 @@ public class Bintrail {
             return
         }
 
-        crashReporter.install()
-
-        guard let device = crashReporter.device else {
-            throw BintrailError.uninitializedDeviceInfo
-        }
-
-        guard let executable = crashReporter.executable else {
-            throw BintrailError.uninitializedExecutableInfo
-        }
-
         try currentSession.saveMetadata(
             metadata: Session.Metadata(
                 startedAt: Date(),
-                device: device,
-                executable: executable
+                device: .current,
+                executable: .current
             )
         )
 
@@ -184,13 +166,14 @@ extension Bintrail {
     }
 
     private func subscribeToNotifications() {
+
+        #if canImport(UIKit)
+
         observeNotification(named: UIApplication.willTerminateNotification) { _ in
-            kscrash_notifyAppTerminate()
+
         }
 
         observeNotification(named: UIApplication.willResignActiveNotification) { _ in
-            kscrash_notifyAppActive(false)
-
             self.startManagedEvent(named: .inactivePeriod)
             self.endManagedEvent(named: .activePeriod)
 
@@ -204,23 +187,17 @@ extension Bintrail {
         }
 
         observeNotification(named: UIApplication.didBecomeActiveNotification) { _ in
-            kscrash_notifyAppActive(true)
-
             self.startManagedEvent(named: .activePeriod)
             self.endManagedEvent(named: .inactivePeriod)
             self.startTimer()
         }
 
         observeNotification(named: UIApplication.willEnterForegroundNotification) { _ in
-            kscrash_notifyAppInForeground(true)
-
             self.startManagedEvent(named: .foregroundPeriod)
             self.endManagedEvent(named: .backgroundPeriod)
         }
 
         observeNotification(named: UIApplication.didEnterBackgroundNotification) { _ in
-            kscrash_notifyAppInForeground(false)
-
             self.startManagedEvent(named: .backgroundPeriod)
             self.endManagedEvent(named: .foregroundPeriod)
         }
@@ -228,5 +205,7 @@ extension Bintrail {
         observeNotification(named: UIApplication.didReceiveMemoryWarningNotification) { _ in
             bt_event_register(.memoryWarning)
         }
+
+        #endif
     }
 }

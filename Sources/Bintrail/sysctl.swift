@@ -1,3 +1,11 @@
+import Foundation
+
+#if os(Linux)
+import Glibc
+#else
+import Darwin
+#endif
+
 internal var sysctlMachine: String? {
     #if targetEnvironment(simulator)
     return ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"]

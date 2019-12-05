@@ -1,3 +1,6 @@
+import Foundation
+import Dispatch
+
 @propertyWrapper
 internal struct Synchronized<Value> {
     let dispatchQueue = DispatchQueue(label: "com.bintrail.sync", attributes: .concurrent)

@@ -1,3 +1,6 @@
+import Foundation
+import Dispatch
+
 internal extension URL {
     static let bintrailBaseUrl = URL(string: "http://localhost:5000")!
 }

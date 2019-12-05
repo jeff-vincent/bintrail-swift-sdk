@@ -1,3 +1,6 @@
+import Foundation
+import Dispatch
+
 public final class Session {
     private lazy var dispatchQueue = DispatchQueue(label: "com.bintrail.session(\(localIdentifier.uuidString))")
 

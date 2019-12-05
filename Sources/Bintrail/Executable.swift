@@ -1,4 +1,4 @@
-import KSCrash
+import Foundation
 
 struct Executable: Codable {
     private static let startTime = Date()
@@ -20,12 +20,20 @@ struct Executable: Codable {
     let startTime: Date
 
     let path: String
+
+    let isDebug: Bool
 }
 
 extension Executable {
     static var current: Executable {
         let bundle = Bundle.main
         let infoDictionary = bundle.infoDictionary ?? [:]
+
+        #if DEBUG
+            let isDebug = true
+        #else
+            let isDebug = false
+        #endif
 
         return Executable(
             name: infoDictionary["CFBundleExecutable"] as? String,
@@ -36,7 +44,8 @@ extension Executable {
                 name: infoDictionary["CFBundleName"] as? String
             ),
             startTime: Executable.startTime,
-            path: bundle.bundlePath
+            path: bundle.bundlePath,
+            isDebug: isDebug
         )
     }
 }

@@ -1,3 +1,5 @@
+import Foundation
+
 private func bt_print_internal(_ items: [Any], terminator: String, prefix: StaticString) {
     let message = items.map { item in
         String(describing: item)

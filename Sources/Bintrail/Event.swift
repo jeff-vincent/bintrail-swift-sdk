@@ -1,3 +1,5 @@
+import Foundation
+
 public final class Event {
     public typealias Metrics = [Metric: Double]
 

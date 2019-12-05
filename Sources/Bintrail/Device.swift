@@ -1,4 +1,5 @@
-import KSCrash
+import Foundation
+
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -34,11 +35,19 @@ struct Device: Codable {
     let bootTime: Date?
 
     let processor: Processor
+
+    let isSimulated: Bool
 }
 
 internal extension Device {
     static var current: Device {
         let uiDevice = UIDevice.current
+
+        #if targetEnvironment(simulator)
+        let isSimulated = true
+        #else
+        let isSimulated = false
+        #endif
 
         return Device(
             identifier: (uiDevice.identifierForVendor ?? UUID()).uuidString,
@@ -57,7 +66,8 @@ internal extension Device {
             processor: Device.Processor(
                 type: sysctlInt32(named: "hw.cputype"),
                 subType: sysctlInt32(named: "hw.cpusubtype")
-            )
+            ),
+            isSimulated: isSimulated
         )
     }
 }
