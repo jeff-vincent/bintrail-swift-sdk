@@ -5,28 +5,21 @@ import UIKit
 
 struct Device: Codable {
     struct Processor: Codable {
-        let architecture: String
-        let type: Int32
+        let type: Int32?
         let subType: Int32?
     }
 
-    struct MemoryInfo: Codable {
-        let size: UInt64
-        let free: UInt64
-        let usable: UInt64
-    }
-
     struct Platform: Codable {
-        let name: String
-        let versionCode: String
-        let versionName: String
+        let name: String?
+        let versionCode: String?
+        let versionName: String?
     }
 
     let identifier: String
 
-    let machine: String
+    let machine: String?
 
-    let model: String
+    let model: String?
 
     let platform: Platform
 
@@ -36,13 +29,35 @@ struct Device: Codable {
 
     let timeZoneIdentifier: String
 
-    let kernelVersion: String
+    let kernelVersion: String?
 
     let bootTime: Date?
 
-    let isJailBroken: Bool
-
     let processor: Processor
+}
 
-    let memory: MemoryInfo
+internal extension Device {
+    static var current: Device {
+        let uiDevice = UIDevice.current
+
+        return Device(
+            identifier: (uiDevice.identifierForVendor ?? UUID()).uuidString,
+            machine: sysctlMachine,
+            model: sysctlModel,
+            platform: Device.Platform(
+                name: uiDevice.systemName,
+                versionCode: sysctlString(named: "kern.osversion"),
+                versionName: uiDevice.systemVersion
+            ),
+            name: uiDevice.name,
+            localeIdentifier: Locale.current.identifier,
+            timeZoneIdentifier: TimeZone.current.identifier,
+            kernelVersion: sysctlString(named: "kern.version"),
+            bootTime: sysctlDate(named: "kern.boottime"),
+            processor: Device.Processor(
+                type: sysctlInt32(named: "hw.cputype"),
+                subType: sysctlInt32(named: "hw.cpusubtype")
+            )
+        )
+    }
 }

@@ -99,34 +99,7 @@ internal class CrashReporter {
             return nil
         }
 
-        let system = context.System
-
-        return Device(
-            identifier: String(cString: system.deviceAppHash),
-            machine: String(cString: system.machine),
-            model: String(cString: system.model),
-            platform: Device.Platform(
-                name: String(cString: system.systemName),
-                versionCode: String(cString: system.osVersion),
-                versionName: String(cString: system.systemVersion)
-            ),
-            name: userInfo.deviceName,
-            localeIdentifier: Locale.current.identifier,
-            timeZoneIdentifier: String(cString: system.timezone),
-            kernelVersion: String(cString: system.kernelVersion),
-            bootTime: CrashReport.secondPrecisionDateFormatter.date(from: String(cString: system.bootTime)),
-            isJailBroken: system.isJailbroken,
-            processor: Device.Processor(
-                architecture: String(cString: system.cpuArchitecture),
-                type: system.cpuType,
-                subType: system.cpuSubType
-            ),
-            memory: Device.MemoryInfo(
-                size: system.memorySize,
-                free: system.freeMemory,
-                usable: system.usableMemory
-            )
-        )
+        return nil
     }
 
     var executable: Executable? {

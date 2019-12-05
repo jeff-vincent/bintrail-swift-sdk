@@ -145,6 +145,7 @@
 		B740D4332395AF5E005A0A8D /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */; };
 		B740D4352395AFDD005A0A8D /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */; };
 		B740D4372395BDB5005A0A8D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
+		B7B8AC22239945560021EF92 /* sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* sysctl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -300,6 +301,7 @@
 		B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
 		B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Extensions.swift"; sourceTree = "<group>"; };
 		B740D4362395BDB5005A0A8D /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		B7B8AC21239945560021EF92 /* sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sysctl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -381,6 +383,7 @@
 				B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */,
 				B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */,
 				B740D4362395BDB5005A0A8D /* Queue.swift */,
+				B7B8AC21239945560021EF92 /* sysctl.swift */,
 			);
 			path = Bintrail;
 			sourceTree = "<group>";
@@ -762,6 +765,7 @@
 				63995E18234B080A00FA9765 /* KSCrashMonitor_MachException.c in Sources */,
 				63995E40234B080A00FA9765 /* KSThread.c in Sources */,
 				63995E02234B080A00FA9765 /* KSMachineContext.c in Sources */,
+				B7B8AC22239945560021EF92 /* sysctl.swift in Sources */,
 				63995DE3234B080A00FA9765 /* KSCrashMonitor_Deadlock.m in Sources */,
 				63995E1E234B080A00FA9765 /* KSString.c in Sources */,
 				63995E42234B080A00FA9765 /* KSStackCursor_Backtrace.c in Sources */,

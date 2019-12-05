@@ -226,13 +226,7 @@ extension Bintrail {
         }
 
         observeNotification(named: UIApplication.didReceiveMemoryWarningNotification) { _ in
-            bt_event_register(.memoryWarning) { event in
-                if let memory = self.crashReporter.device?.memory {
-                    event.add(value: memory.size, forMetric: "size")
-                    event.add(value: memory.free, forMetric: "free")
-                    event.add(value: memory.usable, forMetric: "memory")
-                }
-            }
+            bt_event_register(.memoryWarning)
         }
     }
 }

@@ -28,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         bt_log("App launched successfully", type: .info)
+
+        print(sysctlString(named: "hw.model"))
         
         bt_log("This is a trace messag, perhaps not something you'd send always.", type: .trace)
         bt_log("Debug messages are interesting, but numerous", type: .debug)
