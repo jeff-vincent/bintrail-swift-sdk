@@ -5,27 +5,32 @@ import Foundation
 import UIKit
 #endif
 
+#if canImport(AppKit)
+import AppKit
+#endif
+
 public class Bintrail {
     public static let shared = Bintrail()
 
-    @Synchronized private var managedEventsByName: [Event.Name: Event] = [:]
+    private let dispatchQueue = DispatchQueue(label: "com.bintrail")
+
+    private var notificationObservers: [NSObjectProtocol] = []
 
     private let operationQueue = OperationQueue()
 
-    private let dispatchQueue = DispatchQueue(label: "com.bintrail")
+    private let eventMonitor = EventMonitor()
+
+    private var executableStateObserver: EventMonitor.ExecutableStateObserver?
 
     internal let client: Client
 
     internal private(set) var currentSession: Session
 
-    private var timerDispatchWorkItem: DispatchWorkItem?
-
-    private var notificationObservers: [Any] = []
+    private var timerWorkItem: DispatchWorkItem?
 
     private init() {
         client = Client(baseUrl: .bintrailBaseUrl)
         currentSession = Session(fileManager: .default)
-
         operationQueue.underlyingQueue = dispatchQueue
     }
 
@@ -46,8 +51,6 @@ public class Bintrail {
             )
         )
 
-        subscribeToNotifications()
-
         client.ingestKeyPair = Client.IngestKeyPair(keyId: keyId, secret: secret)
 
         bt_log("Bintrail SDK configured", type: .trace)
@@ -57,15 +60,32 @@ public class Bintrail {
                 bt_log_internal("Failed processing non-current session(s):", errors)
             }
         }
-        startTimer()
-    }
-    private func stopTimer() {
-        timerDispatchWorkItem?.cancel()
-        timerDispatchWorkItem = nil
+
+        executableStateObserver = eventMonitor.addExecutableStateObserver { [weak self] state in
+            switch state {
+            case .active:
+                self?.resume()
+            case .inactive:
+                self?.suspend()
+            }
+        }
+
+        resume()
     }
 
-    private func startTimer() {
-        stopTimer()
+    private func suspend() {
+        timerWorkItem?.cancel()
+        timerWorkItem = nil
+
+        do {
+            try currentSession.writeEnqueuedEntriesToFile()
+        } catch {
+            bt_log_internal("Failed to write enqueued entries to file when resigning active:", error)
+        }
+    }
+
+    private func resume() {
+        suspend()
         let newWorkItem = DispatchWorkItem { [weak self] in
             guard let weakSelf = self else {
                 return
@@ -76,11 +96,11 @@ public class Bintrail {
                     bt_log_internal("Failed to send current session:", error)
                 }
 
-                weakSelf.startTimer()
+                weakSelf.resume()
             }
         }
 
-        timerDispatchWorkItem = newWorkItem
+        timerWorkItem = newWorkItem
         dispatchQueue.asyncAfter(deadline: .now() + 30, execute: newWorkItem)
     }
 
@@ -122,88 +142,5 @@ public class Bintrail {
                 completion([error])
             }
         }
-    }
-}
-
-extension Bintrail {
-    private func observeNotification(
-        named notificationName: Notification.Name,
-        object: Any? = nil,
-        using block: @escaping (Notification) -> Void
-    ) {
-        let observer = NotificationCenter.default.addObserver(
-            forName: notificationName,
-            object: nil,
-            queue: operationQueue,
-            using: block
-        )
-
-        notificationObservers.append(observer)
-    }
-
-    private func startManagedEvent(
-        named name: Event.Name,
-        timestamp: Date = Date(),
-        overwriteIfExits overwrite: Bool = true,
-        cofigure block: ((Event) -> Void
-    )? = nil) {
-        if managedEventsByName[name] != nil && overwrite == false {
-            return
-        }
-
-        let event = Event(name: name)
-        managedEventsByName[name] = event
-        block?(event)
-    }
-
-    private func endManagedEvent(named name: Event.Name) {
-        guard let event = managedEventsByName[name] else {
-            return
-        }
-
-        managedEventsByName[name] = nil
-        bt_event_finish(event)
-    }
-
-    private func subscribeToNotifications() {
-        #if canImport(UIKit)
-
-        observeNotification(named: UIApplication.willTerminateNotification) { _ in
-        }
-
-        observeNotification(named: UIApplication.willResignActiveNotification) { _ in
-            self.startManagedEvent(named: .inactivePeriod)
-            self.endManagedEvent(named: .activePeriod)
-
-            self.stopTimer()
-
-            do {
-                try self.currentSession.writeEnqueuedEntriesToFile()
-            } catch {
-                bt_log_internal("Failed to write enqueued entries to file when resigning active:", error)
-            }
-        }
-
-        observeNotification(named: UIApplication.didBecomeActiveNotification) { _ in
-            self.startManagedEvent(named: .activePeriod)
-            self.endManagedEvent(named: .inactivePeriod)
-            self.startTimer()
-        }
-
-        observeNotification(named: UIApplication.willEnterForegroundNotification) { _ in
-            self.startManagedEvent(named: .foregroundPeriod)
-            self.endManagedEvent(named: .backgroundPeriod)
-        }
-
-        observeNotification(named: UIApplication.didEnterBackgroundNotification) { _ in
-            self.startManagedEvent(named: .backgroundPeriod)
-            self.endManagedEvent(named: .foregroundPeriod)
-        }
-
-        observeNotification(named: UIApplication.didReceiveMemoryWarningNotification) { _ in
-            bt_event_register(.memoryWarning)
-        }
-
-        #endif
     }
 }

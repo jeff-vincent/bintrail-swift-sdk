@@ -168,7 +168,9 @@ public extension Event {
     }
 
     internal enum Namespace: String, Codable {
+        case appleAny
         case iOS
+        case macOS
         case custom
     }
 
@@ -198,13 +200,15 @@ extension Event.Name: ExpressibleByStringLiteral {
 }
 
 internal extension Event.Name {
-    static let foregroundPeriod = Event.Name(value: "inForeground", namespace: .iOS)
+    #if canImport(UIKit) || canImport(AppKit)
+    static let foregroundPeriod = Event.Name(value: "inForeground", namespace: .appleAny)
 
-    static let backgroundPeriod = Event.Name(value: "inBackground", namespace: .iOS)
+    static let backgroundPeriod = Event.Name(value: "inBackground", namespace: .appleAny)
 
-    static let activePeriod = Event.Name(value: "activePeriod", namespace: .iOS)
+    static let activePeriod = Event.Name(value: "activePeriod", namespace: .appleAny)
 
-    static let inactivePeriod = Event.Name(value: "inactivePeriod", namespace: .iOS)
+    static let inactivePeriod = Event.Name(value: "inactivePeriod", namespace: .appleAny)
 
-    static let memoryWarning = Event.Name(value: "memoryWarning", namespace: .iOS)
+    static let memoryWarning = Event.Name(value: "memoryWarning", namespace: .appleAny)
+    #endif
 }
