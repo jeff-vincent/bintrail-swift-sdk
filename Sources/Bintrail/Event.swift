@@ -201,14 +201,16 @@ extension Event.Name: ExpressibleByStringLiteral {
 
 internal extension Event.Name {
     #if canImport(UIKit) || canImport(AppKit)
-    static let foregroundPeriod = Event.Name(value: "inForeground", namespace: .appleAny)
-
-    static let backgroundPeriod = Event.Name(value: "inBackground", namespace: .appleAny)
-
     static let activePeriod = Event.Name(value: "activePeriod", namespace: .appleAny)
 
     static let inactivePeriod = Event.Name(value: "inactivePeriod", namespace: .appleAny)
+    #endif
 
-    static let memoryWarning = Event.Name(value: "memoryWarning", namespace: .appleAny)
+    #if canImport(UIKit)
+    static let memoryWarning = Event.Name(value: "memoryWarning", namespace: .iOS)
+
+    static let foregroundPeriod = Event.Name(value: "inForeground", namespace: .iOS)
+
+    static let backgroundPeriod = Event.Name(value: "inBackground", namespace: .iOS)
     #endif
 }
