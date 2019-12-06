@@ -49,7 +49,7 @@ internal extension Device {
         #if canImport(UIKit)
         let uiDevice = UIDevice.current
         identifier = (uiDevice.identifierForVendor ?? UUID()).uuidString
-        platformName = uiDevice.systemVersion
+        platformName = uiDevice.systemName
         name = uiDevice.name
         #else
         identifier = nil
