@@ -166,11 +166,9 @@ extension Bintrail {
     }
 
     private func subscribeToNotifications() {
-
         #if canImport(UIKit)
 
         observeNotification(named: UIApplication.willTerminateNotification) { _ in
-
         }
 
         observeNotification(named: UIApplication.willResignActiveNotification) { _ in

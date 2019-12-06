@@ -1,5 +1,5 @@
-import Foundation
 import Dispatch
+import Foundation
 
 @propertyWrapper
 internal struct Synchronized<Value> {

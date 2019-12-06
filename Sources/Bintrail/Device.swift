@@ -16,7 +16,7 @@ struct Device: Codable {
         let versionName: String?
     }
 
-    let identifier: String
+    let identifier: String?
 
     let machine: String?
 
@@ -41,31 +41,45 @@ struct Device: Codable {
 
 internal extension Device {
     static var current: Device {
+        let identifier: String?
+        let isSimulated: Bool
+        let platformName: String?
+        let name: String?
+
+        #if canImport(UIKit)
         let uiDevice = UIDevice.current
+        identifier = (uiDevice.identifierForVendor ?? UUID()).uuidString
+        platformName = uiDevice.systemVersion
+        name = uiDevice.name
+        #else
+        identifier = nil
+        platformName = Sysctl.operatingSystemType
+        name = Sysctl.hostName
+        #endif
 
         #if targetEnvironment(simulator)
-        let isSimulated = true
+        isSimulated = true
         #else
-        let isSimulated = false
+        isSimulated = false
         #endif
 
         return Device(
-            identifier: (uiDevice.identifierForVendor ?? UUID()).uuidString,
-            machine: sysctlMachine,
-            model: sysctlModel,
+            identifier: identifier,
+            machine: Sysctl.machine,
+            model: Sysctl.model,
             platform: Device.Platform(
-                name: uiDevice.systemName,
-                versionCode: sysctlString(named: "kern.osversion"),
-                versionName: uiDevice.systemVersion
+                name: platformName,
+                versionCode: Sysctl.operatingSystemVersion,
+                versionName: Sysctl.operatingSystemRelease
             ),
-            name: uiDevice.name,
+            name: name,
             localeIdentifier: Locale.current.identifier,
             timeZoneIdentifier: TimeZone.current.identifier,
-            kernelVersion: sysctlString(named: "kern.version"),
-            bootTime: sysctlDate(named: "kern.boottime"),
+            kernelVersion: Sysctl.kernelVersion,
+            bootTime: Sysctl.bootTime,
             processor: Device.Processor(
-                type: sysctlInt32(named: "hw.cputype"),
-                subType: sysctlInt32(named: "hw.cpusubtype")
+                type: Sysctl.cpuType,
+                subType: Sysctl.cpuSubtype
             ),
             isSimulated: isSimulated
         )

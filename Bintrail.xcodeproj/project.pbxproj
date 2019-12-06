@@ -26,7 +26,8 @@
 		B740D4332395AF5E005A0A8D /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */; };
 		B740D4352395AFDD005A0A8D /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */; };
 		B740D4372395BDB5005A0A8D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
-		B7B8AC22239945560021EF92 /* sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* sysctl.swift */; };
+		B77CC2A9239A64960041034E /* SysCtlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2A8239A64960041034E /* SysCtlTests.swift */; };
+		B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +63,8 @@
 		B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
 		B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Extensions.swift"; sourceTree = "<group>"; };
 		B740D4362395BDB5005A0A8D /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
-		B7B8AC21239945560021EF92 /* sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sysctl.swift; sourceTree = "<group>"; };
+		B77CC2A8239A64960041034E /* SysCtlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SysCtlTests.swift; sourceTree = "<group>"; };
+		B7B8AC21239945560021EF92 /* Sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sysctl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,7 +139,7 @@
 				B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */,
 				B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */,
 				B740D4362395BDB5005A0A8D /* Queue.swift */,
-				B7B8AC21239945560021EF92 /* sysctl.swift */,
+				B7B8AC21239945560021EF92 /* Sysctl.swift */,
 			);
 			path = Bintrail;
 			sourceTree = "<group>";
@@ -154,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				633148BF23452EB500B1722F /* BintrailTests.swift */,
+				B77CC2A8239A64960041034E /* SysCtlTests.swift */,
 			);
 			path = BintrailTests;
 			sourceTree = "<group>";
@@ -207,7 +210,7 @@
 			buildConfigurationList = 63731DC0234495860014E7A3 /* Build configuration list for PBXNativeTarget "Bintrail iOS" */;
 			buildPhases = (
 				63731DB3234495860014E7A3 /* Headers */,
-				63B00E762344997D00B63A81 /* Swiftlint */,
+				B77CC2A7239A60D60041034E /* Swiftlint */,
 				63731DB4234495860014E7A3 /* Sources */,
 				63731DB5234495860014E7A3 /* Frameworks */,
 				63731DB6234495860014E7A3 /* Resources */,
@@ -295,7 +298,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		63B00E762344997D00B63A81 /* Swiftlint */ = {
+		B77CC2A7239A60D60041034E /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -325,7 +328,7 @@
 				633148D32345CFE800B1722F /* Debug.swift in Sources */,
 				633148D12345C20600B1722F /* Synchronized.swift in Sources */,
 				63A8EA072346217300507264 /* Event.swift in Sources */,
-				B7B8AC22239945560021EF92 /* sysctl.swift in Sources */,
+				B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */,
 				63995599234A6F0100FA9765 /* Device.swift in Sources */,
 				B740D4352395AFDD005A0A8D /* JSONDecoder+Extensions.swift in Sources */,
 				B740D4332395AF5E005A0A8D /* JSONEncoder+Extensions.swift in Sources */,
@@ -342,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				633148C623452EC000B1722F /* BintrailTests.swift in Sources */,
+				B77CC2A9239A64960041034E /* SysCtlTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
