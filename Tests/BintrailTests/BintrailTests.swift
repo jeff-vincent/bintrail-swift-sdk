@@ -3,6 +3,5 @@ import XCTest
 
 class BintrailTests: XCTestCase {
     func testExample() {
-        
     }
 }

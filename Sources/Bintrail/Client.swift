@@ -1,29 +1,21 @@
-import Foundation
 import Dispatch
+import Foundation
 
 internal extension URL {
     static let bintrailBaseUrl = URL(string: "http://localhost:5000")!
 }
 
 public enum ClientError: Error {
-    case appCredentialsMising // TODO: Rename, ingest token?
-    case appCredentialsEncodingFailed
-
-    case requestBodyEncodingFailed
+    case ingestKeyPairMising
+    case ingestKeyPairEncodingFailed
 
     case urlSessionTaskError(Error)
 
     case invalidURLResponse
-    case unexpectedResponseBody
 
     case unexpectedResponseStatus(Int)
 
-    case `internal`(Error)
-
-    case unexpected
-
-    case uninitializedExecutableInfo
-    case uninitializedDeviceInfo
+    case underlying(Error)
 }
 
 internal class Client {
@@ -55,7 +47,7 @@ internal class Client {
         )
     }
 
-    internal struct Credentials {
+    internal struct IngestKeyPair {
         let keyId: String
         let secret: String
 
@@ -70,7 +62,7 @@ internal class Client {
         }
     }
 
-    internal var credentials: Credentials?
+    internal var ingestKeyPair: IngestKeyPair?
 
     private let dispatchQueue = DispatchQueue(label: "com.bintrail.client")
 
@@ -173,7 +165,7 @@ internal extension Client {
                     }
                 }
             } catch {
-                completion(.failure(.internal(error)))
+                completion(.failure(.underlying(error)))
             }
         }
     }
@@ -195,11 +187,11 @@ internal extension Client {
                     } catch let error as ClientError {
                         completion(.failure(error))
                     } catch {
-                        completion(.failure(.internal(error)))
+                        completion(.failure(.underlying(error)))
                     }
                 }
             } catch {
-                completion(.failure(.internal(error)))
+                completion(.failure(.underlying(error)))
             }
         }
     }
@@ -218,12 +210,12 @@ internal extension Client {
                     urlRequest.setValue(value, forHTTPHeaderField: key)
                 }
 
-                guard let credentials = self.credentials else {
-                    throw ClientError.appCredentialsMising
+                guard let credentials = self.ingestKeyPair else {
+                    throw ClientError.ingestKeyPairMising
                 }
 
                 guard let base64EncodedAppCredentials = credentials.base64EncodedString else {
-                    throw ClientError.appCredentialsEncodingFailed
+                    throw ClientError.ingestKeyPairEncodingFailed
                 }
 
                 urlRequest.setValue(base64EncodedAppCredentials, forHTTPHeaderField: "Bintrail-Ingest-Token")
@@ -233,7 +225,7 @@ internal extension Client {
             } catch let error as ClientError {
                 completion(.failure(error))
             } catch {
-                completion(.failure(.internal(error)))
+                completion(.failure(.underlying(error)))
             }
         }
     }
@@ -267,7 +259,7 @@ internal extension Client {
             } catch let error as ClientError {
                 completion(.failure(error))
             } catch {
-                completion(.failure(.internal(error)))
+                completion(.failure(.underlying(error)))
             }
         }.resume()
     }

@@ -1,5 +1,5 @@
-import Foundation
 import Dispatch
+import Foundation
 
 #if canImport(UIKit)
 import UIKit
@@ -30,7 +30,7 @@ public class Bintrail {
     }
 
     var isConfigured: Bool {
-        return client.credentials != nil
+        return client.ingestKeyPair != nil
     }
 
     public func configure(keyId: String, secret: String) throws {
@@ -48,7 +48,7 @@ public class Bintrail {
 
         subscribeToNotifications()
 
-        client.credentials = Client.Credentials(keyId: keyId, secret: secret)
+        client.ingestKeyPair = Client.IngestKeyPair(keyId: keyId, secret: secret)
 
         bt_log("Bintrail SDK configured", type: .trace)
 
