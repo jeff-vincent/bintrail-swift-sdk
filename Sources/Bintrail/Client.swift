@@ -2,7 +2,7 @@ import Dispatch
 import Foundation
 
 internal extension URL {
-    static let bintrailBaseUrl = URL(string: "http://localhost:5000")!
+    static let bintrailBaseUrl = URL(string: "https://api.bintrail.com")!
 }
 
 public enum ClientError: Error {
