@@ -97,7 +97,7 @@ public class Bintrail {
 
         EventMonitor.monitorApplicationEvents(verbose: eventOptions.contains(.verboseApplicationEvents))
 
-        #if os(iOS) || os(tvOS)
+        #if os(iOS) || os(tvOS) || os(macOS)
         if eventOptions.contains(.viewControllerLifecycle) {
             Swizzling.applyToViewControllers()
         }
