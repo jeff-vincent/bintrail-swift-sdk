@@ -386,8 +386,32 @@ internal extension Session {
         return entries
     }
 
+    private func upload(metadata: Metadata, using client: Client, completion: @escaping (SessionSendError?) -> Void) {
+        client.upload(sessionMetadata: metadata) { result in
+            self.dispatchQueue.async {
+                switch result {
+                case .success(let response):
+                    do {
+                        try self.saveMetadata(
+                            metadata: metadata.withRemoteIdentifier(response.remoteIdentifier)
+                        )
+                        self.send(using: client, completion: completion)
+                    } catch {
+                        completion(.underlying(error))
+                    }
+                case .failure(let error):
+                    completion(.underlying(error))
+                }
+            }
+        }
+    }
+
     func send(using client: Client, completion: @escaping (SessionSendError?) -> Void) {
         dispatchQueue.async {
+            let completion: (SessionSendError?) -> Void = { error in
+                completion(error)
+            }
+
             do {
                 guard let metadata = try self.loadMetadata() else {
                     throw SessionSendError.metadataMissing
@@ -395,22 +419,7 @@ internal extension Session {
 
                 guard let remoteIdentifier = metadata.remoteIdentifier else {
                     bt_log_internal("Session \(self.localIdentifier) lacks remote identifier. Uploading metadata...")
-
-                    client.upload(sessionMetadata: metadata) { result in
-                        switch result {
-                        case .success(let response):
-                            do {
-                                try self.saveMetadata(
-                                    metadata: metadata.withRemoteIdentifier(response.remoteIdentifier)
-                                )
-                                self.send(using: client, completion: completion)
-                            } catch {
-                                completion(.underlying(error))
-                            }
-                        case .failure(let error):
-                            completion(.underlying(error))
-                        }
-                    }
+                    self.upload(metadata: metadata, using: client, completion: completion)
                     return
                 }
 
@@ -429,16 +438,18 @@ internal extension Session {
                 )
 
                 client.upload(entries: entries, forSessionWithRemoteIdentifier: remoteIdentifier) { result in
-                    if case .failure(let error) = result {
-                        completion(.underlying(error))
-                        return
-                    }
+                    self.dispatchQueue.async {
+                        if case .failure(let error) = result {
+                            completion(.underlying(error))
+                            return
+                        }
 
-                    do {
-                        try self.fileManager.removeItem(at: outFileUrl)
-                        self.send(using: client, completion: completion)
-                    } catch {
-                        completion(.underlying(error))
+                        do {
+                            try self.fileManager.removeItem(at: outFileUrl)
+                            self.send(using: client, completion: completion)
+                        } catch {
+                            completion(.underlying(error))
+                        }
                     }
                 }
             } catch let error as SessionSendError {

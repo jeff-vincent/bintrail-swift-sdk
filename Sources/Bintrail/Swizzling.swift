@@ -24,16 +24,18 @@ internal struct Swizzling {
             isAppliedToViewControllers = true
         }
 
+        let cls = UIViewController.self
+
         let swizzleMap: [Selector: Selector] = [
-            #selector(UIViewController.viewDidLoad): #selector(UIViewController.bintrail_viewDidLoad),
-            #selector(UIViewController.viewWillAppear(_:)): #selector(UIViewController.viewWillAppear(_:)),
-            #selector(UIViewController.viewDidAppear(_:)): #selector(UIViewController.viewDidAppear(_:)),
-            #selector(UIViewController.viewWillDisappear(_:)): #selector(UIViewController.viewWillDisappear(_:)),
-            #selector(UIViewController.viewDidDisappear(_:)): #selector(UIViewController.viewDidDisappear(_:))
+            #selector(cls.viewDidLoad): #selector(cls.bintrail_viewDidLoad),
+            #selector(cls.viewWillAppear(_:)): #selector(cls.bintrail_viewWillAppear(_:)),
+            #selector(cls.viewDidAppear(_:)): #selector(cls.bintrail_viewDidAppear(_:)),
+            #selector(cls.viewWillDisappear(_:)): #selector(cls.bintrail_viewWillDisappear(_:)),
+            #selector(cls.viewDidDisappear(_:)): #selector(cls.bintrail_viewDidDisappear(_:))
         ]
 
         for (originalSelector, swizzledSelector) in swizzleMap {
-            exchange(selector: originalSelector, for: swizzledSelector, of: UIViewController.self)
+            exchange(selector: originalSelector, for: swizzledSelector, of: cls)
         }
     }
     #endif
@@ -54,25 +56,33 @@ extension UIViewController {
     @objc
     func bintrail_viewWillAppear(_ animated: Bool) {
         self.bintrail_viewWillAppear(animated)
-        bt_event_register(Event.Name(value: "viewWillAppear", namespace: .currentOperatingSystem))
+        bt_event_register(Event.Name(value: "viewWillAppear", namespace: .currentOperatingSystem)) { event in
+            event.add(attribute: bintrailProjectedName, for: "name")
+        }
     }
 
     @objc
     func bintrail_viewDidAppear(_ animated: Bool) {
         self.bintrail_viewDidAppear(animated)
-        bt_event_register(Event.Name(value: "viewDidAppear", namespace: .currentOperatingSystem))
+        bt_event_register(Event.Name(value: "viewDidAppear", namespace: .currentOperatingSystem)) { event in
+            event.add(attribute: bintrailProjectedName, for: "name")
+        }
     }
 
     @objc
     func bintrail_viewWillDisappear(_ animated: Bool) {
         self.bintrail_viewWillDisappear(animated)
-        bt_event_register(Event.Name(value: "viewWillDisappear", namespace: .currentOperatingSystem))
+        bt_event_register(Event.Name(value: "viewWillDisappear", namespace: .currentOperatingSystem)) { event in
+            event.add(attribute: bintrailProjectedName, for: "name")
+        }
     }
 
     @objc
     func bintrail_viewDidDisappear(_ animated: Bool) {
         self.bintrail_viewDidDisappear(animated)
-        bt_event_register(Event.Name(value: "viewDidDisappear", namespace: .currentOperatingSystem))
+        bt_event_register(Event.Name(value: "viewDidDisappear", namespace: .currentOperatingSystem)) { event in
+            event.add(attribute: bintrailProjectedName, for: "name")
+        }
     }
 }
 #endif

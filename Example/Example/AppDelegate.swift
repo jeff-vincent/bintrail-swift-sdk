@@ -20,9 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         do {
             try Bintrail.shared.configure(
-                keyId: "NA9FGMOXOIEM96NO09QP",
-                secret: "eEMBulGiWc7xdffh2kzb1TCfWSePRUl23sJloHzL"
+                keyId: "Z8AE62UBRPX6C56DWRGH",
+                secret: "H9gcbN0wKuhEFiya8747vvd6LkAwGHCXmXvC9rpI",
+                eventOptions: [
+                    .verboseApplicationEvents,
+                    .viewControllerLifecycle
+                ]
             )
+            
         } catch {
             print("Failed to configure Bintrail", error)
         }

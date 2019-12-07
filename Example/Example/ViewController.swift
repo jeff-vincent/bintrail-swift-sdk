@@ -26,6 +26,9 @@ class ViewController: UIViewController {
 
         bt_log("Presenting detail controller", detailController, type: .info)
 
+        present(detailController, animated: true) {
+
+        }
 
         tapCounter += 1
     }

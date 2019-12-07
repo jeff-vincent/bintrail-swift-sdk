@@ -10,6 +10,20 @@ import AppKit
 #endif
 
 public class Bintrail {
+    public struct EventMonitoringOptions: OptionSet {
+        public let rawValue: Int
+
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+
+        public static let verboseApplicationEvents = EventMonitoringOptions(rawValue: 1 << 0)
+
+        #if os(iOS) || os(tvOS)
+        public static let viewControllerLifecycle = EventMonitoringOptions(rawValue: 2 << 0)
+        #endif
+    }
+
     public static let shared = Bintrail()
 
     private let dispatchQueue = DispatchQueue(label: "com.bintrail")
@@ -18,15 +32,15 @@ public class Bintrail {
 
     private let operationQueue = OperationQueue()
 
-    private let eventMonitor = EventMonitor()
-
     private var applicationStateObserver: EventMonitor.Observer?
+
+    private var timer: DispatchSourceTimer?
 
     internal let client: Client
 
-    internal private(set) var currentSession: Session
+    private var isSending = false
 
-    private var timerWorkItem: DispatchWorkItem?
+    internal private(set) var currentSession: Session
 
     private init() {
         client = Client(baseUrl: .bintrailBaseUrl)
@@ -38,7 +52,7 @@ public class Bintrail {
         return client.ingestKeyPair != nil
     }
 
-    public func configure(keyId: String, secret: String) throws {
+    public func configure(keyId: String, secret: String, eventOptions: EventMonitoringOptions = []) throws {
         guard isConfigured == false else {
             return
         }
@@ -55,103 +69,136 @@ public class Bintrail {
 
         bt_log("Bintrail SDK configured", type: .trace)
 
-        processNonCurrentSessions { errors in
-            if !errors.isEmpty {
-                bt_log_internal("Failed processing non-current session(s):", errors)
-            }
-        }
+        applicationStateObserver = EventMonitor.addObserver { [weak self] state in
+            var shouldWriteEnqueuedEntries = false
 
-        applicationStateObserver = eventMonitor.addObserver { [weak self] state in
             switch state {
             case .applicationState(let applicationState):
-                switch applicationState {
-                case .active:
-                    self?.resume()
-                case .inactive:
-                    self?.suspend()
-                    #if os(iOS) || os(tvOS)
-                case .background:
-                    self?.suspend()
-                    #elseif os(macOS)
-                case .occluded:
-                    self?.suspend()
-                    #endif
+                if case .inactive = applicationState {
+                    shouldWriteEnqueuedEntries = true
                 }
             case .termination:
-                self?.suspend()
+                shouldWriteEnqueuedEntries = true
+            }
+
+            if shouldWriteEnqueuedEntries {
+                do {
+                    try self?.currentSession.writeEnqueuedEntriesToFile()
+                } catch {
+                    bt_log_internal("Failed to write enqueued entries to file when resigning active:", error)
+                }
             }
         }
 
-        resume()
-    }
+        EventMonitor.monitorApplicationEvents(verbose: eventOptions.contains(.verboseApplicationEvents))
 
-    private func suspend() {
-        timerWorkItem?.cancel()
-        timerWorkItem = nil
-
-        do {
-            try currentSession.writeEnqueuedEntriesToFile()
-        } catch {
-            bt_log_internal("Failed to write enqueued entries to file when resigning active:", error)
+        if eventOptions.contains(.viewControllerLifecycle) {
+            Swizzling.applyToViewControllers()
         }
+
+        send()
     }
 
-    private func resume() {
-        suspend()
-        let newWorkItem = DispatchWorkItem { [weak self] in
-            guard let weakSelf = self else {
+    private func scheduleSend() {
+        // If a timer already exists, it means that one has already been scheduled to happen earlier
+        // than the oner we're currently tasked with creating. Might as well use that one.
+        if let timer = timer {
+            timer.resume()
+            return
+        }
+
+        let timer = DispatchSource.makeTimerSource(queue: dispatchQueue)
+        timer.schedule(deadline: .now() + .seconds(5))
+        timer.setEventHandler { [weak self] in
+            // Trigger the send
+            self?.send()
+
+            // Pre-emptively destroy the timer
+            self?.timer = nil
+        }
+        timer.resume()
+
+        self.timer = timer
+    }
+
+    /// Processes current and saved sessions for sending
+    func send() {
+        dispatchQueue.async {
+            let completion: ([Error?]) -> Void = { errors in
+                // We're no longer sending
+                self.isSending = false
+
+                if !errors.isEmpty {
+                    bt_log_internal("Errors occurred while sending sessions:", errors)
+                }
+
+                self.scheduleSend()
+            }
+
+            // Cancel current timer if exists
+            self.timer?.cancel()
+            self.timer = nil
+
+            // If we're flagged for sending, abort, and schedule a new send.
+            guard !self.isSending else {
+                self.scheduleSend()
                 return
             }
 
-            weakSelf.currentSession.send(using: weakSelf.client) { error in
-                if let error = error {
-                    bt_log_internal("Failed to send current session:", error)
-                }
+            // Flag for sending
+            self.isSending = true
 
-                weakSelf.resume()
-            }
-        }
-
-        timerWorkItem = newWorkItem
-        dispatchQueue.asyncAfter(deadline: .now() + 30, execute: newWorkItem)
-    }
-
-    func processNonCurrentSessions(completion: @escaping ([Error]) -> Void) {
-        operationQueue.addOperation {
             do {
+                // Load all sessions. The current session will have its metadata saved via `configure()`
+                var sessions = try Session.loadSaved(using: .default)
+
+                // Make the current session write its enqueued entries to file
+                try? self.currentSession.writeEnqueuedEntriesToFile()
+
                 var errors: [Error] = []
 
-                var nonCurrentSessions = try Session.loadSaved(using: .default).filter { session in
-                    session != self.currentSession
-                }
-
-                if nonCurrentSessions.isEmpty {
-                    bt_log_internal("No non-current sessions need sending.")
-                    completion(errors)
-                    return
-                }
-
-                for session in nonCurrentSessions {
-                    bt_log_internal("Processing non-current session \(session.localIdentifier)")
-
-                    session.send(using: self.client) { error in
-                        nonCurrentSessions = nonCurrentSessions.filter { otherSession in
-                            session != otherSession
+                for session in sessions {
+                    self.send(session: session) { error in
+                        // Remove session from above created list of loaded sessions
+                        // indicating thet the currently iterated session is done processing.
+                        sessions.removeAll { other in
+                            other == session
                         }
 
                         if let error = error {
                             errors.append(error)
-                        } else {
-                            try? session.deleteSavedData()
                         }
 
-                        if nonCurrentSessions.isEmpty {
+                        // Above list of sessions is now empty. We're done.
+                        if sessions.isEmpty {
                             completion(errors)
                         }
                     }
                 }
             } catch {
                 completion([error])
+            }
+        }
+    }
+
+    func send(session: Session, completion: @escaping (Error?) -> Void) {
+        // Send session
+        session.send(using: self.client) { error in
+            self.dispatchQueue.async {
+                if let error = error {
+                    completion(error)
+                } else {
+                    // Everything went well, and if we're currently not iterating over the current session
+                    // we can safely delete its saved data.
+                    if session != self.currentSession {
+                        do {
+                            try session.deleteSavedData()
+                            bt_log_internal("Deleted saved data for session (\(session.localIdentifier))")
+                        } catch {
+                            completion(error)
+                        }
+                    }
+                }
             }
         }
     }

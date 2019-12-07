@@ -12,7 +12,7 @@ import AppKit
 import WatchKit
 #endif
 
-final class EventMonitor {
+struct EventMonitor {
     #if os(iOS) || os(tvOS)
     typealias Application = UIApplication
     #elseif os(macOS)
@@ -25,17 +25,14 @@ final class EventMonitor {
     }
 
     final class Observer: Equatable {
-        weak var eventMonitor: EventMonitor?
-
         fileprivate let dispatch: (Observable) -> Void
 
-        fileprivate init(eventMonitor: EventMonitor, execute: @escaping (Observable) -> Void) {
-            self.eventMonitor = eventMonitor
+        fileprivate init(execute: @escaping (Observable) -> Void) {
             self.dispatch = execute
         }
 
         func remove() {
-            self.eventMonitor?.removeObserver(self)
+            EventMonitor.removeObserver(self)
         }
 
         static func == (lhs: Observer, rhs: Observer) -> Bool {
@@ -43,13 +40,19 @@ final class EventMonitor {
         }
     }
 
-    private var notificationObservers: [NSObjectProtocol] = []
+    #if os(iOS) || os(tvOS) || os(macOS) || os(watchOS)
+    private static var applicationNotificationObservers: [NSObjectProtocol]?
 
-    private var observers: [Observer] = []
+    private static var isMonitoringApplicationNotifications: Bool {
+        return applicationNotificationObservers != nil
+    }
+    #endif
 
-    private let operationQueue = OperationQueue()
+    private static var observers: [Observer] = []
 
-    private let dispatchQueue = DispatchQueue(label: "com.bintrail.eventMonitor")
+    private static let operationQueue = OperationQueue()
+
+    private static let dispatchQueue = DispatchQueue(label: "com.bintrail.eventMonitor")
 }
 
 #if os(macOS)
@@ -63,19 +66,19 @@ extension EventMonitor.Application {
 #endif
 
 extension EventMonitor {
-    func addObserver(_ execute: @escaping (Observable) -> Void) -> Observer {
-        let observer = Observer(eventMonitor: self, execute: execute)
+    static func addObserver(_ execute: @escaping (Observable) -> Void) -> Observer {
+        let observer = Observer(execute: execute)
         observers.append(observer)
         return observer
     }
 
-    func removeObserver(_ observer: Observer) {
+    static func removeObserver(_ observer: Observer) {
         observers = observers.filter { other in
             other != observer
         }
     }
 
-    private func notify(observable: Observable) {
+    private static func notify(observable: Observable) {
         for observer in observers {
             observer.dispatch(observable)
         }
@@ -83,10 +86,12 @@ extension EventMonitor {
 }
 
 #if os(iOS) || os(tvOS) || os(macOS)
-private extension EventMonitor {
-    private func monitorApplicationEvents() {
-        let applicationNotificationBlock: (Notification) -> Void = { [weak self] notification in
-            self?.handleApplicationNotification(notification: notification)
+internal extension EventMonitor {
+    static func monitorApplicationEvents(verbose: Bool) {
+        let applicationNotificationBlock: (Notification) -> Void = { notification in
+            DispatchQueue.main.async {
+                EventMonitor.handleApplicationNotification(notification: notification)
+            }
         }
 
         var notificationNames: [Notification.Name] = [
@@ -96,25 +101,31 @@ private extension EventMonitor {
             Application.didFinishLaunchingNotification
         ]
 
-        #if os(iOS) || os(tvOS)
-        notificationNames += [
-            Application.willEnterForegroundNotification,
-            Application.didEnterBackgroundNotification,
-            Application.didReceiveMemoryWarningNotification,
-            Application.significantTimeChangeNotification,
-            Application.userDidTakeScreenshotNotification,
-            Application.didChangeStatusBarFrameNotification,
-            Application.didChangeStatusBarOrientationNotification,
-            Application.backgroundRefreshStatusDidChangeNotification,
-            Application.keyboardWillShowNotification,
-            Application.keyboardDidShowNotification,
-            Application.keyboardWillHideNotification,
-            Application.keyboardDidHideNotification,
-            Application.keyboardDidChangeFrameNotification
-        ]
-        #endif
+        if verbose {
+            #if os(iOS) || os(tvOS)
+            notificationNames += [
+                Application.willEnterForegroundNotification,
+                Application.didEnterBackgroundNotification,
+                Application.didReceiveMemoryWarningNotification,
+                Application.significantTimeChangeNotification,
+                Application.userDidTakeScreenshotNotification,
+                Application.didChangeStatusBarFrameNotification,
+                Application.didChangeStatusBarOrientationNotification,
+                Application.backgroundRefreshStatusDidChangeNotification,
+                Application.keyboardWillShowNotification,
+                Application.keyboardDidShowNotification,
+                Application.keyboardWillHideNotification,
+                Application.keyboardDidHideNotification,
+                Application.keyboardDidChangeFrameNotification
+            ]
+            #endif
+        }
 
         let notificationCenter = NotificationCenter.default
+
+        applicationNotificationObservers = nil
+
+        var newObservers: [NSObjectProtocol] = []
 
         for notificationName in Set(notificationNames) {
             let observer = notificationCenter.addObserver(
@@ -124,11 +135,13 @@ private extension EventMonitor {
                 using: applicationNotificationBlock
             )
 
-            notificationObservers.append(observer)
+            newObservers.append(observer)
         }
+
+        applicationNotificationObservers = newObservers
     }
 
-    private func handleApplicationNotification(notification: Notification) {
+    private static func handleApplicationNotification(notification: Notification) {
         guard let application = notification.object as? Application else {
             return
         }
@@ -161,7 +174,7 @@ private extension EventMonitor {
             }
         #endif
         default:
-            bt_log_internal("Unhandled application notification:", notification.name)
+            break
         }
     }
 }

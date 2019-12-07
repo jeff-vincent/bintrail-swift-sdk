@@ -34,6 +34,20 @@
 			remoteGlobalIDString = 63B00E7F23452E2200B63A81;
 			remoteInfo = BintrailTests;
 		};
+		B77CC2EF239BC1590041034E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 633149142345D2CC00B1722F /* Bintrail.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B77CC2B2239A8C400041034E;
+			remoteInfo = "Bintrail macOS";
+		};
+		B77CC2F1239BC1590041034E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 633149142345D2CC00B1722F /* Bintrail.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B77CC2D1239B1D3D0041034E;
+			remoteInfo = "Bintrail watchOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,7 +65,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		633148FD2345D2B900B1722F /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		633148FD2345D2B900B1722F /* Example 2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example 2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		633149002345D2B900B1722F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		633149022345D2B900B1722F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		633149042345D2B900B1722F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -91,7 +105,7 @@
 		633148FE2345D2B900B1722F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				633148FD2345D2B900B1722F /* Example.app */,
+				633148FD2345D2B900B1722F /* Example 2.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,6 +130,8 @@
 			children = (
 				6331491A2345D2CD00B1722F /* Bintrail.framework */,
 				6331491C2345D2CD00B1722F /* BintrailTests.xctest */,
+				B77CC2F0239BC1590041034E /* Bintrail.framework */,
+				B77CC2F2239BC1590041034E /* Bintrail.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,7 +163,7 @@
 			);
 			name = Example;
 			productName = Example;
-			productReference = 633148FD2345D2B900B1722F /* Example.app */;
+			productReference = 633148FD2345D2B900B1722F /* Example 2.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -202,6 +218,20 @@
 			fileType = wrapper.cfbundle;
 			path = BintrailTests.xctest;
 			remoteRef = 6331491B2345D2CD00B1722F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B77CC2F0239BC1590041034E /* Bintrail.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Bintrail.framework;
+			remoteRef = B77CC2EF239BC1590041034E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B77CC2F2239BC1590041034E /* Bintrail.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Bintrail.framework;
+			remoteRef = B77CC2F1239BC1590041034E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -385,7 +415,7 @@
 				);
 				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Example;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Example 2";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -406,7 +436,7 @@
 				);
 				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Example;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Example 2";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
