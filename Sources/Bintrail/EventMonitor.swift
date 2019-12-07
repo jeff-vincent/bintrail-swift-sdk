@@ -116,9 +116,14 @@ internal extension EventMonitor {
                 Application.didReceiveMemoryWarningNotification,
                 Application.significantTimeChangeNotification,
                 Application.userDidTakeScreenshotNotification,
+                Application.backgroundRefreshStatusDidChangeNotification,
+            ]
+            #endif
+
+            #if os(iOS)
+            notificationNames += [
                 Application.didChangeStatusBarFrameNotification,
                 Application.didChangeStatusBarOrientationNotification,
-                Application.backgroundRefreshStatusDidChangeNotification,
                 Application.keyboardWillShowNotification,
                 Application.keyboardDidShowNotification,
                 Application.keyboardWillHideNotification,

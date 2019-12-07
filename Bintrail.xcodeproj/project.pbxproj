@@ -24,7 +24,6 @@
 		B740D4372395BDB5005A0A8D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
 		B77CC2A9239A64960041034E /* SysCtlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2A8239A64960041034E /* SysCtlTests.swift */; };
 		B77CC2AC239A7B9C0041034E /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* EventMonitor.swift */; };
-		B77CC2B6239A8C400041034E /* Bintrail.h in Headers */ = {isa = PBXBuildFile; fileRef = B77CC2B4239A8C400041034E /* Bintrail.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B77CC2BA239A8C520041034E /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BC23452EB500B1722F /* Bintrail.swift */; };
 		B77CC2BB239A8C520041034E /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D22345CFE800B1722F /* Debug.swift */; };
 		B77CC2BC239A8C520041034E /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B923452EB500B1722F /* Log.swift */; };
@@ -39,7 +38,6 @@
 		B77CC2C5239A8C520041034E /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
 		B77CC2C6239A8C520041034E /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
 		B77CC2C7239A8C520041034E /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* EventMonitor.swift */; };
-		B77CC2D5239B1D3D0041034E /* Bintrail.h in Headers */ = {isa = PBXBuildFile; fileRef = B77CC2D3239B1D3D0041034E /* Bintrail.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B77CC2D9239B1D4D0041034E /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BC23452EB500B1722F /* Bintrail.swift */; };
 		B77CC2DA239B1D4D0041034E /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D22345CFE800B1722F /* Debug.swift */; };
 		B77CC2DB239B1D4D0041034E /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B923452EB500B1722F /* Log.swift */; };
@@ -57,6 +55,21 @@
 		B77CC2E8239BB14B0041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
 		B77CC2E9239BB14B0041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
 		B77CC2EA239BB14B0041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
+		B77CC304239C62930041034E /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BC23452EB500B1722F /* Bintrail.swift */; };
+		B77CC305239C62930041034E /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D22345CFE800B1722F /* Debug.swift */; };
+		B77CC306239C62930041034E /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B923452EB500B1722F /* Log.swift */; };
+		B77CC307239C62930041034E /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B823452EB500B1722F /* Session.swift */; };
+		B77CC308239C62930041034E /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A8EA062346217300507264 /* Event.swift */; };
+		B77CC309239C62930041034E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63995598234A6F0100FA9765 /* Device.swift */; };
+		B77CC30A239C62930041034E /* Executable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6399559A234A6F1400FA9765 /* Executable.swift */; };
+		B77CC30B239C62930041034E /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D42C239548E8005A0A8D /* Client.swift */; };
+		B77CC30C239C62930041034E /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4302395A73E005A0A8D /* FileManager+Extensions.swift */; };
+		B77CC30D239C62930041034E /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */; };
+		B77CC30E239C62930041034E /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */; };
+		B77CC30F239C62930041034E /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
+		B77CC310239C62930041034E /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
+		B77CC311239C62930041034E /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* EventMonitor.swift */; };
+		B77CC312239C62930041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
 		B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,12 +108,9 @@
 		B77CC2A8239A64960041034E /* SysCtlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SysCtlTests.swift; sourceTree = "<group>"; };
 		B77CC2AA239A7B680041034E /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 		B77CC2B2239A8C400041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B77CC2B4239A8C400041034E /* Bintrail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bintrail.h; sourceTree = "<group>"; };
-		B77CC2B5239A8C400041034E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B77CC2D1239B1D3D0041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B77CC2D3239B1D3D0041034E /* Bintrail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bintrail.h; sourceTree = "<group>"; };
-		B77CC2D4239B1D3D0041034E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B77CC2E7239BB14B0041034E /* Swizzling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swizzling.swift; sourceTree = "<group>"; };
+		B77CC2FC239C626B0041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7B8AC21239945560021EF92 /* Sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sysctl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,6 +138,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B77CC2CE239B1D3D0041034E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77CC2F9239C626B0041034E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -216,8 +233,6 @@
 				633148AF23452EB500B1722F /* Framework */,
 				633148B523452EB500B1722F /* Sources */,
 				633148BD23452EB500B1722F /* Tests */,
-				B77CC2B3239A8C400041034E /* Bintrail */,
-				B77CC2D2239B1D3D0041034E /* Bintrail */,
 				63731DB9234495860014E7A3 /* Products */,
 				63E8367423468A9D009A4838 /* Frameworks */,
 			);
@@ -230,6 +245,7 @@
 				63B00E7F23452E2200B63A81 /* BintrailTests.xctest */,
 				B77CC2B2239A8C400041034E /* Bintrail.framework */,
 				B77CC2D1239B1D3D0041034E /* Bintrail.framework */,
+				B77CC2FC239C626B0041034E /* Bintrail.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -242,24 +258,6 @@
 				63E8367523468A9E009A4838 /* libc++.tbd */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		B77CC2B3239A8C400041034E /* Bintrail */ = {
-			isa = PBXGroup;
-			children = (
-				B77CC2B4239A8C400041034E /* Bintrail.h */,
-				B77CC2B5239A8C400041034E /* Info.plist */,
-			);
-			path = Bintrail;
-			sourceTree = "<group>";
-		};
-		B77CC2D2239B1D3D0041034E /* Bintrail */ = {
-			isa = PBXGroup;
-			children = (
-				B77CC2D3239B1D3D0041034E /* Bintrail.h */,
-				B77CC2D4239B1D3D0041034E /* Info.plist */,
-			);
-			path = Bintrail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,7 +275,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B77CC2B6239A8C400041034E /* Bintrail.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,7 +282,13 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B77CC2D5239B1D3D0041034E /* Bintrail.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77CC2F7239C626B0041034E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +369,24 @@
 			productReference = B77CC2D1239B1D3D0041034E /* Bintrail.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		B77CC2FB239C626B0041034E /* Bintrail tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B77CC301239C626B0041034E /* Build configuration list for PBXNativeTarget "Bintrail tvOS" */;
+			buildPhases = (
+				B77CC2F7239C626B0041034E /* Headers */,
+				B77CC2F8239C626B0041034E /* Sources */,
+				B77CC2F9239C626B0041034E /* Frameworks */,
+				B77CC2FA239C626B0041034E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bintrail tvOS";
+			productName = Bintrail;
+			productReference = B77CC2FC239C626B0041034E /* Bintrail.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -389,6 +410,9 @@
 					B77CC2D0239B1D3D0041034E = {
 						CreatedOnToolsVersion = 11.2.1;
 					};
+					B77CC2FB239C626B0041034E = {
+						CreatedOnToolsVersion = 11.2.1;
+					};
 				};
 			};
 			buildConfigurationList = 63731DB2234495860014E7A3 /* Build configuration list for PBXProject "Bintrail" */;
@@ -408,6 +432,7 @@
 				63B00E7E23452E2200B63A81 /* BintrailTests */,
 				B77CC2B1239A8C400041034E /* Bintrail macOS */,
 				B77CC2D0239B1D3D0041034E /* Bintrail watchOS */,
+				B77CC2FB239C626B0041034E /* Bintrail tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -435,6 +460,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B77CC2CF239B1D3D0041034E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77CC2FA239C626B0041034E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -558,6 +590,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B77CC2F8239C626B0041034E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B77CC307239C62930041034E /* Session.swift in Sources */,
+				B77CC304239C62930041034E /* Bintrail.swift in Sources */,
+				B77CC310239C62930041034E /* Sysctl.swift in Sources */,
+				B77CC305239C62930041034E /* Debug.swift in Sources */,
+				B77CC30A239C62930041034E /* Executable.swift in Sources */,
+				B77CC30D239C62930041034E /* JSONEncoder+Extensions.swift in Sources */,
+				B77CC309239C62930041034E /* Device.swift in Sources */,
+				B77CC312239C62930041034E /* Swizzling.swift in Sources */,
+				B77CC306239C62930041034E /* Log.swift in Sources */,
+				B77CC30F239C62930041034E /* Queue.swift in Sources */,
+				B77CC30E239C62930041034E /* JSONDecoder+Extensions.swift in Sources */,
+				B77CC30B239C62930041034E /* Client.swift in Sources */,
+				B77CC311239C62930041034E /* EventMonitor.swift in Sources */,
+				B77CC308239C62930041034E /* Event.swift in Sources */,
+				B77CC30C239C62930041034E /* FileManager+Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -620,6 +674,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Framework/Bintrail/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -679,6 +734,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Framework/Bintrail/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -702,7 +758,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "$(SRCROOT)/Framework/Bintrail/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -728,7 +783,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "$(SRCROOT)/Framework/Bintrail/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -797,7 +851,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Bintrail/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -823,7 +876,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Bintrail/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -850,7 +902,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Bintrail/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -877,7 +928,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Bintrail/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -891,6 +941,57 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 6.1;
+			};
+			name = Release;
+		};
+		B77CC302239C626B0041034E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Bintrail;
+				PRODUCT_NAME = Bintrail;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Debug;
+		};
+		B77CC303239C626B0041034E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Bintrail;
+				PRODUCT_NAME = Bintrail;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.2;
 			};
 			name = Release;
 		};
@@ -938,6 +1039,15 @@
 			buildConfigurations = (
 				B77CC2D7239B1D3D0041034E /* Debug */,
 				B77CC2D8239B1D3D0041034E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B77CC301239C626B0041034E /* Build configuration list for PBXNativeTarget "Bintrail tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B77CC302239C626B0041034E /* Debug */,
+				B77CC303239C626B0041034E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -53,7 +53,7 @@ extension Log: Equatable {
 extension Log: Codable {}
 
 private extension DispatchQueue {
-    static let bt_log = DispatchQueue(label: "bintrail.log")
+    static let bintrailLog = DispatchQueue(label: "bintrail.log")
 }
 
 public func bt_log(
@@ -67,7 +67,7 @@ public func bt_log(
 ) {
     let date = Date()
 
-    DispatchQueue.bt_log.async {
+    DispatchQueue.bintrailLog.async {
         let log = Log(
             level: type,
             message: items.map({ String(describing: $0) }).joined(separator: terminator),
