@@ -60,7 +60,6 @@ extension EventMonitor.Application {
     enum State {
         case active
         case inactive
-        case occluded
     }
 }
 #endif
@@ -142,37 +141,33 @@ internal extension EventMonitor {
     }
 
     private static func handleApplicationNotification(notification: Notification) {
-        guard let application = notification.object as? Application else {
-            return
-        }
-
-        let event = Event(name: Event.Name(value: notification.name.rawValue, namespace: .currentOperatingSystem))
+        let event = Event(name: Event.Name(value: notification.name.rawValue, namespace: .applicationNotification))
 
         defer {
             bt_event_register(event)
         }
 
         #if os(iOS) || os(tvOS)
-        event.add(attribute: application.applicationState, for: "applicationState")
+        if let application = notification.object as? Application {
+            event.add(attribute: application.applicationState != .background, for: "inForeground")
+            event.add(attribute: application.applicationState == .active, for: "isActive")
+        }
         #elseif os(macOS)
-        event.add(attribute: application.occlusionState, for: "occlusionState")
+        if let application = notification.object as? Application {
+            event.add(attribute: application.isActive, for: "isActive")
+            event.add(attribute: application.isHidden, for: "isHidden")
+            event.add(attribute: application.isRunning, for: "isRunning")
+            event.add(attribute: application.occlusionState.contains(.visible), for: "isVisible")
+        }
         #endif
 
         switch notification.name {
         case Application.willTerminateNotification:
             notify(observable: .termination)
-        #if os(macOS)
         case Application.didBecomeActiveNotification:
             notify(observable: .applicationState(.active))
         case Application.willResignActiveNotification:
             notify(observable: .applicationState(.inactive))
-        case Application.didChangeOcclusionStateNotification:
-            if application.occlusionState.contains(.visible) {
-                notify(observable: .applicationState(.active))
-            } else {
-                notify(observable: .applicationState(.occluded))
-            }
-        #endif
         default:
             break
         }

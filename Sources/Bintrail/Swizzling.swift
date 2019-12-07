@@ -48,41 +48,40 @@ extension UIViewController {
         String(reflecting: type(of: self))
     }
 
+    private func registerBintrailEvent(named name: String) {
+        bt_event_register(Event.Name(value: name, namespace: .viewControllerLifecycle)) { event in
+            event.add(attribute: bintrailProjectedName, for: "viewControllerName")
+        }
+    }
+
     @objc
     func bintrail_viewDidLoad() {
         self.bintrail_viewDidLoad()
+        registerBintrailEvent(named: "viewDidLoad")
     }
 
     @objc
     func bintrail_viewWillAppear(_ animated: Bool) {
         self.bintrail_viewWillAppear(animated)
-        bt_event_register(Event.Name(value: "viewWillAppear", namespace: .currentOperatingSystem)) { event in
-            event.add(attribute: bintrailProjectedName, for: "name")
-        }
+        registerBintrailEvent(named: "viewWillAppear")
     }
 
     @objc
     func bintrail_viewDidAppear(_ animated: Bool) {
         self.bintrail_viewDidAppear(animated)
-        bt_event_register(Event.Name(value: "viewDidAppear", namespace: .currentOperatingSystem)) { event in
-            event.add(attribute: bintrailProjectedName, for: "name")
-        }
+        registerBintrailEvent(named: "viewDidAppear")
     }
 
     @objc
     func bintrail_viewWillDisappear(_ animated: Bool) {
         self.bintrail_viewWillDisappear(animated)
-        bt_event_register(Event.Name(value: "viewWillDisappear", namespace: .currentOperatingSystem)) { event in
-            event.add(attribute: bintrailProjectedName, for: "name")
-        }
+        registerBintrailEvent(named: "viewWillDisappear")
     }
 
     @objc
     func bintrail_viewDidDisappear(_ animated: Bool) {
         self.bintrail_viewDidDisappear(animated)
-        bt_event_register(Event.Name(value: "viewDidDisappear", namespace: .currentOperatingSystem)) { event in
-            event.add(attribute: bintrailProjectedName, for: "name")
-        }
+        registerBintrailEvent(named: "viewDidDisappear")
     }
 }
 #endif

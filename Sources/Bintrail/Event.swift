@@ -123,30 +123,32 @@ public extension Event {
         }
     }
 
-    internal enum Namespace: String, Codable {
-        case iOS
-        case tvOS
-        case watchOS
-        case macOS
-        case linux
-        case unknown
-        case user
+    internal struct Namespace: RawRepresentable, Hashable, Codable {
+        var rawValue: String
 
-        public static var currentOperatingSystem: Namespace {
-            #if os(iOS)
-            return .iOS
-            #elseif os(tvOS)
-            return .tvOS
-            #elseif os(watchOS)
-            return .watchOS
+        init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        public static let user = Namespace(rawValue: "user")
+
+        #if os(iOS) || os(tvOS) || os(macOS)
+        public static var applicationNotification: Namespace {
+            #if os(iOS) || os(tvOS)
+            return "UIKit.UIApplication.Notification"
             #elseif os(macOS)
-            return .macOS
-            #elseif os(Linux)
-            return .linux
-            #else
-            return .unknown
+            return "AppKit.NSApplication.Notification"
             #endif
         }
+
+        public static var viewControllerLifecycle: Namespace {
+            #if os(iOS) || os(tvOS)
+            return "UIKit.UIViewController.Lifecycle"
+            #elseif os(macOS)
+            return "AppKit.NSViewController.Lifecycle"
+            #endif
+        }
+        #endif
     }
 
     struct Name: Hashable, Codable {
@@ -165,6 +167,12 @@ public extension Event {
             self.value = value
             self.namespace = namespace
         }
+    }
+}
+
+extension Event.Namespace: ExpressibleByStringLiteral {
+    init(stringLiteral value: String) {
+        self.init(rawValue: value)
     }
 }
 

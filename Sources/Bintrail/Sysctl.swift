@@ -101,7 +101,6 @@ struct Sysctl {
     }
 
     static var machine: String? {
-
         #if targetEnvironment(simulator)
         return ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"]
         #else
