@@ -19,11 +19,16 @@ public class Bintrail {
 
         public static let verboseApplicationEvents = EventMonitoringOptions(rawValue: 1 << 0)
 
-        #if os(iOS) || os(tvOS)
+        #if os(iOS) || os(tvOS) || os(macOS)
         public static let viewControllerLifecycle = EventMonitoringOptions(rawValue: 2 << 0)
         #endif
     }
 
+    /// If enabled, internal log messages from the Bintrail SDK will be printed out
+    /// to the console.
+    public static var isDebugModeEnabled: Bool = false
+
+    /// Shared Bintrail instance
     public static let shared = Bintrail()
 
     private let dispatchQueue = DispatchQueue(label: "com.bintrail")

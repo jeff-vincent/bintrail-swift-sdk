@@ -141,7 +141,12 @@ internal extension EventMonitor {
     }
 
     private static func handleApplicationNotification(notification: Notification) {
-        let event = Event(name: Event.Name(value: notification.name.rawValue, namespace: .applicationNotification))
+        let event = Event(
+            name: Event.Name(
+                value: notification.name.rawValue,
+                namespace: .applicationNotification
+            )
+        )
 
         defer {
             bt_event_register(event)
