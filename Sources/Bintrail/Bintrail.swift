@@ -96,10 +96,10 @@ public class Bintrail {
             Swizzling.applyToViewControllers()
         }
 
-        send()
+        send(continuous: true)
     }
 
-    private func scheduleSend() {
+    private func scheduleSend(continuous: Bool) {
         // If a timer already exists, it means that one has already been scheduled to happen earlier
         // than the oner we're currently tasked with creating. Might as well use that one.
         if let timer = timer {
@@ -111,7 +111,7 @@ public class Bintrail {
         timer.schedule(deadline: .now() + .seconds(5))
         timer.setEventHandler { [weak self] in
             // Trigger the send
-            self?.send()
+            self?.send(continuous: true)
 
             // Pre-emptively destroy the timer
             self?.timer = nil
@@ -122,7 +122,7 @@ public class Bintrail {
     }
 
     /// Processes current and saved sessions for sending
-    func send() {
+    func send(continuous: Bool) {
         dispatchQueue.async {
             let completion: ([Error?]) -> Void = { errors in
                 // We're no longer sending
@@ -132,7 +132,9 @@ public class Bintrail {
                     bt_log_internal("Errors occurred while sending sessions:", errors)
                 }
 
-                self.scheduleSend()
+                if continuous {
+                    self.scheduleSend(continuous: continuous)
+                }
             }
 
             // Cancel current timer if exists
@@ -141,7 +143,7 @@ public class Bintrail {
 
             // If we're flagged for sending, abort, and schedule a new send.
             guard !self.isSending else {
-                self.scheduleSend()
+                self.scheduleSend(continuous: continuous)
                 return
             }
 
@@ -187,17 +189,20 @@ public class Bintrail {
             self.dispatchQueue.async {
                 if let error = error {
                     completion(error)
-                } else {
-                    // Everything went well, and if we're currently not iterating over the current session
-                    // we can safely delete its saved data.
-                    if session != self.currentSession {
-                        do {
-                            try session.deleteSavedData()
-                            bt_log_internal("Deleted saved data for session (\(session.localIdentifier))")
-                        } catch {
-                            completion(error)
-                        }
-                    }
+                    return
+                }
+
+                guard session != self.currentSession else {
+                    completion(nil)
+                    return
+                }
+
+                do {
+                    try session.deleteSavedData()
+                    bt_log_internal("Deleted saved data for session (\(session.localIdentifier))")
+                    completion(nil)
+                } catch {
+                    completion(error)
                 }
             }
         }

@@ -33,14 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         bt_log("App launched successfully", type: .info)
-        
-        bt_log("This is a trace messag, perhaps not something you'd send always.", type: .trace)
-        bt_log("Debug messages are interesting, but numerous", type: .debug)
-        bt_log("Here's were we're getting some information", type: .info)
-        bt_log("Oh no, but no biggie.", type: .warning)
-        bt_log("Shoot, something went wrong!", type: .error)
-        bt_log("It works on my machine!", type: .fatal)
-
 
         return true
     }

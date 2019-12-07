@@ -6,8 +6,6 @@ public final class Session {
 
     private var entries = Queue<Entry>()
 
-    private var dequeueDispatchWorkItem: DispatchWorkItem?
-
     internal let localIdentifier: UUID
 
     internal let fileManager: FileManager
@@ -28,32 +26,13 @@ public final class Session {
             // Enqueue new entry
             self.entries.enqueue(entry)
 
-            // No need to proceed if a dispatch work item to dequeue entries already exists or is cancelled
-            guard self.dequeueDispatchWorkItem == nil || self.dequeueDispatchWorkItem?.isCancelled == true else {
-                return
+            if self.entries.count > 100 {
+                try? self.writeEnqueuedEntriesToFile()
             }
-
-            // Create a new dispatch work item to write enqueued entries to file
-            let dequeueDispatchWorkItem = DispatchWorkItem { [weak self] in
-                do {
-                    try self?.writeEnqueuedEntriesToFile()
-                } catch {
-                    bt_log_internal("Failed to write enqueued entries to file")
-                }
-            }
-
-            self.dequeueDispatchWorkItem = dequeueDispatchWorkItem
-
-            // Dispatch work item after a few seconds
-            self.dispatchQueue.asyncAfter(deadline: .now() + 5, execute: dequeueDispatchWorkItem)
         }
     }
 
     func writeEnqueuedEntriesToFile() throws {
-        // In case someone calls this function, cancel and nullify existing work item
-        self.dequeueDispatchWorkItem?.cancel()
-        self.dequeueDispatchWorkItem = nil
-
         // Dequeue entries
         let dequeuedEntries = self.entries.dequeueAll()
 
