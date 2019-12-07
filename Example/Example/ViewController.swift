@@ -27,12 +27,6 @@ class ViewController: UIViewController {
         bt_log("Presenting detail controller", detailController, type: .info)
 
 
-        let event = bt_event_start("View controller presented")
-        event.add(attribute: detailController, for: "viewController")
-        present(detailController, animated: true) {
-            bt_event_finish(event)
-        }
-
         tapCounter += 1
     }
 

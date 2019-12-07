@@ -54,6 +54,9 @@
 		B77CC2E4239B1D4D0041034E /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
 		B77CC2E5239B1D4D0041034E /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
 		B77CC2E6239B1D4D0041034E /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* EventMonitor.swift */; };
+		B77CC2E8239BB14B0041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
+		B77CC2E9239BB14B0041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
+		B77CC2EA239BB14B0041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
 		B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +100,7 @@
 		B77CC2D1239B1D3D0041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B77CC2D3239B1D3D0041034E /* Bintrail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bintrail.h; sourceTree = "<group>"; };
 		B77CC2D4239B1D3D0041034E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B77CC2E7239BB14B0041034E /* Swizzling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swizzling.swift; sourceTree = "<group>"; };
 		B7B8AC21239945560021EF92 /* Sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sysctl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -184,6 +188,7 @@
 				B740D4362395BDB5005A0A8D /* Queue.swift */,
 				B7B8AC21239945560021EF92 /* Sysctl.swift */,
 				B77CC2AA239A7B680041034E /* EventMonitor.swift */,
+				B77CC2E7239BB14B0041034E /* Swizzling.swift */,
 			);
 			path = Bintrail;
 			sourceTree = "<group>";
@@ -489,6 +494,7 @@
 				B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */,
 				63995599234A6F0100FA9765 /* Device.swift in Sources */,
 				B77CC2AC239A7B9C0041034E /* EventMonitor.swift in Sources */,
+				B77CC2E8239BB14B0041034E /* Swizzling.swift in Sources */,
 				B740D4352395AFDD005A0A8D /* JSONDecoder+Extensions.swift in Sources */,
 				B740D4332395AF5E005A0A8D /* JSONEncoder+Extensions.swift in Sources */,
 				633148C223452EBB00B1722F /* Log.swift in Sources */,
@@ -519,6 +525,7 @@
 				B77CC2C0239A8C520041034E /* Executable.swift in Sources */,
 				B77CC2C3239A8C520041034E /* JSONEncoder+Extensions.swift in Sources */,
 				B77CC2BF239A8C520041034E /* Device.swift in Sources */,
+				B77CC2E9239BB14B0041034E /* Swizzling.swift in Sources */,
 				B77CC2BC239A8C520041034E /* Log.swift in Sources */,
 				B77CC2C5239A8C520041034E /* Queue.swift in Sources */,
 				B77CC2C4239A8C520041034E /* JSONDecoder+Extensions.swift in Sources */,
@@ -540,6 +547,7 @@
 				B77CC2DF239B1D4D0041034E /* Executable.swift in Sources */,
 				B77CC2E2239B1D4D0041034E /* JSONEncoder+Extensions.swift in Sources */,
 				B77CC2DE239B1D4D0041034E /* Device.swift in Sources */,
+				B77CC2EA239BB14B0041034E /* Swizzling.swift in Sources */,
 				B77CC2DB239B1D4D0041034E /* Log.swift in Sources */,
 				B77CC2E4239B1D4D0041034E /* Queue.swift in Sources */,
 				B77CC2E3239B1D4D0041034E /* JSONDecoder+Extensions.swift in Sources */,

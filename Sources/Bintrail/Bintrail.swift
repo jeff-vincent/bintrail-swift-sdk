@@ -20,7 +20,7 @@ public class Bintrail {
 
     private let eventMonitor = EventMonitor()
 
-    private var executableStateObserver: EventMonitor.ExecutableStateObserver?
+    private var applicationStateObserver: EventMonitor.Observer?
 
     internal let client: Client
 
@@ -61,11 +61,23 @@ public class Bintrail {
             }
         }
 
-        executableStateObserver = eventMonitor.addExecutableStateObserver { [weak self] state in
+        applicationStateObserver = eventMonitor.addObserver { [weak self] state in
             switch state {
-            case .active:
-                self?.resume()
-            case .inactive:
+            case .applicationState(let applicationState):
+                switch applicationState {
+                case .active:
+                    self?.resume()
+                case .inactive:
+                    self?.suspend()
+                    #if os(iOS) || os(tvOS)
+                case .background:
+                    self?.suspend()
+                    #elseif os(macOS)
+                case .occluded:
+                    self?.suspend()
+                    #endif
+                }
+            case .termination:
                 self?.suspend()
             }
         }

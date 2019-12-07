@@ -14,22 +14,22 @@ import WatchKit
 
 final class EventMonitor {
     #if os(iOS) || os(tvOS)
-    private typealias Application = UIApplication
+    typealias Application = UIApplication
     #elseif os(macOS)
-    private typealias Application = NSApplication
+    typealias Application = NSApplication
     #endif
 
-    enum ExecutableState {
-        case active
-        case inactive
+    enum Observable {
+        case termination
+        case applicationState(Application.State)
     }
 
-    final class ExecutableStateObserver: Equatable {
+    final class Observer: Equatable {
         weak var eventMonitor: EventMonitor?
 
-        fileprivate let dispatch: (ExecutableState) -> Void
+        fileprivate let dispatch: (Observable) -> Void
 
-        fileprivate init(eventMonitor: EventMonitor, execute: @escaping (ExecutableState) -> Void) {
+        fileprivate init(eventMonitor: EventMonitor, execute: @escaping (Observable) -> Void) {
             self.eventMonitor = eventMonitor
             self.dispatch = execute
         }
@@ -38,129 +38,131 @@ final class EventMonitor {
             self.eventMonitor?.removeObserver(self)
         }
 
-        static func == (lhs: ExecutableStateObserver, rhs: ExecutableStateObserver) -> Bool {
+        static func == (lhs: Observer, rhs: Observer) -> Bool {
             return lhs === rhs
         }
     }
 
-    private var executableStateObservers: [ExecutableStateObserver] = []
+    private var notificationObservers: [NSObjectProtocol] = []
 
-    private var activeEventsByName: [Event.Name: Event] = [:]
+    private var observers: [Observer] = []
 
     private let operationQueue = OperationQueue()
 
     private let dispatchQueue = DispatchQueue(label: "com.bintrail.eventMonitor")
-
-    private var exclusiveNotificationObserversByName: [Notification.Name: NSObjectProtocol] = [:]
-
-    private var nonExclusiveNotificationObservers: [NSObjectProtocol] = []
-
-    init() {
-        subscribeToAppNotifications()
-    }
-
-    func observeNotification(
-        named notificationName: Notification.Name,
-        object: Any? = nil,
-        isExclusive: Bool,
-        using block: @escaping (Notification) -> Void
-    ) {
-        let observer = NotificationCenter.default.addObserver(
-            forName: notificationName,
-            object: nil,
-            queue: operationQueue,
-            using: block
-        )
-
-        if isExclusive {
-            exclusiveNotificationObserversByName[notificationName] = observer
-        } else {
-            nonExclusiveNotificationObservers.append(observer)
-        }
-    }
-
-    func startEvent(
-        named name: Event.Name,
-        timestamp: Date = Date(),
-        overwriteIfExits overwrite: Bool = true,
-        cofigure block: ((Event) -> Void
-    )? = nil) {
-        if activeEventsByName[name] != nil && overwrite == false {
-            return
-        }
-        dispatchQueue.async {
-            let event = Event(name: name)
-            self.activeEventsByName[name] = event
-            block?(event)
-        }
-    }
-
-    func endEvent(named name: Event.Name) {
-        guard let event = activeEventsByName[name] else {
-            return
-        }
-
-        dispatchQueue.async {
-            self.activeEventsByName[name] = nil
-            bt_event_finish(event)
-        }
-    }
 }
 
+#if os(macOS)
+extension EventMonitor.Application {
+    enum State {
+        case active
+        case inactive
+        case occluded
+    }
+}
+#endif
+
 extension EventMonitor {
-    func addExecutableStateObserver(_ execute: @escaping (ExecutableState) -> Void) -> ExecutableStateObserver {
-        let observer = ExecutableStateObserver(eventMonitor: self, execute: execute)
-        executableStateObservers.append(observer)
+    func addObserver(_ execute: @escaping (Observable) -> Void) -> Observer {
+        let observer = Observer(eventMonitor: self, execute: execute)
+        observers.append(observer)
         return observer
     }
 
-    func removeObserver(_ observer: ExecutableStateObserver) {
-        executableStateObservers = executableStateObservers.filter { other in
+    func removeObserver(_ observer: Observer) {
+        observers = observers.filter { other in
             other != observer
         }
     }
 
-    private func notify(executableState: ExecutableState) {
-        for observer in executableStateObservers {
-            observer.dispatch(executableState)
+    private func notify(observable: Observable) {
+        for observer in observers {
+            observer.dispatch(observable)
         }
     }
 }
 
+#if os(iOS) || os(tvOS) || os(macOS)
 private extension EventMonitor {
-    private func subscribeToAppNotifications() {
-
-        #if os(iOS) || os(tvOS) || os(macOS)
-        observeNotification(named: Application.willTerminateNotification, isExclusive: false) { _ in
+    private func monitorApplicationEvents() {
+        let applicationNotificationBlock: (Notification) -> Void = { [weak self] notification in
+            self?.handleApplicationNotification(notification: notification)
         }
 
-        observeNotification(named: Application.didBecomeActiveNotification, isExclusive: false) { [weak self] _ in
-            self?.startEvent(named: .activePeriod)
-            self?.endEvent(named: .inactivePeriod)
-            self?.notify(executableState: .active)
-        }
-
-        observeNotification(named: Application.willResignActiveNotification, isExclusive: false) { [weak self] _ in
-            self?.startEvent(named: .inactivePeriod)
-            self?.endEvent(named: .activePeriod)
-            self?.notify(executableState: .inactive)
-        }
-        #endif
+        var notificationNames: [Notification.Name] = [
+            Application.willTerminateNotification,
+            Application.didBecomeActiveNotification,
+            Application.willResignActiveNotification,
+            Application.didFinishLaunchingNotification
+        ]
 
         #if os(iOS) || os(tvOS)
-        observeNotification(named: UIApplication.willEnterForegroundNotification, isExclusive: false) { _ in
-            self.startEvent(named: .foregroundPeriod)
-            self.endEvent(named: .backgroundPeriod)
-        }
-
-        observeNotification(named: UIApplication.didEnterBackgroundNotification, isExclusive: false) { _ in
-            self.startEvent(named: .backgroundPeriod)
-            self.endEvent(named: .foregroundPeriod)
-        }
-
-        observeNotification(named: UIApplication.didReceiveMemoryWarningNotification, isExclusive: false) { _ in
-            bt_event_register(.memoryWarning)
-        }
+        notificationNames += [
+            Application.willEnterForegroundNotification,
+            Application.didEnterBackgroundNotification,
+            Application.didReceiveMemoryWarningNotification,
+            Application.significantTimeChangeNotification,
+            Application.userDidTakeScreenshotNotification,
+            Application.didChangeStatusBarFrameNotification,
+            Application.didChangeStatusBarOrientationNotification,
+            Application.backgroundRefreshStatusDidChangeNotification,
+            Application.keyboardWillShowNotification,
+            Application.keyboardDidShowNotification,
+            Application.keyboardWillHideNotification,
+            Application.keyboardDidHideNotification,
+            Application.keyboardDidChangeFrameNotification
+        ]
         #endif
+
+        let notificationCenter = NotificationCenter.default
+
+        for notificationName in Set(notificationNames) {
+            let observer = notificationCenter.addObserver(
+                forName: notificationName,
+                object: nil,
+                queue: operationQueue,
+                using: applicationNotificationBlock
+            )
+
+            notificationObservers.append(observer)
+        }
+    }
+
+    private func handleApplicationNotification(notification: Notification) {
+        guard let application = notification.object as? Application else {
+            return
+        }
+
+        let event = Event(name: Event.Name(value: notification.name.rawValue, namespace: .currentOperatingSystem))
+
+        defer {
+            bt_event_register(event)
+        }
+
+        #if os(iOS) || os(tvOS)
+        event.add(attribute: application.applicationState, for: "applicationState")
+        #elseif os(macOS)
+        event.add(attribute: application.occlusionState, for: "occlusionState")
+        #endif
+
+        switch notification.name {
+        case Application.willTerminateNotification:
+            notify(observable: .termination)
+        #if os(macOS)
+        case Application.didBecomeActiveNotification:
+            notify(observable: .applicationState(.active))
+        case Application.willResignActiveNotification:
+            notify(observable: .applicationState(.inactive))
+        case Application.didChangeOcclusionStateNotification:
+            if application.occlusionState.contains(.visible) {
+                notify(observable: .applicationState(.active))
+            } else {
+                notify(observable: .applicationState(.occluded))
+            }
+        #endif
+        default:
+            bt_log_internal("Unhandled application notification:", notification.name)
+        }
     }
 }
+#endif
