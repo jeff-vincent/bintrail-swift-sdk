@@ -17,11 +17,15 @@ struct EventMonitor {
     typealias Application = UIApplication
     #elseif os(macOS)
     typealias Application = NSApplication
+    #elseif os(watchOS)
+    struct Application {}
     #endif
 
     enum Observable {
         case termination
+        #if os(iOS) || os(tvOS) || os(macOS) || os(watchOS)
         case applicationState(Application.State)
+        #endif
     }
 
     final class Observer: Equatable {
@@ -40,7 +44,7 @@ struct EventMonitor {
         }
     }
 
-    #if os(iOS) || os(tvOS) || os(macOS) || os(watchOS)
+    #if os(iOS) || os(tvOS) || os(macOS)
     private static var applicationNotificationObservers: [NSObjectProtocol]?
 
     private static var isMonitoringApplicationNotifications: Bool {
@@ -55,14 +59,18 @@ struct EventMonitor {
     private static let dispatchQueue = DispatchQueue(label: "com.bintrail.eventMonitor")
 }
 
-#if os(macOS)
-extension EventMonitor.Application {
+
+internal extension EventMonitor.Application {
+    #if os(macOS)
     enum State {
         case active
         case inactive
     }
+    #elseif os(watchOS)
+    typealias State = WKApplicationState
+    #endif
 }
-#endif
+
 
 extension EventMonitor {
     static func addObserver(_ execute: @escaping (Observable) -> Void) -> Observer {

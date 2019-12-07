@@ -14,6 +14,9 @@ private typealias ViewController = UIViewController
 private typealias ViewController = NSViewController
 #endif
 
+// TODO: Swizzle WatchKit lifecycle notification events
+// See https://developer.apple.com/documentation/watchkit/wkextensiondelegate
+
 #if !os(Linux)
 internal struct Swizzling {
     static func exchange(selector: Selector, for swizzledSelector: Selector, of cls: AnyClass) {
@@ -35,6 +38,7 @@ internal struct Swizzling {
         }
 
         let cls = ViewController.self
+
         var swizzleMap: [Selector: Selector] = [
             #selector(cls.viewDidLoad): #selector(cls.bintrail_viewDidLoad)
         ]

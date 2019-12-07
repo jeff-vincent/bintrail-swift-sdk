@@ -57,7 +57,11 @@ public class Bintrail {
         return client.ingestKeyPair != nil
     }
 
-    public func configure(keyId: String, secret: String, eventOptions: EventMonitoringOptions = []) throws {
+    public func configure(
+        keyId: String,
+        secret: String,
+        eventOptions: EventMonitoringOptions = []
+    ) throws {
         guard isConfigured == false else {
             return
         }
@@ -95,7 +99,9 @@ public class Bintrail {
             }
         }
 
+        #if os(iOS) || os(tvOS) || os(macOS)
         EventMonitor.monitorApplicationEvents(verbose: eventOptions.contains(.verboseApplicationEvents))
+        #endif
 
         #if os(iOS) || os(tvOS) || os(macOS)
         if eventOptions.contains(.viewControllerLifecycle) {

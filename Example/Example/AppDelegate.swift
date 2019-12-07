@@ -8,6 +8,7 @@
 
 import Bintrail
 import UIKit
+import os.log
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

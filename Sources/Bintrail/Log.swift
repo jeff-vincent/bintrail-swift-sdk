@@ -52,6 +52,10 @@ extension Log: Equatable {
 
 extension Log: Codable {}
 
+private extension DispatchQueue {
+    static let bt_log = DispatchQueue(label: "bintrail.log")
+}
+
 public func bt_log(
     _ items: Any...,
     type: LogType,
@@ -61,23 +65,19 @@ public func bt_log(
     line: Int = #line,
     column: Int = #column
 ) {
-    #if DEBUG
-    let message = items.map { item in
-        String(describing: item)
-    }.joined(separator: terminator)
+    let date = Date()
 
-    print("bt_log [\(type.rawValue.uppercased())]", message)
-    #endif
+    DispatchQueue.bt_log.async {
+        let log = Log(
+            level: type,
+            message: items.map({ String(describing: $0) }).joined(separator: terminator),
+            line: line,
+            column: column,
+            function: String(describing: function),
+            file: String(describing: file),
+            timestamp: date
+        )
 
-    let log = Log(
-        level: type,
-        message: items.map({ String(describing: $0) }).joined(separator: terminator),
-        line: line,
-        column: column,
-        function: String(describing: function),
-        file: String(describing: file),
-        timestamp: Date()
-    )
-
-    Bintrail.shared.currentSession.add(.log(log))
+        Bintrail.shared.currentSession.add(.log(log))
+    }
 }
