@@ -11,12 +11,11 @@ class SysCtlTests: XCTestCase {
         
         let data = try encoder.encode(device)
 
-        guard let string =  String(data: data, encoding: .utf8) else {
+        guard let string = String(data: data, encoding: .utf8) else {
             XCTFail()
             return
         }
 
         print(string)
-
     }
 }

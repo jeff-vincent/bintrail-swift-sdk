@@ -2,7 +2,7 @@
 //  Bintrail.h
 //  Bintrail
 //
-//  Created by David Ask on 2019-12-06.
+//  Created by David Ask on 2019-12-07.
 //  Copyright © 2019 Bintrail AB. All rights reserved.
 //
 

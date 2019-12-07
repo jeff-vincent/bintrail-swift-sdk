@@ -39,6 +39,21 @@
 		B77CC2C5239A8C520041034E /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
 		B77CC2C6239A8C520041034E /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
 		B77CC2C7239A8C520041034E /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* EventMonitor.swift */; };
+		B77CC2D5239B1D3D0041034E /* Bintrail.h in Headers */ = {isa = PBXBuildFile; fileRef = B77CC2D3239B1D3D0041034E /* Bintrail.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B77CC2D9239B1D4D0041034E /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BC23452EB500B1722F /* Bintrail.swift */; };
+		B77CC2DA239B1D4D0041034E /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D22345CFE800B1722F /* Debug.swift */; };
+		B77CC2DB239B1D4D0041034E /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B923452EB500B1722F /* Log.swift */; };
+		B77CC2DC239B1D4D0041034E /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B823452EB500B1722F /* Session.swift */; };
+		B77CC2DD239B1D4D0041034E /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A8EA062346217300507264 /* Event.swift */; };
+		B77CC2DE239B1D4D0041034E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63995598234A6F0100FA9765 /* Device.swift */; };
+		B77CC2DF239B1D4D0041034E /* Executable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6399559A234A6F1400FA9765 /* Executable.swift */; };
+		B77CC2E0239B1D4D0041034E /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D42C239548E8005A0A8D /* Client.swift */; };
+		B77CC2E1239B1D4D0041034E /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4302395A73E005A0A8D /* FileManager+Extensions.swift */; };
+		B77CC2E2239B1D4D0041034E /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */; };
+		B77CC2E3239B1D4D0041034E /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */; };
+		B77CC2E4239B1D4D0041034E /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
+		B77CC2E5239B1D4D0041034E /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
+		B77CC2E6239B1D4D0041034E /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* EventMonitor.swift */; };
 		B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +94,9 @@
 		B77CC2B2239A8C400041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B77CC2B4239A8C400041034E /* Bintrail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bintrail.h; sourceTree = "<group>"; };
 		B77CC2B5239A8C400041034E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B77CC2D1239B1D3D0041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B77CC2D3239B1D3D0041034E /* Bintrail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bintrail.h; sourceTree = "<group>"; };
+		B77CC2D4239B1D3D0041034E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7B8AC21239945560021EF92 /* Sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sysctl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,6 +117,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B77CC2AF239A8C400041034E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77CC2CE239B1D3D0041034E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -187,6 +212,7 @@
 				633148B523452EB500B1722F /* Sources */,
 				633148BD23452EB500B1722F /* Tests */,
 				B77CC2B3239A8C400041034E /* Bintrail */,
+				B77CC2D2239B1D3D0041034E /* Bintrail */,
 				63731DB9234495860014E7A3 /* Products */,
 				63E8367423468A9D009A4838 /* Frameworks */,
 			);
@@ -198,6 +224,7 @@
 				63731DB8234495860014E7A3 /* Bintrail.framework */,
 				63B00E7F23452E2200B63A81 /* BintrailTests.xctest */,
 				B77CC2B2239A8C400041034E /* Bintrail.framework */,
+				B77CC2D1239B1D3D0041034E /* Bintrail.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,6 +248,15 @@
 			path = Bintrail;
 			sourceTree = "<group>";
 		};
+		B77CC2D2239B1D3D0041034E /* Bintrail */ = {
+			isa = PBXGroup;
+			children = (
+				B77CC2D3239B1D3D0041034E /* Bintrail.h */,
+				B77CC2D4239B1D3D0041034E /* Info.plist */,
+			);
+			path = Bintrail;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -237,6 +273,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B77CC2B6239A8C400041034E /* Bintrail.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77CC2CC239B1D3D0041034E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B77CC2D5239B1D3D0041034E /* Bintrail.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +343,24 @@
 			productReference = B77CC2B2239A8C400041034E /* Bintrail.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		B77CC2D0239B1D3D0041034E /* Bintrail watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B77CC2D6239B1D3D0041034E /* Build configuration list for PBXNativeTarget "Bintrail watchOS" */;
+			buildPhases = (
+				B77CC2CC239B1D3D0041034E /* Headers */,
+				B77CC2CD239B1D3D0041034E /* Sources */,
+				B77CC2CE239B1D3D0041034E /* Frameworks */,
+				B77CC2CF239B1D3D0041034E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bintrail watchOS";
+			productName = Bintrail;
+			productReference = B77CC2D1239B1D3D0041034E /* Bintrail.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -319,6 +381,9 @@
 					B77CC2B1239A8C400041034E = {
 						CreatedOnToolsVersion = 11.2.1;
 					};
+					B77CC2D0239B1D3D0041034E = {
+						CreatedOnToolsVersion = 11.2.1;
+					};
 				};
 			};
 			buildConfigurationList = 63731DB2234495860014E7A3 /* Build configuration list for PBXProject "Bintrail" */;
@@ -337,6 +402,7 @@
 				63731DB7234495860014E7A3 /* Bintrail iOS */,
 				63B00E7E23452E2200B63A81 /* BintrailTests */,
 				B77CC2B1239A8C400041034E /* Bintrail macOS */,
+				B77CC2D0239B1D3D0041034E /* Bintrail watchOS */,
 			);
 		};
 /* End PBXProject section */
@@ -357,6 +423,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B77CC2B0239A8C400041034E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77CC2CF239B1D3D0041034E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -453,6 +526,27 @@
 				B77CC2C7239A8C520041034E /* EventMonitor.swift in Sources */,
 				B77CC2BE239A8C520041034E /* Event.swift in Sources */,
 				B77CC2C2239A8C520041034E /* FileManager+Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B77CC2CD239B1D3D0041034E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B77CC2DC239B1D4D0041034E /* Session.swift in Sources */,
+				B77CC2D9239B1D4D0041034E /* Bintrail.swift in Sources */,
+				B77CC2E5239B1D4D0041034E /* Sysctl.swift in Sources */,
+				B77CC2DA239B1D4D0041034E /* Debug.swift in Sources */,
+				B77CC2DF239B1D4D0041034E /* Executable.swift in Sources */,
+				B77CC2E2239B1D4D0041034E /* JSONEncoder+Extensions.swift in Sources */,
+				B77CC2DE239B1D4D0041034E /* Device.swift in Sources */,
+				B77CC2DB239B1D4D0041034E /* Log.swift in Sources */,
+				B77CC2E4239B1D4D0041034E /* Queue.swift in Sources */,
+				B77CC2E3239B1D4D0041034E /* JSONDecoder+Extensions.swift in Sources */,
+				B77CC2E0239B1D4D0041034E /* Client.swift in Sources */,
+				B77CC2E6239B1D4D0041034E /* EventMonitor.swift in Sources */,
+				B77CC2DD239B1D4D0041034E /* Event.swift in Sources */,
+				B77CC2E1239B1D4D0041034E /* FileManager+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,8 +749,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.BintrailTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Debug;
 		};
@@ -673,8 +770,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.BintrailTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Release;
 		};
@@ -731,6 +831,61 @@
 			};
 			name = Release;
 		};
+		B77CC2D7239B1D3D0041034E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Bintrail/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Bintrail;
+				PRODUCT_NAME = Bintrail;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.1;
+			};
+			name = Debug;
+		};
+		B77CC2D8239B1D3D0041034E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Bintrail/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Bintrail;
+				PRODUCT_NAME = Bintrail;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -766,6 +921,15 @@
 			buildConfigurations = (
 				B77CC2B8239A8C400041034E /* Debug */,
 				B77CC2B9239A8C400041034E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B77CC2D6239B1D3D0041034E /* Build configuration list for PBXNativeTarget "Bintrail watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B77CC2D7239B1D3D0041034E /* Debug */,
+				B77CC2D8239B1D3D0041034E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

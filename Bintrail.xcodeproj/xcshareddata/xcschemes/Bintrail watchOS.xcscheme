@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B77CC2B1239A8C400041034E"
-               BuildableName = "Bintrail.framework"
-               BlueprintName = "Bintrail macOS"
+               BlueprintIdentifier = "B77CC2D0239B1D3D0041034E"
+               BuildableName = "Bintrail_watchOS.framework"
+               BlueprintName = "Bintrail watchOS"
                ReferencedContainer = "container:Bintrail.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -60,9 +60,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B77CC2B1239A8C400041034E"
-            BuildableName = "Bintrail.framework"
-            BlueprintName = "Bintrail macOS"
+            BlueprintIdentifier = "B77CC2D0239B1D3D0041034E"
+            BuildableName = "Bintrail_watchOS.framework"
+            BlueprintName = "Bintrail watchOS"
             ReferencedContainer = "container:Bintrail.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

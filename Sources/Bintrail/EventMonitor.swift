@@ -8,10 +8,14 @@ import UIKit
 import AppKit
 #endif
 
+#if canImport(WatchKit)
+import WatchKit
+#endif
+
 final class EventMonitor {
-    #if canImport(UIKit)
+    #if os(iOS) || os(tvOS)
     private typealias Application = UIApplication
-    #elseif canImport(AppKit)
+    #elseif os(macOS)
     private typealias Application = NSApplication
     #endif
 
@@ -125,6 +129,8 @@ extension EventMonitor {
 
 private extension EventMonitor {
     private func subscribeToAppNotifications() {
+
+        #if os(iOS) || os(tvOS) || os(macOS)
         observeNotification(named: Application.willTerminateNotification, isExclusive: false) { _ in
         }
 
@@ -139,8 +145,9 @@ private extension EventMonitor {
             self?.endEvent(named: .activePeriod)
             self?.notify(executableState: .inactive)
         }
+        #endif
 
-        #if canImport(UIKit)
+        #if os(iOS) || os(tvOS)
         observeNotification(named: UIApplication.willEnterForegroundNotification, isExclusive: false) { _ in
             self.startEvent(named: .foregroundPeriod)
             self.endEvent(named: .backgroundPeriod)

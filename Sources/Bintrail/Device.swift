@@ -4,6 +4,42 @@ import Foundation
 import UIKit
 #endif
 
+#if canImport(WatchKit)
+import WatchKit
+#endif
+
+struct SystemVersionPlist: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case productBuildVersion = "ProductBuildVersion"
+        case productVersion = "ProductVersion"
+        case productName = "ProductName"
+    }
+
+    let productBuildVersion: String
+    let productVersion: String
+    let productName: String
+}
+
+private extension OperatingSystemVersion {
+    var stringValue: String {
+        return [String(majorVersion), String(minorVersion), String(patchVersion)].joined(separator: ".")
+    }
+}
+
+private extension ProcessInfo {
+    var operatingSystemBuild: String? {
+        let versionString = ProcessInfo.processInfo.operatingSystemVersionString
+
+        guard
+            let startIndex = versionString.range(of: "(Build ")?.upperBound,
+            let endIndex = versionString.lastIndex(of: ")") else {
+            return nil
+        }
+
+        return String(versionString[startIndex ..< endIndex])
+    }
+}
+
 struct Device: Codable {
     struct Processor: Codable {
         let type: Int32?
@@ -41,20 +77,41 @@ struct Device: Codable {
 
 internal extension Device {
     static var current: Device {
+        let processInfo = ProcessInfo.processInfo
+
         let identifier: String?
         let isSimulated: Bool
-        let platformName: String?
         let name: String?
+        let platform: Platform
 
-        #if canImport(UIKit)
+        #if os(iOS) || os(tvOS)
         let uiDevice = UIDevice.current
         identifier = (uiDevice.identifierForVendor ?? UUID()).uuidString
-        platformName = uiDevice.systemName
         name = uiDevice.name
-        #else
+        platform = Platform(
+            name: uiDevice.systemName,
+            versionCode: processInfo.operatingSystemBuild,
+            versionName: uiDevice.systemVersion
+        )
+        #elseif os(watchOS)
+        let device = WKInterfaceDevice.current()
         identifier = nil
-        platformName = Sysctl.operatingSystemType
-        name = Sysctl.hostName
+        name = device.name
+        platform = Platform(
+            name: "watchOS",
+            versionCode: processInfo.operatingSystemBuild,
+            versionName: device.systemVersion
+        )
+        #elseif os(macOS)
+        identifier = nil
+        name = Host.current().name
+        platform = Platform(
+            name: "macOS",
+            versionCode: processInfo.operatingSystemBuild,
+            versionName: processInfo.operatingSystemVersion.stringValue
+        )
+        #else
+        // TODO: Linux
         #endif
 
         #if targetEnvironment(simulator)
@@ -67,11 +124,7 @@ internal extension Device {
             identifier: identifier,
             machine: Sysctl.machine,
             model: Sysctl.model,
-            platform: Device.Platform(
-                name: platformName,
-                versionCode: Sysctl.operatingSystemVersion,
-                versionName: Sysctl.operatingSystemRelease
-            ),
+            platform: platform,
             name: name,
             localeIdentifier: Locale.current.identifier,
             timeZoneIdentifier: TimeZone.current.identifier,
