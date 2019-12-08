@@ -9,7 +9,7 @@ internal extension JSONEncoder {
             encoder.outputFormatting = [.prettyPrinted]
         #endif
 
-        if #available(iOS 11, macOS 10.13, *) {
+        if #available(iOS 11, macOS 10.13, watchOS 4.0, tvOS 11.0, *) {
             encoder.outputFormatting.insert(.sortedKeys)
         }
 

@@ -17,9 +17,8 @@ public class Bintrail {
             self.rawValue = rawValue
         }
 
-        public static let verboseApplicationEvents = EventMonitoringOptions(rawValue: 1 << 0)
-
         #if os(iOS) || os(tvOS) || os(macOS)
+        public static let monitorApplicationEvents = EventMonitoringOptions(rawValue: 1 << 0)
         public static let viewControllerLifecycle = EventMonitoringOptions(rawValue: 2 << 0)
         #endif
     }
@@ -36,8 +35,6 @@ public class Bintrail {
     private var notificationObservers: [NSObjectProtocol] = []
 
     private let operationQueue = OperationQueue()
-
-    private var applicationStateObserver: EventMonitor.Observer?
 
     private var timer: DispatchSourceTimer?
 
@@ -78,32 +75,11 @@ public class Bintrail {
 
         bt_log("Bintrail SDK configured", type: .trace)
 
-        applicationStateObserver = EventMonitor.addObserver { [weak self] state in
-            var shouldWriteEnqueuedEntries = false
-
-            switch state {
-            case .applicationState(let applicationState):
-                if case .inactive = applicationState {
-                    shouldWriteEnqueuedEntries = true
-                }
-            case .termination:
-                shouldWriteEnqueuedEntries = true
-            }
-
-            if shouldWriteEnqueuedEntries {
-                do {
-                    try self?.currentSession.writeEnqueuedEntriesToFile()
-                } catch {
-                    bt_log_internal("Failed to write enqueued entries to file when resigning active:", error)
-                }
-            }
+        #if os(iOS) || os(tvOS) || os(macOS)
+        if eventOptions.contains(.monitorApplicationEvents) {
+            ApplicationEventMonitor.install()
         }
 
-        #if os(iOS) || os(tvOS) || os(macOS)
-        EventMonitor.monitorApplicationEvents(verbose: eventOptions.contains(.verboseApplicationEvents))
-        #endif
-
-        #if os(iOS) || os(tvOS) || os(macOS)
         if eventOptions.contains(.viewControllerLifecycle) {
             Swizzling.applyToViewControllers()
         }
