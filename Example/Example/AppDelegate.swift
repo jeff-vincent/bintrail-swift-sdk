@@ -8,7 +8,6 @@
 
 import Bintrail
 import UIKit
-import os.log
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,12 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try Bintrail.shared.configure(
                 keyId: "Z8AE62UBRPX6C56DWRGH",
                 secret: "H9gcbN0wKuhEFiya8747vvd6LkAwGHCXmXvC9rpI",
-                eventOptions: [
-                    .verboseApplicationEvents,
-                    .viewControllerLifecycle
+                options: [
+                    .includeApplicationNotifications,
+                    .includeViewControllerLifecycle
                 ]
             )
-            
+
         } catch {
             print("Failed to configure Bintrail", error)
         }
