@@ -76,3 +76,6 @@ bt_log("Application launched successfully!", .info)
 
 
 
+## License
+
+Bintrail Swift SDK is available under the MIT license. See the LICENSE file for more info.
