@@ -1,16 +1,6 @@
 # Bintrail Swift SDK
 [Bintrail](https://www.bintrail.com) allows you to remotely gather, search and analyze your application logs in the cloud.
 
-------
-
-**🚨 Bintrail is currently in ALPHA**
-
-Please don't use Bintrail in production just yet. Do use Bintrail in your non-released applications for evaulation purposes.
-
-------
-
-
-
 ## Requirements
 
 Bintrail requires Swift 4.0 or later, Objective-C, compatible with following platform versions or later:
