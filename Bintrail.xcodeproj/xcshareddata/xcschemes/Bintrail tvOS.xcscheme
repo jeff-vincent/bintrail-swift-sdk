@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B77CC2FB239C626B0041034E"
-               BuildableName = "Bintrail_tvOS.framework"
+               BuildableName = "Bintrail.framework"
                BlueprintName = "Bintrail tvOS"
                ReferencedContainer = "container:Bintrail.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B77CC2FB239C626B0041034E"
-            BuildableName = "Bintrail_tvOS.framework"
+            BuildableName = "Bintrail.framework"
             BlueprintName = "Bintrail tvOS"
             ReferencedContainer = "container:Bintrail.xcodeproj">
          </BuildableReference>
