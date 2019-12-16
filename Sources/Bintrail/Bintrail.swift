@@ -77,7 +77,7 @@ public class Bintrail {
 
         #if os(iOS) || os(tvOS) || os(macOS)
         if options.contains(.includeApplicationNotifications) {
-            ApplicationEventMonitor.install()
+            ApplicationNotificationMonitor.install()
         }
 
         if options.contains(.includeViewControllerLifecycle) {

@@ -20,7 +20,7 @@
 		B740D4332395AF5E005A0A8D /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */; };
 		B740D4352395AFDD005A0A8D /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */; };
 		B740D4372395BDB5005A0A8D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
-		B77CC2AC239A7B9C0041034E /* ApplicationEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* ApplicationEventMonitor.swift */; };
+		B77CC2AC239A7B9C0041034E /* ApplicationNotificationMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* ApplicationNotificationMonitor.swift */; };
 		B77CC2BA239A8C520041034E /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BC23452EB500B1722F /* Bintrail.swift */; };
 		B77CC2BB239A8C520041034E /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D22345CFE800B1722F /* Debug.swift */; };
 		B77CC2BC239A8C520041034E /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B923452EB500B1722F /* Log.swift */; };
@@ -34,7 +34,7 @@
 		B77CC2C4239A8C520041034E /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */; };
 		B77CC2C5239A8C520041034E /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
 		B77CC2C6239A8C520041034E /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
-		B77CC2C7239A8C520041034E /* ApplicationEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* ApplicationEventMonitor.swift */; };
+		B77CC2C7239A8C520041034E /* ApplicationNotificationMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* ApplicationNotificationMonitor.swift */; };
 		B77CC2D9239B1D4D0041034E /* Bintrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148BC23452EB500B1722F /* Bintrail.swift */; };
 		B77CC2DA239B1D4D0041034E /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148D22345CFE800B1722F /* Debug.swift */; };
 		B77CC2DB239B1D4D0041034E /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633148B923452EB500B1722F /* Log.swift */; };
@@ -48,7 +48,6 @@
 		B77CC2E3239B1D4D0041034E /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */; };
 		B77CC2E4239B1D4D0041034E /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
 		B77CC2E5239B1D4D0041034E /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
-		B77CC2E6239B1D4D0041034E /* ApplicationEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* ApplicationEventMonitor.swift */; };
 		B77CC2E8239BB14B0041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
 		B77CC2E9239BB14B0041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
 		B77CC2EA239BB14B0041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
@@ -65,7 +64,7 @@
 		B77CC30E239C62930041034E /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */; };
 		B77CC30F239C62930041034E /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4362395BDB5005A0A8D /* Queue.swift */; };
 		B77CC310239C62930041034E /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
-		B77CC311239C62930041034E /* ApplicationEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* ApplicationEventMonitor.swift */; };
+		B77CC311239C62930041034E /* ApplicationNotificationMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* ApplicationNotificationMonitor.swift */; };
 		B77CC312239C62930041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
 		B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
 /* End PBXBuildFile section */
@@ -89,7 +88,7 @@
 		B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
 		B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Extensions.swift"; sourceTree = "<group>"; };
 		B740D4362395BDB5005A0A8D /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
-		B77CC2AA239A7B680041034E /* ApplicationEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationEventMonitor.swift; sourceTree = "<group>"; };
+		B77CC2AA239A7B680041034E /* ApplicationNotificationMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationNotificationMonitor.swift; sourceTree = "<group>"; };
 		B77CC2B2239A8C400041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B77CC2D1239B1D3D0041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B77CC2E7239BB14B0041034E /* Swizzling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swizzling.swift; sourceTree = "<group>"; };
@@ -170,7 +169,7 @@
 				B740D4342395AFDD005A0A8D /* JSONDecoder+Extensions.swift */,
 				B740D4362395BDB5005A0A8D /* Queue.swift */,
 				B7B8AC21239945560021EF92 /* Sysctl.swift */,
-				B77CC2AA239A7B680041034E /* ApplicationEventMonitor.swift */,
+				B77CC2AA239A7B680041034E /* ApplicationNotificationMonitor.swift */,
 				B77CC2E7239BB14B0041034E /* Swizzling.swift */,
 			);
 			path = Bintrail;
@@ -443,7 +442,7 @@
 				63A8EA072346217300507264 /* Event.swift in Sources */,
 				B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */,
 				63995599234A6F0100FA9765 /* Device.swift in Sources */,
-				B77CC2AC239A7B9C0041034E /* ApplicationEventMonitor.swift in Sources */,
+				B77CC2AC239A7B9C0041034E /* ApplicationNotificationMonitor.swift in Sources */,
 				B77CC2E8239BB14B0041034E /* Swizzling.swift in Sources */,
 				B740D4352395AFDD005A0A8D /* JSONDecoder+Extensions.swift in Sources */,
 				B740D4332395AF5E005A0A8D /* JSONEncoder+Extensions.swift in Sources */,
@@ -471,7 +470,7 @@
 				B77CC2C5239A8C520041034E /* Queue.swift in Sources */,
 				B77CC2C4239A8C520041034E /* JSONDecoder+Extensions.swift in Sources */,
 				B77CC2C1239A8C520041034E /* Client.swift in Sources */,
-				B77CC2C7239A8C520041034E /* ApplicationEventMonitor.swift in Sources */,
+				B77CC2C7239A8C520041034E /* ApplicationNotificationMonitor.swift in Sources */,
 				B77CC2BE239A8C520041034E /* Event.swift in Sources */,
 				B77CC2C2239A8C520041034E /* FileManager+Extensions.swift in Sources */,
 			);
@@ -493,7 +492,6 @@
 				B77CC2E4239B1D4D0041034E /* Queue.swift in Sources */,
 				B77CC2E3239B1D4D0041034E /* JSONDecoder+Extensions.swift in Sources */,
 				B77CC2E0239B1D4D0041034E /* Client.swift in Sources */,
-				B77CC2E6239B1D4D0041034E /* ApplicationEventMonitor.swift in Sources */,
 				B77CC2DD239B1D4D0041034E /* Event.swift in Sources */,
 				B77CC2E1239B1D4D0041034E /* FileManager+Extensions.swift in Sources */,
 			);
@@ -515,7 +513,7 @@
 				B77CC30F239C62930041034E /* Queue.swift in Sources */,
 				B77CC30E239C62930041034E /* JSONDecoder+Extensions.swift in Sources */,
 				B77CC30B239C62930041034E /* Client.swift in Sources */,
-				B77CC311239C62930041034E /* ApplicationEventMonitor.swift in Sources */,
+				B77CC311239C62930041034E /* ApplicationNotificationMonitor.swift in Sources */,
 				B77CC308239C62930041034E /* Event.swift in Sources */,
 				B77CC30C239C62930041034E /* FileManager+Extensions.swift in Sources */,
 			);

@@ -1,3 +1,4 @@
+#if os(iOS) || os(tvOS) || os(macOS)
 import Foundation
 
 #if canImport(UIKit)
@@ -8,14 +9,12 @@ import UIKit
 import AppKit
 #endif
 
-struct ApplicationEventMonitor {
-    #if os(iOS) || os(tvOS) || os(macOS)
+struct ApplicationNotificationMonitor {
     private static var applicationNotificationObservers: [NSObjectProtocol]?
 
     private static var isMonitoringApplicationNotifications: Bool {
         return applicationNotificationObservers != nil
     }
-    #endif
 
     private static let operationQueue: OperationQueue = {
         let operationQueue = OperationQueue()
@@ -28,7 +27,7 @@ struct ApplicationEventMonitor {
     static func install() {
         let applicationNotificationBlock: (Notification) -> Void = { notification in
             DispatchQueue.main.async {
-                ApplicationEventMonitor.handleApplicationNotification(notification: notification)
+                ApplicationNotificationMonitor.handleApplicationNotification(notification: notification)
             }
         }
 
@@ -53,9 +52,7 @@ struct ApplicationEventMonitor {
     }
 }
 
-#if os(iOS) || os(tvOS) || os(macOS)
-
-private extension ApplicationEventMonitor {
+private extension ApplicationNotificationMonitor {
     #if os(macOS)
     static var macOSApplicationNotificationNames: Set<Notification.Name> {
         [
@@ -115,9 +112,8 @@ private extension ApplicationEventMonitor {
             .UIApplicationDidReceiveMemoryWarning,
             .UIApplicationSignificantTimeChange,
             .UIApplicationUserDidTakeScreenshot
-            
         ]
-        
+
         #if os(iOS)
         result += [
             .UIApplicationDidChangeStatusBarFrame,
@@ -129,7 +125,7 @@ private extension ApplicationEventMonitor {
             .UIKeyboardDidChangeFrame
         ]
         #endif
-        
+
         #endif
 
         return Set(result)
