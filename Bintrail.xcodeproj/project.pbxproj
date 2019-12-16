@@ -284,6 +284,7 @@
 			buildConfigurationList = B77CC2D6239B1D3D0041034E /* Build configuration list for PBXNativeTarget "Bintrail watchOS" */;
 			buildPhases = (
 				B77CC2CC239B1D3D0041034E /* Headers */,
+				B7C6D7FF23A7BAF00094108E /* Swiftlint */,
 				B77CC2CD239B1D3D0041034E /* Sources */,
 				B77CC2CE239B1D3D0041034E /* Frameworks */,
 				B77CC2CF239B1D3D0041034E /* Resources */,
@@ -302,6 +303,7 @@
 			buildConfigurationList = B77CC301239C626B0041034E /* Build configuration list for PBXNativeTarget "Bintrail tvOS" */;
 			buildPhases = (
 				B77CC2F7239C626B0041034E /* Headers */,
+				B7C6D80023A7BAFD0094108E /* Swiftlint */,
 				B77CC2F8239C626B0041034E /* Sources */,
 				B77CC2F9239C626B0041034E /* Frameworks */,
 				B77CC2FA239C626B0041034E /* Resources */,
@@ -412,6 +414,42 @@
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		B77CC2C8239A8C680041034E /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		B7C6D7FF23A7BAF00094108E /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		B7C6D80023A7BAFD0094108E /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
