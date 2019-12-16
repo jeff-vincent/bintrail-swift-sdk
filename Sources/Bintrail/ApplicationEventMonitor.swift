@@ -93,7 +93,11 @@ private extension ApplicationEventMonitor {
             UIApplication.didEnterBackgroundNotification,
             UIApplication.didReceiveMemoryWarningNotification,
             UIApplication.significantTimeChangeNotification,
-            UIApplication.userDidTakeScreenshotNotification,
+            UIApplication.userDidTakeScreenshotNotification
+        ]
+
+        #if os(iOS)
+        result += [
             UIApplication.didChangeStatusBarFrameNotification,
             UIApplication.didChangeStatusBarOrientationNotification,
             UIApplication.keyboardWillShowNotification,
@@ -102,13 +106,20 @@ private extension ApplicationEventMonitor {
             UIApplication.keyboardDidHideNotification,
             UIApplication.keyboardDidChangeFrameNotification
         ]
+        #endif
+
         #else
         result += [
             .UIApplicationWillEnterForeground,
             .UIApplicationDidEnterBackground,
             .UIApplicationDidReceiveMemoryWarning,
             .UIApplicationSignificantTimeChange,
-            .UIApplicationUserDidTakeScreenshot,
+            .UIApplicationUserDidTakeScreenshot
+            
+        ]
+        
+        #if os(iOS)
+        result += [
             .UIApplicationDidChangeStatusBarFrame,
             .UIApplicationDidChangeStatusBarOrientation,
             .UIKeyboardWillShow,
@@ -117,6 +128,8 @@ private extension ApplicationEventMonitor {
             .UIKeyboardDidHide,
             .UIKeyboardDidChangeFrame
         ]
+        #endif
+        
         #endif
 
         return Set(result)
