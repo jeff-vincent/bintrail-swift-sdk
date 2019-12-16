@@ -1,3 +1,5 @@
+![Build Status](https://github.com/bintrail/bintrail-swift-sdk/workflows/Build/badge.svg)
+
 # Bintrail Swift SDK
 [Bintrail](https://www.bintrail.com) allows you to remotely gather, search and analyze your application logs in the cloud.
 
