@@ -249,11 +249,6 @@ internal extension Client {
                 }
 
                 guard (200 ..< 300).contains(httpUrlResponse.statusCode) else {
-                    // TODO: Remove me
-                    if let data = data, let string = String(data: data, encoding: .utf8) {
-                        print(string)
-                    }
-
                     throw ClientError.unexpectedResponseStatus(httpUrlResponse.statusCode)
                 }
 
