@@ -118,7 +118,7 @@ public class Bintrail {
                 self.isSending = false
 
                 if !errors.isEmpty {
-                    bt_log_internal("Errors occurred while sending sessions:", errors)
+                    bt_log_internal("Errors occurred while sending sessions: \(errors)")
                 }
 
                 if continuous {

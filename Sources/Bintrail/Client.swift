@@ -236,7 +236,7 @@ internal extension Client {
         urlRequest: URLRequest,
         completion: @escaping (Result<(HTTPURLResponse, Data), ClientError>) -> Void
     ) {
-        bt_log_internal("Sending URLRequest", urlRequest)
+        bt_log_internal("Sending URLRequest \(urlRequest)")
 
         urlSession.dataTask(with: urlRequest) { data, urlResponse, error in
             do {

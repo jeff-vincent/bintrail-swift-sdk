@@ -78,27 +78,45 @@ struct Sysctl {
     }
 
     static func date(for keys: [Int32]) throws -> Date {
-        let timeValue = try self.timeValue(for: keys)
+        let timeValue = try self.time(for: keys)
         return Date(timeIntervalSince1970: Double(timeValue.tv_sec) + Double(timeValue.tv_usec) / 1_000 / 1_000)
     }
 
-    static func timeValue(for keys: [Int32]) throws -> timeval {
-        var keys = keys
-
+    static func time(for keys: [Int32]) throws -> timeval {
         var data = timeval()
 
-        var size = try requiredSize(for: keys)
-
-        guard sysctl(&keys, UInt32(keys.count), &data, &size, nil, 0) == 0 else {
-            throw Error(errno: errno)
-        }
+        try populate(value: &data, for: keys)
 
         return data
+    }
+
+    static func populate<T>(value: inout T, for keys: [Int32]) throws {
+        var size = try requiredSize(for: keys)
+        var keys = keys
+
+        guard sysctl(&keys, UInt32(keys.count), &value, &size, nil, 0) == 0 else {
+            throw Error(errno: errno)
+        }
     }
 
     static var hostName: String? {
         try? Sysctl.string(for: [CTL_KERN, KERN_HOSTNAME])
     }
+
+    static let isDebuggerAttached: Bool? = {
+        var data = kinfo_proc()
+
+        do {
+            try populate(
+                value: &data,
+                for: [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]
+            )
+
+            return data.kp_proc.p_flag & P_TRACED != 0
+        } catch {
+            return nil
+        }
+    }()
 
     static var machine: String? {
         #if targetEnvironment(simulator)

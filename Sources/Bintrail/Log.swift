@@ -1,6 +1,6 @@
 import Foundation
 
-public enum LogType: String, Codable, CaseIterable {
+public enum LogType: String, Codable, CaseIterable, CustomStringConvertible, Comparable {
     case trace
     case debug
     case info
@@ -23,6 +23,14 @@ public enum LogType: String, Codable, CaseIterable {
         case .fatal:
             return 6
         }
+    }
+
+    public var description: String {
+        rawValue.uppercased()
+    }
+
+    public static func < (lhs: LogType, rhs: LogType) -> Bool {
+        return lhs.intValue < rhs.intValue
     }
 }
 
@@ -52,32 +60,25 @@ extension Log: Equatable {
 
 extension Log: Codable {}
 
-private extension DispatchQueue {
-    static let bintrailLog = DispatchQueue(label: "bintrail.log")
-}
-
 public func bt_log(
-    _ items: Any...,
+    _ item: @autoclosure () -> Any,
     type: LogType,
-    terminator: String = " ",
     file: StaticString = #file,
     function: StaticString = #function,
     line: Int = #line,
     column: Int = #column
 ) {
-    let date = Date()
+    let message = String(describing: item())
 
-    DispatchQueue.bintrailLog.async {
-        let log = Log(
-            level: type,
-            message: items.map({ String(describing: $0) }).joined(separator: terminator),
-            line: line,
-            column: column,
-            function: String(describing: function),
-            file: String(describing: file),
-            timestamp: date
-        )
+    let log = Log(
+        level: type,
+        message: message,
+        line: line,
+        column: column,
+        function: String(describing: function),
+        file: String(describing: file),
+        timestamp: Date()
+    )
 
-        Bintrail.shared.currentSession.add(.log(log))
-    }
+    Bintrail.shared.currentSession.add(.log(log))
 }

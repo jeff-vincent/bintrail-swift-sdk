@@ -12,6 +12,10 @@ let package = Package(
     targets: [
         .target(
             name: "Bintrail"
+        ),
+        .testTarget(
+            name: "BintrailTests",
+            dependencies: ["Bintrail"]
         )
     ]
 )

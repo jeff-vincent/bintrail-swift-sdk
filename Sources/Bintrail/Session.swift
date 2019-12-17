@@ -22,6 +22,10 @@ public final class Session {
     }
 
     internal func add(_ entry: Entry) {
+        if Sysctl.isDebuggerAttached == true {
+            print(String(describing: entry))
+        }
+
         dispatchQueue.async {
             // Enqueue new entry
             self.entries.enqueue(entry)
@@ -77,7 +81,7 @@ internal extension Session {
         case event
     }
 
-    enum Entry {
+    enum Entry: CustomDebugStringConvertible {
         case log(Log)
         case event(Event)
 
@@ -86,6 +90,32 @@ internal extension Session {
             case .log: return .log
             case .event: return .event
             }
+        }
+
+        var timestamp: Date {
+            switch self {
+            case .log(let value):
+                return value.timestamp
+            case .event(let value):
+                return value.timestamp
+            }
+        }
+
+        var debugDescription: String {
+            var components: [String] = [
+                String(describing: timestamp)
+            ]
+
+            switch self {
+            case .event(let value):
+                components.append(String(format: "[EVENT (%@)]", value.name.namespace.rawValue))
+                components.append(value.name.value)
+            case .log(let value):
+                components.append(String(format: "[%@]", value.level.description))
+                components.append(value.message)
+            }
+
+            return components.joined(separator: " ")
         }
     }
 }
@@ -246,7 +276,7 @@ private extension Session {
         try fileManager.createDirectoryIfNeeded(at: directoryUrl, withIntermediateDirectories: true)
 
         if !fileManager.fileExists(atPath: entriesFileUrl.path) {
-            bt_log_internal("Creating entry file at ", entriesFileUrl.relativePath)
+            bt_log_internal("Creating entry file at \(entriesFileUrl.relativePath)")
             fileManager.createFile(atPath: entriesFileUrl.path, contents: Data(), attributes: nil)
         }
 

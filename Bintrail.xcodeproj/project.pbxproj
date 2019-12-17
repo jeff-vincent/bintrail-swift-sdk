@@ -67,7 +67,19 @@
 		B77CC311239C62930041034E /* ApplicationNotificationMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* ApplicationNotificationMonitor.swift */; };
 		B77CC312239C62930041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
 		B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
+		B7F7233C23A8001700825C5F /* Bintrail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63731DB8234495860014E7A3 /* Bintrail.framework */; };
+		B7F7234823A8052300825C5F /* SysctlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F7234723A8052300825C5F /* SysctlTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B7F7233D23A8001700825C5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 63731DB7234495860014E7A3;
+			remoteInfo = "Bintrail iOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		633148B123452EB500B1722F /* Bintrail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bintrail.h; sourceTree = "<group>"; };
@@ -94,6 +106,9 @@
 		B77CC2E7239BB14B0041034E /* Swizzling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swizzling.swift; sourceTree = "<group>"; };
 		B77CC2FC239C626B0041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7B8AC21239945560021EF92 /* Sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sysctl.swift; sourceTree = "<group>"; };
+		B7F7233723A8001700825C5F /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7F7233B23A8001700825C5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B7F7234723A8052300825C5F /* SysctlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SysctlTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,12 +140,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B7F7233423A8001700825C5F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7F7233C23A8001700825C5F /* Bintrail.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		633148AF23452EB500B1722F /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				B7F7234423A8005300825C5F /* BintrailTests */,
 				633148B023452EB500B1722F /* Bintrail */,
 			);
 			path = Framework;
@@ -180,6 +204,7 @@
 			children = (
 				633148AF23452EB500B1722F /* Framework */,
 				633148B523452EB500B1722F /* Sources */,
+				B7F7233823A8001700825C5F /* Tests */,
 				63731DB9234495860014E7A3 /* Products */,
 				63E8367423468A9D009A4838 /* Frameworks */,
 			);
@@ -192,6 +217,7 @@
 				B77CC2B2239A8C400041034E /* Bintrail.framework */,
 				B77CC2D1239B1D3D0041034E /* Bintrail.framework */,
 				B77CC2FC239C626B0041034E /* Bintrail.framework */,
+				B7F7233723A8001700825C5F /* Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,6 +230,30 @@
 				63E8367523468A9E009A4838 /* libc++.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B7F7233823A8001700825C5F /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				B7F7234523A8007B00825C5F /* BintrailTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		B7F7234423A8005300825C5F /* BintrailTests */ = {
+			isa = PBXGroup;
+			children = (
+				B7F7233B23A8001700825C5F /* Info.plist */,
+			);
+			path = BintrailTests;
+			sourceTree = "<group>";
+		};
+		B7F7234523A8007B00825C5F /* BintrailTests */ = {
+			isa = PBXGroup;
+			children = (
+				B7F7234723A8052300825C5F /* SysctlTests.swift */,
+			);
+			path = BintrailTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -317,13 +367,31 @@
 			productReference = B77CC2FC239C626B0041034E /* Bintrail.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		B7F7233623A8001700825C5F /* Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7F7234123A8001700825C5F /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildPhases = (
+				B7F7233323A8001700825C5F /* Sources */,
+				B7F7233423A8001700825C5F /* Frameworks */,
+				B7F7233523A8001700825C5F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B7F7233E23A8001700825C5F /* PBXTargetDependency */,
+			);
+			name = Tests;
+			productName = Tests;
+			productReference = B7F7233723A8001700825C5F /* Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		63731DAF234495860014E7A3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1100;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Bintrail AB";
 				TargetAttributes = {
@@ -339,6 +407,10 @@
 					};
 					B77CC2FB239C626B0041034E = {
 						CreatedOnToolsVersion = 11.2.1;
+					};
+					B7F7233623A8001700825C5F = {
+						CreatedOnToolsVersion = 11.3;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -359,6 +431,7 @@
 				B77CC2B1239A8C400041034E /* Bintrail macOS */,
 				B77CC2D0239B1D3D0041034E /* Bintrail watchOS */,
 				B77CC2FB239C626B0041034E /* Bintrail tvOS */,
+				B7F7233623A8001700825C5F /* Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -386,6 +459,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B77CC2FA239C626B0041034E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7F7233523A8001700825C5F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -557,7 +637,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B7F7233323A8001700825C5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7F7234823A8052300825C5F /* SysctlTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B7F7233E23A8001700825C5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 63731DB7234495860014E7A3 /* Bintrail iOS */;
+			targetProxy = B7F7233D23A8001700825C5F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		63731DBE234495860014E7A3 /* Debug */ = {
@@ -884,6 +980,48 @@
 			};
 			name = Release;
 		};
+		B7F7233F23A8001700825C5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				INFOPLIST_FILE = "$(PROJECT_DIR)/Framework/BintrailTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B7F7234023A8001700825C5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				INFOPLIST_FILE = "$(PROJECT_DIR)/Framework/BintrailTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -928,6 +1066,15 @@
 			buildConfigurations = (
 				B77CC302239C626B0041034E /* Debug */,
 				B77CC303239C626B0041034E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7F7234123A8001700825C5F /* Build configuration list for PBXNativeTarget "Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7F7233F23A8001700825C5F /* Debug */,
+				B7F7234023A8001700825C5F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
