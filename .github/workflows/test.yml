@@ -1,0 +1,76 @@
+name: Test
+on:
+  - push
+  - pull_request
+
+jobs:
+  macOS:
+    name: Test macOS
+    runs-on: macos-latest
+    strategy:
+        matrix:
+          scheme:
+            - Bintrail macOS
+          destination: 
+            - platform=macOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build and test
+        run: |
+          xcodebuild clean test -project Bintrail.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | xcpretty
+  iOS:
+    name: Test iOS
+    runs-on: macos-latest
+    strategy:
+        matrix:
+          scheme:
+            - Bintrail iOS
+          destination: 
+            - platform=iOS Simulator,OS=13.2.2,name=iPhone 11 Pro
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build and test
+        run: |
+          xcodebuild clean test -project Bintrail.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | xcpretty
+  tvOS:
+    name: Test tvOS
+    runs-on: macos-latest
+    strategy:
+        matrix:
+          scheme:
+            - Bintrail tvOS
+          destination: 
+            - platform=tvOS Simulator,OS=13.2,name=Apple TV 4K
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build and test
+        run: |
+          xcodebuild clean test -project Bintrail.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | xcpretty
+  watchOS:
+    name: Test watchOS
+    runs-on: macos-latest
+    strategy:
+        matrix:
+          scheme:
+            - Bintrail watchOS
+          destination: 
+            - OS=6.0,name=Apple Watch Series 5 - 44mm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build and test
+        run: |
+          xcodebuild clean test -project Bintrail.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | xcpretty
+
+  spm-macOS:
+    name: Swift Package manager (macOS)
+    runs-on: macos-latest    
+    needs:
+      - macOS
+    steps:
+      - uses: actions/checkout@v1
+      - name: swift test
+        run: swift test
