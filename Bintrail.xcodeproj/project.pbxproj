@@ -72,6 +72,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		B75DAF1F23D6506B00A10E45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B77CC2B1239A8C400041034E;
+			remoteInfo = "Bintrail macOS";
+		};
+		B75DAF2123D6506B00A10E45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B77CC2FB239C626B0041034E;
+			remoteInfo = "Bintrail tvOS";
+		};
+		B75DAF2323D6506B00A10E45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B77CC2D0239B1D3D0041034E;
+			remoteInfo = "Bintrail watchOS";
+		};
 		B7F7233D23A8001700825C5F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
@@ -378,6 +399,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				B75DAF2023D6506B00A10E45 /* PBXTargetDependency */,
+				B75DAF2223D6506B00A10E45 /* PBXTargetDependency */,
+				B75DAF2423D6506B00A10E45 /* PBXTargetDependency */,
 				B7F7233E23A8001700825C5F /* PBXTargetDependency */,
 			);
 			name = Tests;
@@ -648,6 +672,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B75DAF2023D6506B00A10E45 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B77CC2B1239A8C400041034E /* Bintrail macOS */;
+			targetProxy = B75DAF1F23D6506B00A10E45 /* PBXContainerItemProxy */;
+		};
+		B75DAF2223D6506B00A10E45 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B77CC2FB239C626B0041034E /* Bintrail tvOS */;
+			targetProxy = B75DAF2123D6506B00A10E45 /* PBXContainerItemProxy */;
+		};
+		B75DAF2423D6506B00A10E45 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B77CC2D0239B1D3D0041034E /* Bintrail watchOS */;
+			targetProxy = B75DAF2323D6506B00A10E45 /* PBXContainerItemProxy */;
+		};
 		B7F7233E23A8001700825C5F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 63731DB7234495860014E7A3 /* Bintrail iOS */;
@@ -983,12 +1022,13 @@
 		B7F7233F23A8001700825C5F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ADDITIONAL_SDKS = "watchOS tvOS macOS";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = XPHB8XN6PN;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/Framework/BintrailTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -996,20 +1036,23 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchossimulator macosx appletvos appletvsimulator";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Debug;
 		};
 		B7F7234023A8001700825C5F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ADDITIONAL_SDKS = "watchOS tvOS macOS";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XPHB8XN6PN;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/Framework/BintrailTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1017,8 +1060,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchossimulator macosx appletvos appletvsimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Release;
 		};

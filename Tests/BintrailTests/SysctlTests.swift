@@ -12,10 +12,4 @@ class SysctlTests: XCTestCase {
     func testMachineNotNil() {
         XCTAssert(Sysctl.machine != nil)
     }
-
-    #if !os(Linux) || !os(Windows)
-    func testModelNotNil() {
-        XCTAssert(Sysctl.model != nil)
-    }
-    #endif
 }
