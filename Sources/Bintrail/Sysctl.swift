@@ -6,7 +6,7 @@ import Glibc
 import Darwin
 #endif
 
-/// https://www.freebsd.org/cgi/man.cgi?sysctl(3)
+// https://opensource.apple.com/source/xnu/xnu-1456.1.26/bsd/sys/sysctl.h.auto.html
 struct Sysctl {
     enum Error: Swift.Error {
         case unknown

@@ -29,12 +29,6 @@ extension Executable {
         let bundle = Bundle.main
         let infoDictionary = bundle.infoDictionary ?? [:]
 
-        #if DEBUG
-            let isDebug = true
-        #else
-            let isDebug = false
-        #endif
-
         return Executable(
             name: infoDictionary["CFBundleExecutable"] as? String,
             package: Package(
@@ -45,7 +39,7 @@ extension Executable {
             ),
             startTime: Executable.startTime,
             path: bundle.bundlePath,
-            isDebug: isDebug
+            isDebug: Sysctl.isDebuggerAttached ?? false
         )
     }
 }

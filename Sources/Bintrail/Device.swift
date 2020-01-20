@@ -54,9 +54,14 @@ struct Device: Codable {
 
     let identifier: String?
 
+    /// The machine class
     let machine: String?
 
+    /// The machine model
     let model: String?
+
+    // 
+    let make: String?
 
     let platform: Platform
 
@@ -83,6 +88,13 @@ internal extension Device {
         let isSimulated: Bool
         let name: String?
         let platform: Platform
+        let make: String?
+
+        #if os(iOS) || os(tvOS) || os(macOS) || os(watchOS)
+        make = "Apple"
+        #else
+        make = nil // TODO: Resolve make for non-Apple platforms
+        #endif
 
         #if os(iOS) || os(tvOS)
         let uiDevice = UIDevice.current
@@ -124,6 +136,7 @@ internal extension Device {
             identifier: identifier,
             machine: Sysctl.machine,
             model: Sysctl.model,
+            make: make,
             platform: platform,
             name: name,
             localeIdentifier: Locale.current.identifier,
