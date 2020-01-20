@@ -1,4 +1,4 @@
-![Build Status](https://github.com/bintrail/bintrail-swift-sdk/workflows/Build/badge.svg)
+![Build Status](https://github.com/bintrail/bintrail-swift-sdk/workflows/Test/badge.svg)
 
 # Bintrail Swift SDK
 [Bintrail](https://www.bintrail.com) allows you to remotely gather, search and analyze your application logs in the cloud.
@@ -11,7 +11,6 @@ Bintrail requires Swift 4.0 or later, Objective-C, compatible with following pla
 * macOS 10.0
 * watchOS 3.0
 * tvOS 9.0
-
 
 
 ## Installation
@@ -33,8 +32,7 @@ github "bintrail/bintrail-swift-sdk"
 
 ### Using Swift Package Manager
 
-In Xcode, go to File > Swift Packages > Add package dependency. Select your project, and enter `https://github.com/bintrail/bintrail/swift-sdk` as repository URL.
-
+In Xcode, go to File > Swift Packages > Add package dependency. Select your project, and enter `https://github.com/bintrail/bintrail/bintrail-swift-sdk` as repository URL.
 
 
 ## Integrating Bintrail
