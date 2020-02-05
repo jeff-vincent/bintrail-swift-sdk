@@ -204,31 +204,25 @@ internal extension Client {
         completion: @escaping (Result<(HTTPURLResponse, Data), ClientError>) -> Void
     ) {
         dispatchQueue.async {
-            do {
-                var urlRequest = URLRequest(url: endpoint.url(withBaseUrl: self.baseUrl))
-                urlRequest.httpMethod = endpoint.method
+            var urlRequest = URLRequest(url: endpoint.url(withBaseUrl: self.baseUrl))
+            urlRequest.httpMethod = endpoint.method
 
-                for (key, value) in endpoint.headers {
-                    urlRequest.setValue(value, forHTTPHeaderField: key)
-                }
-
-                guard let credentials = self.ingestKeyPair else {
-                    throw ClientError.ingestKeyPairMising
-                }
-
-                guard let base64EncodedAppCredentials = credentials.base64EncodedString else {
-                    throw ClientError.ingestKeyPairEncodingFailed
-                }
-
-                urlRequest.setValue(base64EncodedAppCredentials, forHTTPHeaderField: "Bintrail-Ingest-Token")
-                urlRequest.httpBody = body
-
-                self.send(urlRequest: urlRequest, completion: completion)
-            } catch let error as ClientError {
-                completion(.failure(error))
-            } catch {
-                completion(.failure(.underlying(error)))
+            for (key, value) in endpoint.headers {
+                urlRequest.setValue(value, forHTTPHeaderField: key)
             }
+
+            guard let credentials = self.ingestKeyPair else {
+                return completion(.failure(ClientError.ingestKeyPairMising))
+            }
+
+            guard let base64EncodedAppCredentials = credentials.base64EncodedString else {
+                return completion(.failure(ClientError.ingestKeyPairEncodingFailed))
+            }
+
+            urlRequest.setValue(base64EncodedAppCredentials, forHTTPHeaderField: "Bintrail-Ingest-Token")
+            urlRequest.httpBody = body
+
+            self.send(urlRequest: urlRequest, completion: completion)
         }
     }
 
@@ -239,25 +233,19 @@ internal extension Client {
         bt_log_internal("Sending URLRequest \(urlRequest)")
 
         urlSession.dataTask(with: urlRequest) { data, urlResponse, error in
-            do {
-                if let error = error {
-                    throw ClientError.urlSessionTaskError(error)
-                }
-
-                guard let httpUrlResponse = urlResponse as? HTTPURLResponse else {
-                    throw ClientError.invalidURLResponse
-                }
-
-                guard (200 ..< 300).contains(httpUrlResponse.statusCode) else {
-                    throw ClientError.unexpectedResponseStatus(httpUrlResponse.statusCode)
-                }
-
-                completion(.success((httpUrlResponse, data ?? Data())))
-            } catch let error as ClientError {
-                completion(.failure(error))
-            } catch {
-                completion(.failure(.underlying(error)))
+            if let error = error {
+                return completion(.failure(ClientError.urlSessionTaskError(error)))
             }
+
+            guard let httpUrlResponse = urlResponse as? HTTPURLResponse else {
+                return completion(.failure(ClientError.invalidURLResponse))
+            }
+
+            guard (200 ..< 300).contains(httpUrlResponse.statusCode) else {
+                return completion(.failure(ClientError.unexpectedResponseStatus(httpUrlResponse.statusCode)))
+            }
+
+            completion(.success((httpUrlResponse, data ?? Data())))
         }.resume()
     }
 }
