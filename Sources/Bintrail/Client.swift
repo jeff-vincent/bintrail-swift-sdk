@@ -3,7 +3,7 @@ import Foundation
 
 internal extension URL {
     static let bintrailBaseUrl = URL(
-        string: ProcessInfo.processInfo.environment["BINTRAIL_API_URL"] ?? "https://api.bintrail.com"
+        string: ProcessInfo.processInfo.environment["BINTRAIL_URL"] ?? "https://data.bintrail.com"
     )!
 }
 

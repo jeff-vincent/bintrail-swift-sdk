@@ -23,7 +23,7 @@ public final class Session {
 
     internal func add(_ entry: Entry) {
         if Sysctl.isDebuggerAttached == true {
-            print(String(describing: entry))
+            debugPrint(String(describing: entry))
         }
 
         dispatchQueue.async {
@@ -81,7 +81,7 @@ internal extension Session {
         case event
     }
 
-    enum Entry: CustomDebugStringConvertible {
+    enum Entry {
         case log(Log)
         case event(Event)
 
@@ -100,23 +100,25 @@ internal extension Session {
                 return value.timestamp
             }
         }
+    }
+}
 
-        var debugDescription: String {
-            var components: [String] = [
-                String(describing: timestamp)
-            ]
+extension Session.Entry: CustomDebugStringConvertible {
+    var debugDescription: String {
+        var components: [String] = [
+            String(describing: timestamp)
+        ]
 
-            switch self {
-            case .event(let value):
-                components.append(String(format: "[EVENT (%@)]", value.name.namespace.rawValue))
-                components.append(value.name.value)
-            case .log(let value):
-                components.append(String(format: "[%@]", value.level.description))
-                components.append(value.message)
-            }
-
-            return components.joined(separator: " ")
+        switch self {
+        case .event(let value):
+            components.append(String(format: "[EVENT (%@)]", value.name.namespace.rawValue))
+            components.append(value.name.value)
+        case .log(let value):
+            components.append(String(format: "[%@]", value.level.description))
+            components.append(value.message)
         }
+
+        return components.joined(separator: " ")
     }
 }
 

@@ -10,7 +10,7 @@ import AppKit
 #endif
 
 public class Bintrail {
-    public struct Options: OptionSet {
+    public struct MonitoringOptions: OptionSet {
         public let rawValue: Int
 
         public init(rawValue: Int) {
@@ -18,8 +18,8 @@ public class Bintrail {
         }
 
         #if os(iOS) || os(tvOS) || os(macOS)
-        public static let includeApplicationNotifications = Options(rawValue: 1 << 0)
-        public static let includeViewControllerLifecycle = Options(rawValue: 2 << 0)
+        public static let applicationNotifications = MonitoringOptions(rawValue: 1 << 0)
+        public static let viewControllerLifecycle = MonitoringOptions(rawValue: 2 << 0)
         #endif
     }
 
@@ -57,7 +57,7 @@ public class Bintrail {
     public func configure(
         keyId: String,
         secret: String,
-        options: Options = []
+        monitoring: MonitoringOptions = []
     ) throws {
         guard isConfigured == false else {
             return
@@ -76,11 +76,11 @@ public class Bintrail {
         bt_log("Bintrail SDK configured", type: .trace)
 
         #if os(iOS) || os(tvOS) || os(macOS)
-        if options.contains(.includeApplicationNotifications) {
+        if monitoring.contains(.applicationNotifications) {
             ApplicationNotificationMonitor.install()
         }
 
-        if options.contains(.includeViewControllerLifecycle) {
+        if monitoring.contains(.viewControllerLifecycle) {
             Swizzling.applyToViewControllers()
         }
         #endif

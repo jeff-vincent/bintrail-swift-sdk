@@ -62,7 +62,7 @@ extension Log: Codable {}
 
 public func bt_log(
     _ item: @autoclosure () -> Any,
-    type: LogType,
+    type: LogType = .info,
     file: StaticString = #file,
     function: StaticString = #function,
     line: Int = #line,
