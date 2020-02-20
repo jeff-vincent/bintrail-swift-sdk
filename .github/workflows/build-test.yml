@@ -4,26 +4,50 @@ on:
   - pull_request
 
 jobs:
-  BuildAndTest:
-    name: ApplePlatforms
+  macOS:
+    name: Test macOS
     runs-on: macos-latest
-    strategy:
-        matrix:
-          scheme:
-            - Bintrail macOS
-            - Bintrail iOS
-            - Bintrail tvOS
-            - Bintrail watchOS
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build and test
-        run: |
-          set -o pipefail && env NSUnbufferedIO=YES xcodebuild clean test -project Bintrail.xcodeproj -scheme "${{ matrix.scheme }}" | xcpretty
+        run: ./ci test macOS
+  iOS:
+    name: Test iOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build and test
+        run: ./ci test iOS iPhone
+  tvOS:
+    name: Test tvOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build and test
+        run: ./ci test tvOS "Apple TV"
+  watchOS:
+    name: Build watchOS
+    runs-on: macos-latest
+    strategy:
+        matrix:
+          scheme:
+            - Bintrail watchOS
+          destination: 
+            - OS=6.0,name=Apple Watch Series 5 - 44mm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build
+        run: ./ci build watchOS "Apple Watch"
 
   spm-macOS:
     name: Test Swift Package manager (macOS)
     runs-on: macos-latest    
+    needs:
+      - macOS
     steps:
       - uses: actions/checkout@v1
       - name: swift test

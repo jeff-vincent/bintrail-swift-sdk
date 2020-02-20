@@ -1,0 +1,23 @@
+#!/bin/bash -ef -o pipefail
+if [ -z "$1" ]
+    then
+    echo "Action not specified"
+    exit 1
+fi
+
+if [ -z "$2" ]
+    then
+    echo "Platform not specified"
+    exit 1
+fi
+
+echo "Running xcodebuild $1 for $2"
+
+if [ -z "$3" ]
+  then
+    xcodebuild clean $1 -project Bintrail.xcodeproj -scheme "Bintrail $2"
+  else
+    instruments -s devices | grep "$3" | sed 's/.*\[\([^]]*\)].*/\1/' \
+    | xargs -I {} \
+    xcodebuild clean $1 -project Bintrail.xcodeproj -scheme "Bintrail $2" -destination "id={}"
+fi
