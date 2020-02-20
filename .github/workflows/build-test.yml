@@ -31,12 +31,6 @@ jobs:
   watchOS:
     name: Build watchOS
     runs-on: macos-latest
-    strategy:
-        matrix:
-          scheme:
-            - Bintrail watchOS
-          destination: 
-            - OS=6.0,name=Apple Watch Series 5 - 44mm
     steps:
       - name: Checkout
         uses: actions/checkout@v1
