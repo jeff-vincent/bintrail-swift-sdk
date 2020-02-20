@@ -76,7 +76,7 @@ public class Bintrail {
 
         client.ingestKeyPair = Client.IngestKeyPair(keyId: keyId, secret: secret)
 
-        bt_log(.trace, "Bintrail SDK configured")
+        bt_log("Bintrail SDK configured", .trace)
 
         #if os(iOS) || os(tvOS) || os(macOS)
         if monitoring.contains(.applicationNotifications) {

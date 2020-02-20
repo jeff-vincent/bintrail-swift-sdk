@@ -83,7 +83,7 @@ Use `bt_log` to queue log messages for ingestion in Bintrail. When a debugger is
 You can specify a log level using `bt_log`
 
 ```swift
-bt_log(.trace, "Hello world!")
+bt_log("Hello world!", .debug)
 ```
 
 

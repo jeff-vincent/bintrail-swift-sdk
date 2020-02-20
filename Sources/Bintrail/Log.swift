@@ -107,8 +107,8 @@ extension Log: Equatable {
 extension Log: Codable {}
 
 public func bt_log(
-    _ type: LogType = .info,
     _ item: @autoclosure () -> Any,
+    _ type: LogType = .info,
     file: StaticString = #file,
     function: StaticString = #function,
     line: Int = #line,

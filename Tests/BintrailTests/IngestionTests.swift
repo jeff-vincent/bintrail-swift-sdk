@@ -71,8 +71,8 @@ class IngestionTests: XCTestCase {
         bt_log(#function)
 
         bt_event_register("XCTestEvent") { event in
-            event.add(attribute: sessionMetadataIngestedExpectation.expectationDescription, for: "exp1")
-            event.add(attribute: sessionEntriesIngestedExpectation.expectationDescription, for: "exp2")
+            event.add(value: sessionMetadataIngestedExpectation.expectationDescription, forAttribute: "exp1")
+            event.add(value: sessionEntriesIngestedExpectation.expectationDescription, forAttribute: "exp2")
         }
 
         waitForExpectations(timeout: 60)
