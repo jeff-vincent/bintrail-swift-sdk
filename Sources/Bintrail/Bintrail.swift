@@ -30,6 +30,8 @@ public class Bintrail {
     /// Shared Bintrail instance
     public static let shared = Bintrail()
 
+    public var logFilter: LogFilter = .all
+
     private let dispatchQueue = DispatchQueue(label: "com.bintrail")
 
     private var notificationObservers: [NSObjectProtocol] = []
@@ -57,7 +59,8 @@ public class Bintrail {
     public func configure(
         keyId: String,
         secret: String,
-        monitoring: MonitoringOptions = []
+        monitoring: MonitoringOptions = [],
+        logFilter: LogFilter = .all
     ) throws {
         guard isConfigured == false else {
             return
@@ -73,7 +76,7 @@ public class Bintrail {
 
         client.ingestKeyPair = Client.IngestKeyPair(keyId: keyId, secret: secret)
 
-        bt_log("Bintrail SDK configured", type: .trace)
+        bt_log(.trace, "Bintrail SDK configured")
 
         #if os(iOS) || os(tvOS) || os(macOS)
         if monitoring.contains(.applicationNotifications) {

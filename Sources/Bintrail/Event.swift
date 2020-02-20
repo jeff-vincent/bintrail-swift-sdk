@@ -27,19 +27,19 @@ public final class Event {
 
     public func add(attributes: [AnyHashable: Any]) {
         for (key, value) in attributes {
-            add(attribute: value, for: String(describing: key))
+            add(value: value, forAttribute: String(describing: key))
         }
     }
 
-    public func add(attribute value: String?, for key: String) {
+    public func add(value: String?, forAttribute key: String) {
         attributes[key] = value
     }
 
-    public func add<T: LosslessStringConvertible>(attribute value: T, for key: String) {
+    public func add<T: LosslessStringConvertible>(value: T, forAttribute key: String) {
         attributes[key] = String(value)
     }
 
-    public func add(attribute value: Any, for key: String) {
+    public func add(value: Any, forAttribute key: String) {
         attributes[key] = String(describing: value)
     }
 
@@ -49,6 +49,32 @@ public final class Event {
 
     public func add<T: BinaryFloatingPoint>(value: T, forMetric metric: Event.Metric) {
         metrics[metric] = Float(value)
+    }
+}
+
+extension Event: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        var string = String(format: "[EVENT]: %@", String(describing: name))
+
+        if !attributes.isEmpty {
+            string += "\n\tAttributes:\n"
+            string += attributes.map { kvp in
+                return String(format: "\t\t%@: %@", kvp.key, kvp.value)
+            }.joined(separator: "\n")
+        }
+
+        if !metrics.isEmpty {
+            string += "\n\tMetrics:\n"
+            string += metrics.map { kvp in
+                return String(
+                    format: "\t\t%@: %@",
+                    String(describing: kvp.key),
+                    String(describing: kvp.value)
+                )
+            }.joined(separator: "\n")
+        }
+
+        return string
     }
 }
 
@@ -99,6 +125,10 @@ extension Event: Codable {
 }
 
 internal func bt_event_register(_ event: Event) {
+    if Sysctl.isDebuggerAttached == true {
+        debugPrint(event)
+    }
+
     Bintrail.shared.currentSession.add(.event(event))
 }
 
@@ -167,6 +197,28 @@ public extension Event {
             self.value = value
             self.namespace = namespace
         }
+    }
+}
+
+extension Event.Metric: CustomStringConvertible {
+    public var description: String {
+        rawValue
+    }
+}
+
+extension Event.Name: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        guard namespace != .user else {
+            return value
+        }
+
+        return String(format: "%@.%@", String(describing: namespace), value)
+    }
+}
+
+extension Event.Namespace: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return rawValue
     }
 }
 

@@ -47,36 +47,51 @@ struct Device: Codable {
     }
 
     struct Platform: Codable {
+        /// Name of the platform, e.g. `iOS` or `tvOS`
         let name: String
+
+        /// Version code of the platform, e.g. `17C45`
         let versionCode: String?
+
+        /// Version name of the platform, e.g. `13.3`
         let versionName: String?
     }
 
-    let identifier: String?
+    /// Device identifier. May or may not be unique to the actual hardware, due to privacy concerns.
+    /// For iOS platforms this value corresponds to `UIDevice.identifierForVendor`
+    let identifier: String
 
-    /// The machine class
+    /// The machine class, e.g `iPhone12,5`
     let machine: String?
 
     /// The machine model
     let model: String?
 
-    // 
+    /// The make of the device, e.g. `Apple`
     let make: String?
 
+    /// Device platform
     let platform: Platform
 
+    /// Device name
     let name: String?
 
+    /// Device locale identifier, e.g. `en`, or `sv_SE`
     let localeIdentifier: String?
 
+    /// Device time zone identifier
     let timeZoneIdentifier: String
 
+    /// Device kernel version
     let kernelVersion: String?
 
+    /// Device boot time
     let bootTime: Date?
 
+    /// Device processor info
     let processor: Processor
 
+    /// Indicates whether the device is simulated
     let isSimulated: Bool
 }
 
@@ -92,8 +107,6 @@ internal extension Device {
 
         #if os(iOS) || os(tvOS) || os(macOS) || os(watchOS)
         make = "Apple"
-        #else
-        make = nil // TODO: Resolve make for non-Apple platforms
         #endif
 
         #if os(iOS) || os(tvOS)
@@ -146,7 +159,9 @@ internal extension Device {
         #endif
 
         return Device(
-            identifier: identifier,
+            // In case a device identifier has not been established, a unique identifier
+            // is given.
+            identifier: identifier ?? UUID().uuidString,
             machine: Sysctl.machine,
             model: Sysctl.model,
             make: make,

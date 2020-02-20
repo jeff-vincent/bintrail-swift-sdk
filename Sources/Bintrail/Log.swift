@@ -1,6 +1,6 @@
 import Foundation
 
-public enum LogType: String, Codable, CaseIterable, CustomStringConvertible, Comparable {
+public enum LogType: String, Codable, CaseIterable, Comparable {
     case trace
     case debug
     case info
@@ -25,12 +25,41 @@ public enum LogType: String, Codable, CaseIterable, CustomStringConvertible, Com
         }
     }
 
-    public var description: String {
-        rawValue.uppercased()
-    }
-
     public static func < (lhs: LogType, rhs: LogType) -> Bool {
         return lhs.intValue < rhs.intValue
+    }
+}
+
+extension LogType: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .trace:
+            return "TRACE"
+        case .debug:
+            return "DEBUG"
+        case .info:
+            return "INFO"
+        case .warning:
+            return "WARN"
+        case .error:
+            return "ERROR"
+        case .fatal:
+            return "FATAL"
+        }
+    }
+}
+
+public enum LogFilter {
+    case all
+    case select(Set<LogType>)
+    case severityFrom(LogType)
+
+    public func contains(logType: LogType) -> Bool {
+        switch self {
+        case .all: return true
+        case .severityFrom(let from): return logType >= from
+        case .select(let set): return set.contains(logType)
+        }
     }
 }
 
@@ -52,6 +81,23 @@ internal struct Log {
     let timestamp: Date
 }
 
+extension Log: CustomDebugStringConvertible {
+    private static var debugDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "y-MM-dd H:m:ss.SSSS"
+        return dateFormatter
+    }()
+
+    var debugDescription: String {
+        String(
+            format: "[%@]\t%@ - %@",
+            String(describing: level),
+            Log.debugDateFormatter.string(from: timestamp),
+            message
+        )
+    }
+}
+
 extension Log: Equatable {
     public static func == (lhs: Log, rhs: Log) -> Bool {
         return lhs.identifier == rhs.identifier
@@ -61,18 +107,21 @@ extension Log: Equatable {
 extension Log: Codable {}
 
 public func bt_log(
+    _ type: LogType = .info,
     _ item: @autoclosure () -> Any,
-    type: LogType = .info,
     file: StaticString = #file,
     function: StaticString = #function,
     line: Int = #line,
-    column: Int = #column
+    column: Int = #column,
+    instance: Bintrail = .shared
 ) {
-    let message = String(describing: item())
+    guard instance.logFilter.contains(logType: type) else {
+        return
+    }
 
     let log = Log(
         level: type,
-        message: message,
+        message: String(describing: item()),
         line: line,
         column: column,
         function: String(describing: function),
@@ -80,5 +129,9 @@ public func bt_log(
         timestamp: Date()
     )
 
-    Bintrail.shared.currentSession.add(.log(log))
+    if Sysctl.isDebuggerAttached == true {
+        debugPrint(log)
+    }
+
+    instance.currentSession.add(.log(log))
 }

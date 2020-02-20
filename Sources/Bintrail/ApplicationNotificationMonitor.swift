@@ -154,8 +154,8 @@ private extension ApplicationNotificationMonitor {
 
         #if os(iOS) || os(tvOS)
         if let application = notification.object as? UIApplication {
-            event.add(attribute: application.applicationState != .background, for: "inForeground")
-            event.add(attribute: application.applicationState == .active, for: "isActive")
+            event.add(value: application.applicationState != .background, forAttribute: "inForeground")
+            event.add(value: application.applicationState == .active, forAttribute: "isActive")
         }
         #elseif os(macOS)
         if let application = notification.object as? NSApplication {

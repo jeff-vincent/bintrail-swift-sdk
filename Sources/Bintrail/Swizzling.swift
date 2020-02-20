@@ -69,7 +69,7 @@ extension ViewController {
 
        private func registerBintrailEvent(named name: String) {
            bt_event_register(Event.Name(value: name, namespace: .viewControllerLifecycle)) { event in
-               event.add(attribute: bintrailProjectedName, for: "viewControllerName")
+               event.add(value: bintrailProjectedName, forAttribute: "viewControllerName")
            }
        }
 #if os(iOS) || os(tvOS)
