@@ -159,10 +159,10 @@ private extension ApplicationNotificationMonitor {
         }
         #elseif os(macOS)
         if let application = notification.object as? NSApplication {
-            event.add(attribute: application.isActive, for: "isActive")
-            event.add(attribute: application.isHidden, for: "isHidden")
-            event.add(attribute: application.isRunning, for: "isRunning")
-            event.add(attribute: application.occlusionState.contains(.visible), for: "isVisible")
+            event.add(value: application.isActive, forAttribute: "isActive")
+            event.add(value: application.isHidden, forAttribute: "isHidden")
+            event.add(value: application.isRunning, forAttribute: "isRunning")
+            event.add(value: application.occlusionState.contains(.visible), forAttribute: "isVisible")
         }
         #endif
     }
