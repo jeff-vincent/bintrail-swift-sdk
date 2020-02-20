@@ -397,30 +397,12 @@ internal extension Session {
         return entries
     }
 
-    private func upload(metadata: Metadata, using client: Client, completion: @escaping (SessionSendError?) -> Void) {
-        client.upload(sessionMetadata: metadata) { result in
-            self.dispatchQueue.async {
-                switch result {
-                case .success(let response):
-                    do {
-                        try self.saveMetadata(
-                            metadata: metadata.withRemoteIdentifier(response.remoteIdentifier)
-                        )
-                        self.send(using: client, completion: completion)
-                    } catch {
-                        completion(.underlying(error))
-                    }
-                case .failure(let error):
-                    completion(.underlying(error))
-                }
-            }
-        }
-    }
-
     func send(using client: Client, completion: @escaping (SessionSendError?) -> Void) {
         dispatchQueue.async {
-            let completion: (SessionSendError?) -> Void = { error in
-                completion(error)
+            func postNotification(name: Notification.Name, userInfo: [String: Any]? = nil) {
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: name, object: self, userInfo: userInfo)
+                }
             }
 
             do {
@@ -430,7 +412,24 @@ internal extension Session {
 
                 guard let remoteIdentifier = metadata.remoteIdentifier else {
                     bt_log_internal("Session \(self.localIdentifier) lacks remote identifier. Uploading metadata...")
-                    self.upload(metadata: metadata, using: client, completion: completion)
+                    client.upload(sessionMetadata: metadata) { result in
+                        self.dispatchQueue.async {
+                            do {
+                                try self.saveMetadata(
+                                    metadata: metadata.withRemoteIdentifier(result.get().remoteIdentifier)
+                                )
+                                postNotification(name: Session.metadataIngestionSuccessNotification)
+
+                                completion(nil)
+                            } catch {
+                                postNotification(
+                                    name: Session.metadataIngestionFailureNotification,
+                                    userInfo: [NSUnderlyingErrorKey: error]
+                                )
+                                completion(.underlying(error))
+                            }
+                        }
+                    }
                     return
                 }
 
@@ -450,15 +449,16 @@ internal extension Session {
 
                 client.upload(entries: entries, forSessionWithRemoteIdentifier: remoteIdentifier) { result in
                     self.dispatchQueue.async {
-                        if case .failure(let error) = result {
-                            completion(.underlying(error))
-                            return
-                        }
-
                         do {
+                            try result.get()
                             try self.fileManager.removeItem(at: outFileUrl)
+                            postNotification(name: Session.entriesIngestionSuccessNotificationName)
                             self.send(using: client, completion: completion)
                         } catch {
+                            postNotification(
+                                name: Session.entriesIngestionFailureNotificationName,
+                                userInfo: [NSUnderlyingErrorKey: error]
+                            )
                             completion(.underlying(error))
                         }
                     }
@@ -470,4 +470,22 @@ internal extension Session {
             }
         }
     }
+}
+
+public extension Session {
+    static let metadataIngestionSuccessNotification = Notification.Name(
+        rawValue: "BintrailSessionMetadataIngestionSuccess"
+    )
+
+    static let metadataIngestionFailureNotification = Notification.Name(
+        rawValue: "BintrailSessionMetadataIngestionFailure"
+    )
+
+    static let entriesIngestionSuccessNotificationName = Notification.Name(
+        rawValue: "BintrailSessionEntriesIngestionSuccess"
+    )
+
+    static let entriesIngestionFailureNotificationName = Notification.Name(
+        rawValue: "BintrailSessionEntriesIngestionFailure"
+    )
 }

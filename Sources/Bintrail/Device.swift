@@ -47,7 +47,7 @@ struct Device: Codable {
     }
 
     struct Platform: Codable {
-        let name: String?
+        let name: String
         let versionCode: String?
         let versionName: String?
     }
@@ -115,7 +115,22 @@ internal extension Device {
             versionName: device.systemVersion
         )
         #elseif os(macOS)
-        identifier = nil
+        let platformExpert: io_service_t = IOServiceGetMatchingService(
+            kIOMasterPortDefault,
+            IOServiceMatching("IOPlatformExpertDevice")
+        )
+
+        let serialNumberAsCFString = IORegistryEntryCreateCFProperty(
+            platformExpert,
+            kIOPlatformSerialNumberKey as CFString,
+            kCFAllocatorDefault,
+            0
+        )
+
+        IOObjectRelease(platformExpert)
+
+        identifier = serialNumberAsCFString?.takeUnretainedValue() as? String
+
         name = Host.current().name
         platform = Platform(
             name: "macOS",

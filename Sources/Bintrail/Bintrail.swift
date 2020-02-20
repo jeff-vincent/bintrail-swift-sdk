@@ -45,7 +45,7 @@ public class Bintrail {
     internal private(set) var currentSession: Session
 
     private init() {
-        client = Client(baseUrl: .bintrailBaseUrl)
+        client = Client()
         currentSession = Session(fileManager: .default)
         operationQueue.underlyingQueue = dispatchQueue
     }

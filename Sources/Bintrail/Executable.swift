@@ -4,16 +4,16 @@ struct Executable: Codable {
     private static let startTime = Date()
 
     struct Package: Codable {
-        let identifier: String?
+        let identifier: String
 
-        let versionName: String?
+        let versionName: String
 
-        let versionCode: String?
+        let versionCode: String
 
-        let name: String?
+        let name: String
     }
 
-    let name: String?
+    let name: String
 
     let package: Package
 
@@ -30,12 +30,12 @@ extension Executable {
         let infoDictionary = bundle.infoDictionary ?? [:]
 
         return Executable(
-            name: infoDictionary["CFBundleExecutable"] as? String,
+            name: infoDictionary["CFBundleExecutable"] as? String ?? "Unnamed",
             package: Package(
-                identifier: infoDictionary["CFBundleIdentifier"] as? String,
-                versionName: infoDictionary["CFBundleShortVersionString"] as? String,
-                versionCode: infoDictionary["CFBundleVersion"] as? String,
-                name: infoDictionary["CFBundleName"] as? String
+                identifier: infoDictionary["CFBundleIdentifier"] as? String ?? "unknown",
+                versionName: infoDictionary["CFBundleShortVersionString"] as? String ?? "0",
+                versionCode: infoDictionary["CFBundleVersion"] as? String ?? "0",
+                name: infoDictionary["CFBundleName"] as? String ?? "Unnamed"
             ),
             startTime: Executable.startTime,
             path: bundle.bundlePath,

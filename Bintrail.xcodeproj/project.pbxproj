@@ -15,6 +15,9 @@
 		63995599234A6F0100FA9765 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63995598234A6F0100FA9765 /* Device.swift */; };
 		6399559B234A6F1400FA9765 /* Executable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6399559A234A6F1400FA9765 /* Executable.swift */; };
 		63A8EA072346217300507264 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A8EA062346217300507264 /* Event.swift */; };
+		B71CECCD23F5F34500BCDA95 /* Bintrail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63731DB8234495860014E7A3 /* Bintrail.framework */; };
+		B71CECD323F5F3A300BCDA95 /* SysctlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F7234723A8052300825C5F /* SysctlTests.swift */; };
+		B71CECD723F5FC9700BCDA95 /* IngestionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CECD623F5FC9700BCDA95 /* IngestionTests.swift */; };
 		B740D42D239548E8005A0A8D /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D42C239548E8005A0A8D /* Client.swift */; };
 		B740D4312395A73E005A0A8D /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4302395A73E005A0A8D /* FileManager+Extensions.swift */; };
 		B740D4332395AF5E005A0A8D /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */; };
@@ -67,38 +70,38 @@
 		B77CC311239C62930041034E /* ApplicationNotificationMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2AA239A7B680041034E /* ApplicationNotificationMonitor.swift */; };
 		B77CC312239C62930041034E /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CC2E7239BB14B0041034E /* Swizzling.swift */; };
 		B7B8AC22239945560021EF92 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8AC21239945560021EF92 /* Sysctl.swift */; };
-		B7F7233C23A8001700825C5F /* Bintrail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63731DB8234495860014E7A3 /* Bintrail.framework */; };
-		B7F7234823A8052300825C5F /* SysctlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F7234723A8052300825C5F /* SysctlTests.swift */; };
+		B7C97F2023FED93500E8ABED /* DeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C97F1F23FED93500E8ABED /* DeviceTests.swift */; };
+		B7C97F2A23FEE09D00E8ABED /* Bintrail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77CC2B2239A8C400041034E /* Bintrail.framework */; };
+		B7C97F3023FEE0C800E8ABED /* SysctlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F7234723A8052300825C5F /* SysctlTests.swift */; };
+		B7C97F3123FEE0C800E8ABED /* IngestionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CECD623F5FC9700BCDA95 /* IngestionTests.swift */; };
+		B7C97F3223FEE0C800E8ABED /* DeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C97F1F23FED93500E8ABED /* DeviceTests.swift */; };
+		B7C97F3C23FEE0EB00E8ABED /* Bintrail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77CC2FC239C626B0041034E /* Bintrail.framework */; };
+		B7C97F4223FEE10000E8ABED /* SysctlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F7234723A8052300825C5F /* SysctlTests.swift */; };
+		B7C97F4323FEE10000E8ABED /* IngestionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CECD623F5FC9700BCDA95 /* IngestionTests.swift */; };
+		B7C97F4423FEE10000E8ABED /* DeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C97F1F23FED93500E8ABED /* DeviceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		B75DAF1F23D6506B00A10E45 /* PBXContainerItemProxy */ = {
+		B71CECCE23F5F34500BCDA95 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 63731DB7234495860014E7A3;
+			remoteInfo = "Bintrail iOS";
+		};
+		B7C97F2B23FEE09D00E8ABED /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B77CC2B1239A8C400041034E;
 			remoteInfo = "Bintrail macOS";
 		};
-		B75DAF2123D6506B00A10E45 /* PBXContainerItemProxy */ = {
+		B7C97F3D23FEE0EB00E8ABED /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B77CC2FB239C626B0041034E;
 			remoteInfo = "Bintrail tvOS";
-		};
-		B75DAF2323D6506B00A10E45 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B77CC2D0239B1D3D0041034E;
-			remoteInfo = "Bintrail watchOS";
-		};
-		B7F7233D23A8001700825C5F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 63731DAF234495860014E7A3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 63731DB7234495860014E7A3;
-			remoteInfo = "Bintrail iOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -116,6 +119,9 @@
 		63E8367523468A9E009A4838 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		63E8367723468AB9009A4838 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		63E8367923468AC0009A4838 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		B71CECC823F5F34500BCDA95 /* Bintrail iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bintrail iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B71CECD523F5F3E200BCDA95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B71CECD623F5FC9700BCDA95 /* IngestionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngestionTests.swift; sourceTree = "<group>"; };
 		B740D42C239548E8005A0A8D /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		B740D4302395A73E005A0A8D /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		B740D4322395AF5E005A0A8D /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
@@ -127,8 +133,9 @@
 		B77CC2E7239BB14B0041034E /* Swizzling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swizzling.swift; sourceTree = "<group>"; };
 		B77CC2FC239C626B0041034E /* Bintrail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bintrail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7B8AC21239945560021EF92 /* Sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sysctl.swift; sourceTree = "<group>"; };
-		B7F7233723A8001700825C5F /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B7F7233B23A8001700825C5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B7C97F1F23FED93500E8ABED /* DeviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTests.swift; sourceTree = "<group>"; };
+		B7C97F2523FEE09D00E8ABED /* Bintrail macOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bintrail macOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7C97F3723FEE0EB00E8ABED /* Bintrail tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bintrail tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7F7234723A8052300825C5F /* SysctlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SysctlTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,6 +144,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B71CECC523F5F34500BCDA95 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B71CECCD23F5F34500BCDA95 /* Bintrail.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,11 +176,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B7F7233423A8001700825C5F /* Frameworks */ = {
+		B7C97F2223FEE09D00E8ABED /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7F7233C23A8001700825C5F /* Bintrail.framework in Frameworks */,
+				B7C97F2A23FEE09D00E8ABED /* Bintrail.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C97F3423FEE0EB00E8ABED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7C97F3C23FEE0EB00E8ABED /* Bintrail.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,7 +198,7 @@
 		633148AF23452EB500B1722F /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				B7F7234423A8005300825C5F /* BintrailTests */,
+				B71CECD423F5F3E200BCDA95 /* Tests */,
 				633148B023452EB500B1722F /* Bintrail */,
 			);
 			path = Framework;
@@ -238,7 +261,9 @@
 				B77CC2B2239A8C400041034E /* Bintrail.framework */,
 				B77CC2D1239B1D3D0041034E /* Bintrail.framework */,
 				B77CC2FC239C626B0041034E /* Bintrail.framework */,
-				B7F7233723A8001700825C5F /* Tests.xctest */,
+				B71CECC823F5F34500BCDA95 /* Bintrail iOS Tests.xctest */,
+				B7C97F2523FEE09D00E8ABED /* Bintrail macOS Tests.xctest */,
+				B7C97F3723FEE0EB00E8ABED /* Bintrail tvOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -253,6 +278,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B71CECD423F5F3E200BCDA95 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				B71CECD523F5F3E200BCDA95 /* Info.plist */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		B7F7233823A8001700825C5F /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,18 +294,12 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		B7F7234423A8005300825C5F /* BintrailTests */ = {
-			isa = PBXGroup;
-			children = (
-				B7F7233B23A8001700825C5F /* Info.plist */,
-			);
-			path = BintrailTests;
-			sourceTree = "<group>";
-		};
 		B7F7234523A8007B00825C5F /* BintrailTests */ = {
 			isa = PBXGroup;
 			children = (
 				B7F7234723A8052300825C5F /* SysctlTests.swift */,
+				B71CECD623F5FC9700BCDA95 /* IngestionTests.swift */,
+				B7C97F1F23FED93500E8ABED /* DeviceTests.swift */,
 			);
 			path = BintrailTests;
 			sourceTree = "<group>";
@@ -331,6 +358,24 @@
 			productReference = 63731DB8234495860014E7A3 /* Bintrail.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		B71CECC723F5F34500BCDA95 /* Bintrail iOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B71CECD023F5F34500BCDA95 /* Build configuration list for PBXNativeTarget "Bintrail iOS Tests" */;
+			buildPhases = (
+				B71CECC423F5F34500BCDA95 /* Sources */,
+				B71CECC523F5F34500BCDA95 /* Frameworks */,
+				B71CECC623F5F34500BCDA95 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B71CECCF23F5F34500BCDA95 /* PBXTargetDependency */,
+			);
+			name = "Bintrail iOS Tests";
+			productName = "Bintrail iOS Tests";
+			productReference = B71CECC823F5F34500BCDA95 /* Bintrail iOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B77CC2B1239A8C400041034E /* Bintrail macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B77CC2B7239A8C400041034E /* Build configuration list for PBXNativeTarget "Bintrail macOS" */;
@@ -388,25 +433,40 @@
 			productReference = B77CC2FC239C626B0041034E /* Bintrail.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		B7F7233623A8001700825C5F /* Tests */ = {
+		B7C97F2423FEE09D00E8ABED /* Bintrail macOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B7F7234123A8001700825C5F /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildConfigurationList = B7C97F2D23FEE09D00E8ABED /* Build configuration list for PBXNativeTarget "Bintrail macOS Tests" */;
 			buildPhases = (
-				B7F7233323A8001700825C5F /* Sources */,
-				B7F7233423A8001700825C5F /* Frameworks */,
-				B7F7233523A8001700825C5F /* Resources */,
+				B7C97F2123FEE09D00E8ABED /* Sources */,
+				B7C97F2223FEE09D00E8ABED /* Frameworks */,
+				B7C97F2323FEE09D00E8ABED /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				B75DAF2023D6506B00A10E45 /* PBXTargetDependency */,
-				B75DAF2223D6506B00A10E45 /* PBXTargetDependency */,
-				B75DAF2423D6506B00A10E45 /* PBXTargetDependency */,
-				B7F7233E23A8001700825C5F /* PBXTargetDependency */,
+				B7C97F2C23FEE09D00E8ABED /* PBXTargetDependency */,
 			);
-			name = Tests;
-			productName = Tests;
-			productReference = B7F7233723A8001700825C5F /* Tests.xctest */;
+			name = "Bintrail macOS Tests";
+			productName = "Bintrail macOS Tests";
+			productReference = B7C97F2523FEE09D00E8ABED /* Bintrail macOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B7C97F3623FEE0EB00E8ABED /* Bintrail tvOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7C97F3F23FEE0EB00E8ABED /* Build configuration list for PBXNativeTarget "Bintrail tvOS Tests" */;
+			buildPhases = (
+				B7C97F3323FEE0EB00E8ABED /* Sources */,
+				B7C97F3423FEE0EB00E8ABED /* Frameworks */,
+				B7C97F3523FEE0EB00E8ABED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B7C97F3E23FEE0EB00E8ABED /* PBXTargetDependency */,
+			);
+			name = "Bintrail tvOS Tests";
+			productName = "Bintrail tvOS Tests";
+			productReference = B7C97F3723FEE0EB00E8ABED /* Bintrail tvOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -423,6 +483,9 @@
 						CreatedOnToolsVersion = 11.0;
 						LastSwiftMigration = 1100;
 					};
+					B71CECC723F5F34500BCDA95 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
 					B77CC2B1239A8C400041034E = {
 						CreatedOnToolsVersion = 11.2.1;
 					};
@@ -432,9 +495,11 @@
 					B77CC2FB239C626B0041034E = {
 						CreatedOnToolsVersion = 11.2.1;
 					};
-					B7F7233623A8001700825C5F = {
-						CreatedOnToolsVersion = 11.3;
-						LastSwiftMigration = 1130;
+					B7C97F2423FEE09D00E8ABED = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					B7C97F3623FEE0EB00E8ABED = {
+						CreatedOnToolsVersion = 11.3.1;
 					};
 				};
 			};
@@ -455,13 +520,22 @@
 				B77CC2B1239A8C400041034E /* Bintrail macOS */,
 				B77CC2D0239B1D3D0041034E /* Bintrail watchOS */,
 				B77CC2FB239C626B0041034E /* Bintrail tvOS */,
-				B7F7233623A8001700825C5F /* Tests */,
+				B71CECC723F5F34500BCDA95 /* Bintrail iOS Tests */,
+				B7C97F2423FEE09D00E8ABED /* Bintrail macOS Tests */,
+				B7C97F3623FEE0EB00E8ABED /* Bintrail tvOS Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		63731DB6234495860014E7A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B71CECC623F5F34500BCDA95 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -489,7 +563,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B7F7233523A8001700825C5F /* Resources */ = {
+		B7C97F2323FEE09D00E8ABED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C97F3523FEE0EB00E8ABED /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -596,6 +677,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B71CECC423F5F34500BCDA95 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B71CECD723F5FC9700BCDA95 /* IngestionTests.swift in Sources */,
+				B7C97F2023FED93500E8ABED /* DeviceTests.swift in Sources */,
+				B71CECD323F5F3A300BCDA95 /* SysctlTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B77CC2AE239A8C400041034E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -661,36 +752,43 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B7F7233323A8001700825C5F /* Sources */ = {
+		B7C97F2123FEE09D00E8ABED /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7F7234823A8052300825C5F /* SysctlTests.swift in Sources */,
+				B7C97F3123FEE0C800E8ABED /* IngestionTests.swift in Sources */,
+				B7C97F3023FEE0C800E8ABED /* SysctlTests.swift in Sources */,
+				B7C97F3223FEE0C800E8ABED /* DeviceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C97F3323FEE0EB00E8ABED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7C97F4323FEE10000E8ABED /* IngestionTests.swift in Sources */,
+				B7C97F4223FEE10000E8ABED /* SysctlTests.swift in Sources */,
+				B7C97F4423FEE10000E8ABED /* DeviceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		B75DAF2023D6506B00A10E45 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B77CC2B1239A8C400041034E /* Bintrail macOS */;
-			targetProxy = B75DAF1F23D6506B00A10E45 /* PBXContainerItemProxy */;
-		};
-		B75DAF2223D6506B00A10E45 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B77CC2FB239C626B0041034E /* Bintrail tvOS */;
-			targetProxy = B75DAF2123D6506B00A10E45 /* PBXContainerItemProxy */;
-		};
-		B75DAF2423D6506B00A10E45 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B77CC2D0239B1D3D0041034E /* Bintrail watchOS */;
-			targetProxy = B75DAF2323D6506B00A10E45 /* PBXContainerItemProxy */;
-		};
-		B7F7233E23A8001700825C5F /* PBXTargetDependency */ = {
+		B71CECCF23F5F34500BCDA95 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 63731DB7234495860014E7A3 /* Bintrail iOS */;
-			targetProxy = B7F7233D23A8001700825C5F /* PBXContainerItemProxy */;
+			targetProxy = B71CECCE23F5F34500BCDA95 /* PBXContainerItemProxy */;
+		};
+		B7C97F2C23FEE09D00E8ABED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B77CC2B1239A8C400041034E /* Bintrail macOS */;
+			targetProxy = B7C97F2B23FEE09D00E8ABED /* PBXContainerItemProxy */;
+		};
+		B7C97F3E23FEE0EB00E8ABED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B77CC2FB239C626B0041034E /* Bintrail tvOS */;
+			targetProxy = B7C97F3D23FEE0EB00E8ABED /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -872,6 +970,45 @@
 			};
 			name = Release;
 		};
+		B71CECD123F5F34500BCDA95 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				INFOPLIST_FILE = Framework/Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bintrail.Bintrail-iOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B71CECD223F5F34500BCDA95 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				INFOPLIST_FILE = Framework/Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bintrail.Bintrail-iOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B77CC2B8239A8C400041034E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1021,51 +1158,85 @@
 			};
 			name = Release;
 		};
-		B7F7233F23A8001700825C5F /* Debug */ = {
+		B7C97F2E23FEE09D00E8ABED /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ADDITIONAL_SDKS = "watchOS tvOS macOS";
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = XPHB8XN6PN;
-				INFOPLIST_FILE = "$(PROJECT_DIR)/Framework/BintrailTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				INFOPLIST_FILE = Framework/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Tests;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bintrail.Bintrail-macOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchossimulator macosx appletvos appletvsimulator";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Debug;
 		};
-		B7F7234023A8001700825C5F /* Release */ = {
+		B7C97F2F23FEE09D00E8ABED /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ADDITIONAL_SDKS = "watchOS tvOS macOS";
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = XPHB8XN6PN;
-				INFOPLIST_FILE = "$(PROJECT_DIR)/Framework/BintrailTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				INFOPLIST_FILE = Framework/Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bintrail.Bintrail-macOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B7C97F4023FEE0EB00E8ABED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				INFOPLIST_FILE = Framework/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bintrail.Bintrail-tvOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchossimulator macosx appletvos appletvsimulator";
+				SDKROOT = appletvos;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Debug;
+		};
+		B7C97F4123FEE0EB00E8ABED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				INFOPLIST_FILE = Framework/Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bintrail.Bintrail-tvOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.2;
 			};
 			name = Release;
 		};
@@ -1086,6 +1257,15 @@
 			buildConfigurations = (
 				63731DC1234495860014E7A3 /* Debug */,
 				63731DC2234495860014E7A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B71CECD023F5F34500BCDA95 /* Build configuration list for PBXNativeTarget "Bintrail iOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B71CECD123F5F34500BCDA95 /* Debug */,
+				B71CECD223F5F34500BCDA95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1117,11 +1297,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B7F7234123A8001700825C5F /* Build configuration list for PBXNativeTarget "Tests" */ = {
+		B7C97F2D23FEE09D00E8ABED /* Build configuration list for PBXNativeTarget "Bintrail macOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B7F7233F23A8001700825C5F /* Debug */,
-				B7F7234023A8001700825C5F /* Release */,
+				B7C97F2E23FEE09D00E8ABED /* Debug */,
+				B7C97F2F23FEE09D00E8ABED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7C97F3F23FEE0EB00E8ABED /* Build configuration list for PBXNativeTarget "Bintrail tvOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7C97F4023FEE0EB00E8ABED /* Debug */,
+				B7C97F4123FEE0EB00E8ABED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
