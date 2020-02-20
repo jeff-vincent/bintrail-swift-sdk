@@ -72,6 +72,28 @@ class DeviceTests: XCTestCase {
         XCTAssertNotNil(Device.current.processor.subType)
     }
 
+    #if os(iOS) || os(tvOS) || os(macOS) || os(watchOS)
+    func testApplePlatformName() {
+        let devicePlatformName = Device.current.platform.name
+
+        #if os(macOS)
+            XCTAssertEqual(devicePlatformName, "macOS")
+        #endif
+
+        #if os(tvOS)
+            XCTAssertEqual(devicePlatformName, "tvOS")
+        #endif
+
+        #if os(iOS)
+            XCTAssertEqual(devicePlatformName, "iOS")
+        #endif
+
+        #if os(watchOS)
+            XCTAssertEqual(devicePlatformName, "watchOS")
+        #endif
+    }
+    #endif
+
     func testPlatformVersionNameNotNil() {
         XCTAssertNotNil(Device.current.platform.versionName)
     }
