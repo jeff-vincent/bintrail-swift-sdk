@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build and test
-        run: ./ci test iOS iPhone
+        run: ./ci test iOS "iPhone 8"
   tvOS:
     name: Test tvOS
     runs-on: macos-latest
