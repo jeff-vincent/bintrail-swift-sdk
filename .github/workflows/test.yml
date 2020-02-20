@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@v1
       - name: Build and test
         run: |
-          xcodebuild clean test -project Bintrail.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | xcpretty
+          xcodebuild clean build -project Bintrail.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | xcpretty
 
   spm-macOS:
     name: Swift Package manager (macOS)
