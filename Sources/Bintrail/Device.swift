@@ -137,8 +137,6 @@ internal extension Device {
             versionCode: processInfo.operatingSystemBuild,
             versionName: processInfo.operatingSystemVersion.stringValue
         )
-        #else
-        // TODO: Linux
         #endif
 
         #if targetEnvironment(simulator)

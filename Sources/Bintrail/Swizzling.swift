@@ -17,7 +17,6 @@ private typealias ViewController = NSViewController
 // TODO: Swizzle WatchKit lifecycle notification events
 // See https://developer.apple.com/documentation/watchkit/wkextensiondelegate
 
-#if !os(Linux)
 internal struct Swizzling {
     static func exchange(selector: Selector, for swizzledSelector: Selector, of cls: AnyClass) {
         let originalMethod = class_getInstanceMethod(cls, selector)
@@ -61,7 +60,6 @@ internal struct Swizzling {
     }
     #endif
 }
-#endif
 
 #if os(iOS) || os(tvOS) || os(macOS)
 extension ViewController {

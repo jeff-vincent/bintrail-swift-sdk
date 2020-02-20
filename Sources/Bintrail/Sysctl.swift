@@ -1,11 +1,7 @@
 import Foundation
 
-#if os(Linux)
-import Glibc
-#else
-import Darwin
-#endif
 
+// https://github.com/apple/swift-corelibs-libdispatch/commit/ccd47a29f60694d38d91cf1ea9709349a4b63cfb
 // https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/sysctl.3.html
 struct Sysctl {
     enum Error: Swift.Error {

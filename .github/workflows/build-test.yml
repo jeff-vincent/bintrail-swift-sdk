@@ -1,4 +1,4 @@
-name: Test
+name: Build & Test
 on:
   - push
   - pull_request
@@ -50,7 +50,7 @@ jobs:
         run: |
           xcodebuild clean test -project Bintrail.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | xcpretty
   watchOS:
-    name: Test watchOS
+    name: Build watchOS
     runs-on: macos-latest
     strategy:
         matrix:
@@ -61,12 +61,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Build and test
+      - name: Build
         run: |
           xcodebuild clean build -project Bintrail.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | xcpretty
 
   spm-macOS:
-    name: Swift Package manager (macOS)
+    name: Test Swift Package manager (macOS)
     runs-on: macos-latest    
     needs:
       - macOS
