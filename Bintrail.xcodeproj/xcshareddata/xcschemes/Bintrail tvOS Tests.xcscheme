@@ -16,9 +16,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B71CECC723F5F34500BCDA95"
-               BuildableName = "Bintrail iOS Tests.xctest"
-               BlueprintName = "Bintrail iOS Tests"
+               BlueprintIdentifier = "B7C97F3623FEE0EB00E8ABED"
+               BuildableName = "Bintrail tvOS Tests.xctest"
+               BlueprintName = "Bintrail tvOS Tests"
                ReferencedContainer = "container:Bintrail.xcodeproj">
             </BuildableReference>
          </TestableReference>

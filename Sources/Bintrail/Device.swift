@@ -112,9 +112,17 @@ internal extension Device {
         #if os(iOS) || os(tvOS)
         let uiDevice = UIDevice.current
         identifier = (uiDevice.identifierForVendor ?? UUID()).uuidString
+
+        let systemName: String
+        #if targetEnvironment(macCatalyst)
+            systemName = "macOS"
+        #else
+            systemName = uiDevice.systemName
+        #endif
+
         name = uiDevice.name
         platform = Platform(
-            name: uiDevice.systemName,
+            name: systemName,
             versionCode: processInfo.operatingSystemBuild,
             versionName: uiDevice.systemVersion
         )

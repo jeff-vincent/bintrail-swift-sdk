@@ -60,8 +60,8 @@ class IngestionTests: XCTestCase {
         Bintrail.isDebugModeEnabled = true
 
         try Bintrail.shared.configure(
-            keyId: "WNENBKAZ6QUGU0J454HL",
-            secret: "mCDlkJHSyyWwrhri4c3tZoOtbG0mxbwr83dR6EUE",
+            keyId: "VDELZJ8HQU7X8TT2BF8I",
+            secret: "iVEPb4j7Cq7GLJzTXh6Uu80h49O7D4duGeaa9hFZ",
             monitoring: [
                 .applicationNotifications,
                 .viewControllerLifecycle

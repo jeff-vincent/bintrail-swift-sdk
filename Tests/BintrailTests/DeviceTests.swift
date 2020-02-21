@@ -85,7 +85,11 @@ class DeviceTests: XCTestCase {
         #endif
 
         #if os(iOS)
-            XCTAssertEqual(devicePlatformName, "iOS")
+            #if targetEnvironment(macCatalyst)
+        XCTAssertEqual(devicePlatformName, "macOS")
+            #else
+        XCTAssertEqual(devicePlatformName, "iOS")
+            #endif
         #endif
 
         #if os(watchOS)
