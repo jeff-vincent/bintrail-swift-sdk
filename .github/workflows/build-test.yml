@@ -17,14 +17,14 @@ jobs:
         orkaBaseImage: gh_actions_v3.img
         githubUser: ${{ secrets.GH_USER }}
         githubPat: ${{ secrets.GH_PAT }}
-        githubRepoName: iOS-example
+        githubRepoName: bintrail-swift-sdk
     outputs:
       uniqueVMActionsTag: ${{ steps.spin_up.outputs.uniqueVMActionsTag }}
       vmName: ${{ steps.spin_up.outputs.vmName }}
       orkaNodeName: ${{ steps.spin_up.outputs.orkaNodeName }}
   macOS:
     name: Test macOS
-    runs-on: macos-latest
+    runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -32,7 +32,7 @@ jobs:
         run: ./ci test macOS
   iOS:
     name: Test iOS
-    runs-on: macos-latest
+    runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -40,7 +40,7 @@ jobs:
         run: ./ci test iOS "iPhone"
   tvOS:
     name: Test tvOS
-    runs-on: macos-latest
+    runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -48,7 +48,7 @@ jobs:
         run: ./ci test tvOS "Apple TV"
   watchOS:
     name: Build watchOS
-    runs-on: macos-latest
+    runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -57,7 +57,7 @@ jobs:
 
   spm-macOS:
     name: Test Swift Package manager (macOS)
-    runs-on: macos-latest    
+    runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
     needs:
       - macOS
     steps:
@@ -78,5 +78,5 @@ jobs:
         vmName: ${{ needs.spin_up.outputs.vmName }}
         githubUser: ${{ secrets.GH_USER }}
         githubPat: ${{ secrets.GH_PAT }}
-        githubRepoName: iOS-example
+        githubRepoName: bintrail-swift-sdk
 
