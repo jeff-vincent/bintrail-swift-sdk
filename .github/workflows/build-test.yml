@@ -4,6 +4,24 @@ on:
   - pull_request
 
 jobs:
+  spin_up:
+    runs-on: [self-hosted, master]
+    steps:
+    - name: Spin Up VM
+      id: spin_up
+      uses: jeff-vincent/orka-actions-spin-up@master
+      with:
+        orkaIP: http://10.221.188.100
+        orkaUser: ${{ secrets.ORKA_USER }}
+        orkaPass: ${{ secrets.ORKA_PASS }}
+        orkaBaseImage: gh_actions_v3.img
+        githubUser: ${{ secrets.GH_USER }}
+        githubPat: ${{ secrets.GH_PAT }}
+        githubRepoName: iOS-example
+    outputs:
+      uniqueVMActionsTag: ${{ steps.spin_up.outputs.uniqueVMActionsTag }}
+      vmName: ${{ steps.spin_up.outputs.vmName }}
+      orkaNodeName: ${{ steps.spin_up.outputs.orkaNodeName }}
   macOS:
     name: Test macOS
     runs-on: macos-latest
@@ -46,3 +64,18 @@ jobs:
       - uses: actions/checkout@v1
       - name: swift test
         run: swift test
+  tear_down:
+    if: always()
+    needs: [spin_up, macOS, tvOS, watchOS, spm-macOS]
+    runs-on: [self-hosted, master]
+    steps:
+    - name: Tear Down VM
+      id: tear_down
+      uses: jeff-vincent/orka-actions-tear-down@master
+      with:
+        orkaUser: ${{ secrets.ORKA_USER }}
+        orkaPass: ${{ secrets.ORKA_PASS }}
+        vmName: ${{ needs.spin_up.outputs.vmName }}
+        githubUser: ${{ secrets.GH_USER }}
+        githubPat: ${{ secrets.GH_PAT }}
+        githubRepoName: iOS-example
