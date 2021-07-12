@@ -23,6 +23,7 @@ jobs:
       vmName: ${{ steps.spin_up.outputs.vmName }}
       orkaNodeName: ${{ steps.spin_up.outputs.orkaNodeName }}
   macOS:
+    needs: spin_up
     name: Test macOS
     runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
     steps:
@@ -31,6 +32,7 @@ jobs:
       - name: Build and test
         run: ./ci test macOS
   iOS:
+    needs: spin_up
     name: Test iOS
     runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
     steps:
@@ -39,6 +41,7 @@ jobs:
       - name: Build and test
         run: ./ci test iOS "iPhone"
   tvOS:
+    needs: spin_up
     name: Test tvOS
     runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
     steps:
@@ -47,6 +50,7 @@ jobs:
       - name: Build and test
         run: ./ci test tvOS "Apple TV"
   watchOS:
+    needs: spin_up
     name: Build watchOS
     runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
     steps:
@@ -56,10 +60,9 @@ jobs:
         run: ./ci build watchOS "Apple Watch"
 
   spm-macOS:
+    needs: [spin_up, macOS]
     name: Test Swift Package manager (macOS)
     runs-on: [self-hosted, "${{ needs.spin_up.outputs.uniqueVMActionsTag }}"]
-    needs:
-      - macOS
     steps:
       - uses: actions/checkout@v1
       - name: swift test
