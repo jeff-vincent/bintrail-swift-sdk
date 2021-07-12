@@ -14,7 +14,7 @@ jobs:
         orkaIP: http://10.221.188.100
         orkaUser: ${{ secrets.ORKA_USER }}
         orkaPass: ${{ secrets.ORKA_PASS }}
-        orkaBaseImage: gh_actions_v6.img
+        orkaBaseImage: gh_actions_v7.img
         githubUser: ${{ secrets.GH_USER }}
         githubPat: ${{ secrets.GH_PAT }}
         githubRepoName: bintrail-swift-sdk
@@ -69,7 +69,7 @@ jobs:
         run: swift test
   tear_down:
     if: always()
-    needs: [spin_up, macOS, tvOS, watchOS, spm-macOS]
+    needs: [spin_up, iOS, macOS, tvOS, watchOS, spm-macOS]
     runs-on: [self-hosted, master]
     steps:
     - name: Tear Down VM
