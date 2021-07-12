@@ -79,3 +79,4 @@ jobs:
         githubUser: ${{ secrets.GH_USER }}
         githubPat: ${{ secrets.GH_PAT }}
         githubRepoName: iOS-example
+
