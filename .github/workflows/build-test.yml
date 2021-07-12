@@ -14,7 +14,7 @@ jobs:
         orkaIP: http://10.221.188.100
         orkaUser: ${{ secrets.ORKA_USER }}
         orkaPass: ${{ secrets.ORKA_PASS }}
-        orkaBaseImage: gh_actions_v4.img
+        orkaBaseImage: gh_actions_v5.img
         githubUser: ${{ secrets.GH_USER }}
         githubPat: ${{ secrets.GH_PAT }}
         githubRepoName: bintrail-swift-sdk
