@@ -83,3 +83,4 @@ jobs:
         githubPat: ${{ secrets.GH_PAT }}
         githubRepoName: bintrail-swift-sdk
 
+
