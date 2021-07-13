@@ -16,10 +16,10 @@ echo "Running xcodebuild $1 for $2"
 if [ -z "$3" ]
   then
     set -o pipefail && env NSUnbufferedIO=YES \
-    xcodebuild clean $1 -project Bintrail.xcodeproj -scheme "Bintrail $2"
+    xcodebuild clean $1 -project Bintrail.xcodeproj -scheme "Bintrail $2" CODE_SIGNING_ALLOWED=NO
   else
     set -o pipefail && env NSUnbufferedIO=YES \
     instruments -s devices | grep "$3" | sort -R | grep -m 1 "" | sed 's/.*\[\([^]]*\)].*/\1/' \
     | xargs -I {} \
-    xcodebuild clean $1 -project Bintrail.xcodeproj -scheme "Bintrail $2" -destination "id={}"
+    xcodebuild clean $1 -project Bintrail.xcodeproj -scheme "Bintrail $2" -destination "id={}" CODE_SIGNING_ALLOWED=NO
 fi
