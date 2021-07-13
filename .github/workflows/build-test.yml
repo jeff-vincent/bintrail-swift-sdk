@@ -33,7 +33,7 @@ jobs:
         run: ./ci build watchOS "Apple Watch"
   tear_down:
     if: always()
-    needs: [spin_up, iOS, macOS, tvOS, watchOS, spm-macOS]
+    needs: [spin_up, watchOS]
     runs-on: [self-hosted, master]
     steps:
     - name: Tear Down VM
